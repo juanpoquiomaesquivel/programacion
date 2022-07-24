@@ -1,4 +1,4 @@
-#include <stdio.h>
+/*#include <stdio.h>
 
 int main()
 {
@@ -25,4 +25,4 @@ int main()
     printf("Beneficios del cambista: %.3lf\n", beneficios);
 
     return 0;
-}
+}*/
