@@ -1,0 +1,13 @@
+-> Fernando Berzal
+Página principal: https://elvex.ugr.es/index.html
+
+Programación en C - Enlace: http://elvex.ugr.es/decsai/c/
+
+# Introducción a la programación
+
+Ejercicio 11:
+Un banco recibe todos los días del Banco Mundial una lista de cómo está el 
+cambio de las divisas del mundo respecto del dólar americano (USD). Diseñar 
+un algoritmo que, a partir de una cantidad de dólares que deseamos comprar, nos 
+devuelva la cantidad en euros (y en pesetas) que nos costarían esos dólares. 
+Suponga que el banco obtiene en el cambio un tanto por ciento variable de beneficios.
