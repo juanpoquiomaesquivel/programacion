@@ -1,6 +1,7 @@
 #include <stdio.h>
 
-int main() {
+int main()
+{
     double dolares = 157.89;
     double tipoDeCambio = 0.97899331;
     double euros;
@@ -19,7 +20,6 @@ int main() {
     pesetas *= euros;
 
     printf("\nTipo de cambio: %.3lf\n", tipoDeCambio);
-    printf("Cantidad en euros: %.3lf\n", euros + beneficios);
     printf("Cantidad en euros menos beneficios: %.3lf\n", euros);
     printf("Cantidad en pesetas: %.3lf\n", pesetas);
     printf("Beneficios del cambista: %.3lf\n", beneficios);
