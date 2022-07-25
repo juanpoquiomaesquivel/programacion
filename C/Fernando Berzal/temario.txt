@@ -19,6 +19,8 @@ devuelva la cantidad en euros (y en pesetas) que nos costarían esos dólares.
 Suponga que el banco obtiene en el cambio un tanto por ciento variable de beneficios.
 NOTA: 1 euro = 166.386 pesetas
 
+# Estructuras de control
+
 Ejercicio 12:
 Diseñar un programa que lea los coeficientes de un polinomio de segundo grado 
 ax^2 + bx + c = 0 y calcule las raíces del mismo (reales o complejas). El programa 
