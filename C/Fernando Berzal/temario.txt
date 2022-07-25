@@ -9,6 +9,7 @@ Ejercicio 3:
 Traduzca las siguientes fórmulas a expresiones escritas en C, declarando para 
 ello las variables que considere necesarias:
 a. F = (9/5)C + 32
+b. f(x,y) = (1 + (x^2)/y)/((x^3)/(1+y))
 
 Ejercicio 11:
 Un banco recibe todos los días del Banco Mundial una lista de cómo está el 
@@ -17,3 +18,9 @@ un algoritmo que, a partir de una cantidad de dólares que deseamos comprar, nos
 devuelva la cantidad en euros (y en pesetas) que nos costarían esos dólares. 
 Suponga que el banco obtiene en el cambio un tanto por ciento variable de beneficios.
 NOTA: 1 euro = 166.386 pesetas
+
+Ejercicio 12:
+Diseñar un programa que lea los coeficientes de un polinomio de segundo grado 
+ax^2 + bx + c = 0 y calcule las raíces del mismo (reales o complejas). El programa 
+debe responder de forma adecuada en los distintos casos en que el polinomio sea de 
+grado inferior a dos.

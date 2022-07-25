@@ -1,4 +1,4 @@
-#include <stdio.h>
+/*#include <stdio.h>
 
 int main()
 {
@@ -13,4 +13,4 @@ int main()
     printf("\n%.3lf grados Celsius es, en grados Farenheit, igual a: %.3lf\n", C, F);
 
     return 0;
-}
+}*/
