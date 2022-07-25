@@ -28,13 +28,13 @@ public class VentanaSeleccion extends JFrame implements Ventana {
         panelSuperior = new PanelSuperior(this, ANCHO, "Iniciar Sesion");
         this.add(panelSuperior);
 
-        panelPrincipal = new PanelSeleccion(this, ANCHO, ALTO);
-        this.add(panelPrincipal);
+        panelSeleccion = new PanelSeleccion(this, ANCHO, ALTO);
+        this.add(panelSeleccion);
     }
 
     private static final int ANCHO = 400, ALTO = 370;
     private PanelSuperior panelSuperior;
-    private PanelSeleccion panelPrincipal;
+    private PanelSeleccion panelSeleccion;
 
     @Override
     public JFrame getPadre() {
@@ -45,13 +45,11 @@ public class VentanaSeleccion extends JFrame implements Ventana {
 class PanelSeleccion extends JPanel {
 
     public PanelSeleccion(JFrame jframe, int ancho, int alto) {
+        this.jframe = jframe;
         this.setLayout(null);
         this.setSize(ancho, alto);
         this.setLocation(0, PanelSuperior.ALTO);
         this.setBackground(Color.WHITE);
-
-        this.lblFondo = this.generarFondo("fondo_principal.png");
-        this.lblFondo.setBounds(0, 0, ancho, alto);
 
         this.lblTitulo = this.generarJLabel("Tic Tac Toe", Color.BLACK, Font.BOLD, 35);
         this.lblTitulo.setBounds(50, 10, 300, 40);
@@ -69,19 +67,19 @@ class PanelSeleccion extends JPanel {
         this.btnOnline.setBounds(136, 220, 128, 128);
         this.add(this.btnOnline);
 
-        this.add(this.lblFondo);
+        this.colocarFondo("fondo_principal.png", ancho, alto);
     }
 
-    private JLabel generarFondo(String recurso) {
+    private void colocarFondo(String recurso, int ancho, int alto) {
         JLabel lbl = new JLabel(new ImageIcon(getClass().getResource("/img/" + recurso)));
-
-        return lbl;
+        lbl.setBounds(0, 0, ancho, alto);
+        this.add(lbl);
     }
 
     private JLabel generarJLabel(String etiqueta, Color color, int estilo, int tamano) {
         JLabel lbl = new JLabel(etiqueta);
         lbl.setHorizontalAlignment(JLabel.CENTER);
-        lbl.setFont(new Font("Berlin Sans FB", estilo, tamano));
+        lbl.setFont(new Font(Ventana.FONT, estilo, tamano));
         lbl.setForeground(color);
 
         return lbl;
@@ -98,20 +96,16 @@ class PanelSeleccion extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
+                JFrame v;
 
-                // Michi.enfoque = "local";
+                if (recurso == "local.png")
+                    v = new VentanaLocal(jframe);
+                else
+                    v = new VentanaOnline(jframe);
 
-                // if (cont_local == 0) {
-                // vp_local = new VentanaPrincipal(marco, "local");
-                // vp_local.setVisible(true);
-
-                // cont_local++;
-                // } else {
-                // vp_local.setLocation(marco.getLocation());
-                // vp_local.setVisible(true);
-                // }
-
-                // marco.dispose();
+                v.setLocation(jframe.getLocation());
+                v.setVisible(true);
+                jframe.dispose();
             }
         });
         btn.addMouseListener(new MouseAdapter() {
@@ -130,7 +124,7 @@ class PanelSeleccion extends JPanel {
         return btn;
     }
 
-    private JLabel lblFondo;
+    private JFrame jframe;
     private JLabel lblTitulo;
     private JLabel lblSubtitulo;
     private JButton btnLocal;

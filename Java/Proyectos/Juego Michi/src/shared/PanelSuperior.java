@@ -16,26 +16,24 @@ import javax.swing.JPanel;
 public class PanelSuperior extends JPanel {
 
     public PanelSuperior(JFrame jframe, int ancho, String titulo) {
+        this.ancho = ancho;
         this.setLayout(null);
         this.setSize(ancho, ALTO);
         this.setLocation(0, 0);
         this.setBackground(Color.BLACK);
 
-        this.lblFondo = generarFondo(jframe, "fondo_.jpg");
-        this.lblFondo.setBounds(0, 0, ancho, ALTO);
-
-        this.lblTitulo = this.generarJLabel(" " + titulo, Color.BLACK, Font.PLAIN, 12);
+        this.lblTitulo = this.generarJLabel("  " + titulo, Color.BLACK, Font.PLAIN, 12);
         this.lblTitulo.setBounds(0, 0, ancho / 2, ALTO);
         this.add(this.lblTitulo);
 
         this.colocarJButtonMinimizar(jframe);
         this.colocarJButtonCerrar(jframe);
-
-        this.add(this.lblFondo);
+        this.colocarFondo(jframe, "fondo_.jpg");
     }
 
-    private JLabel generarFondo(JFrame jframe, String recurso) {
+    private void colocarFondo(JFrame jframe, String recurso) {
         JLabel lbl = new JLabel(new ImageIcon(getClass().getResource("/img/" + recurso)));
+        lbl.setBounds(0, 0, this.ancho, PanelSuperior.ALTO);
         lbl.addMouseListener(new MouseAdapter() {
 
             @Override
@@ -51,13 +49,12 @@ public class PanelSuperior extends JPanel {
                 jframe.setLocation(jframe.getLocation().x + me.getX() - x, jframe.getLocation().y + me.getY() - y);
             }
         });
-
-        return lbl;
+        this.add(lbl);
     }
 
-    private JLabel generarJLabel(String etiqueta, Color color, int estilo, int tamano) {
-        JLabel lbl = new JLabel(etiqueta);
-        lbl.setFont(new Font("Berlin Sans FB", estilo, tamano));
+    private JLabel generarJLabel(String rotulo, Color color, int estilo, int tamano) {
+        JLabel lbl = new JLabel(rotulo);
+        lbl.setFont(new Font(Ventana.FONT, estilo, tamano));
         lbl.setForeground(color);
 
         return lbl;
@@ -69,7 +66,7 @@ public class PanelSuperior extends JPanel {
         btn.setContentAreaFilled(false);
         btn.setFocusPainted(false);
         btn.setBorder(null);
-        btn.setBounds(344, 3, 24, 24);
+        btn.setBounds(ancho - 54, 3, 24, 24);
         btn.addActionListener(new ActionListener() {
 
             @Override
@@ -98,12 +95,19 @@ public class PanelSuperior extends JPanel {
         btn.setContentAreaFilled(false);
         btn.setFocusPainted(false);
         btn.setBorder(null);
-        btn.setBounds(370, 3, 24, 24);
+        btn.setBounds(ancho - 27, 3, 24, 24);
         btn.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                System.exit(0);
+                JFrame aux = ((Ventana) jframe).getPadre();
+
+                if (aux != null) {
+                    aux.setLocation(jframe.getLocation());
+                    aux.setVisible(true);
+                }
+
+                jframe.dispose();
             }
         });
         btn.addMouseListener(new MouseAdapter() {
@@ -121,8 +125,8 @@ public class PanelSuperior extends JPanel {
         this.add(btn);
     }
 
+    private int ancho;
     public static final int ALTO = 30;
     private int x, y;
-    private JLabel lblFondo;
     private JLabel lblTitulo;
 }
