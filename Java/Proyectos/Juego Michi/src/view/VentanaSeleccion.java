@@ -25,7 +25,7 @@ public class VentanaSeleccion extends JFrame implements Ventana {
         this.setUndecorated(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        panelSuperior = new PanelSuperior(this, ANCHO, "Iniciar Sesion");
+        panelSuperior = new PanelSuperior(this, ANCHO, "MICHI :)");
         this.add(panelSuperior);
 
         panelSeleccion = new PanelSeleccion(this, ANCHO, ALTO);
@@ -55,7 +55,7 @@ class PanelSeleccion extends JPanel {
         this.lblTitulo.setBounds(50, 10, 300, 40);
         this.add(this.lblTitulo);
 
-        this.lblSubtitulo = this.generarJLabel("¡Disfruta el juego!", Color.BLACK, Font.PLAIN, 15);
+        this.lblSubtitulo = this.generarJLabel("Disfruta el juego!", Color.BLACK, Font.PLAIN, 15);
         this.lblSubtitulo.setBounds(50, 55, 300, 20);
         this.add(this.lblSubtitulo);
 

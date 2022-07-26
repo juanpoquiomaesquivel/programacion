@@ -22,8 +22,8 @@ public class PanelSuperior extends JPanel {
         this.setLocation(0, 0);
         this.setBackground(Color.BLACK);
 
-        this.lblTitulo = this.generarJLabel("  " + titulo, Color.BLACK, Font.PLAIN, 12);
-        this.lblTitulo.setBounds(0, 0, ancho / 2, ALTO);
+        this.lblTitulo = this.generarJLabel(titulo, Color.BLACK, Font.PLAIN, 12);
+        this.lblTitulo.setBounds(3, 0, ancho / 2, ALTO);
         this.add(this.lblTitulo);
 
         this.colocarJButtonMinimizar(jframe);

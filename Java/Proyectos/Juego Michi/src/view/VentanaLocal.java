@@ -2,6 +2,8 @@ package view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -10,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import model.Jugador;
 import shared.PanelSuperior;
 import shared.Ventana;
 
@@ -55,7 +58,7 @@ class PanelLocal extends JPanel {
         this.add(this.lblJugador1);
 
         this.lblJugador2 = this.generarJLabel("jugador2.png", "Jugador 2", Font.PLAIN, 18);
-        this.lblJugador2.setBounds((ancho - 150) / 2, 120, 150, 35);
+        this.lblJugador2.setBounds((ancho - 150) / 2, 100, 150, 35);
         this.add(this.lblJugador2);
 
         this.txtJugador1 = this.generarJTextField();
@@ -63,9 +66,10 @@ class PanelLocal extends JPanel {
         this.add(this.txtJugador1);
 
         this.txtJugador2 = this.generarJTextField();
-        this.txtJugador2.setBounds((ancho - 120) / 2, 152, 120, 25);
+        this.txtJugador2.setBounds((ancho - 120) / 2, 132, 120, 25);
         this.add(this.txtJugador2);
 
+        this.colocarJButton(ancho);
         this.colocarFondo("fondo_principal.png", ancho, alto);
     }
 
@@ -85,10 +89,38 @@ class PanelLocal extends JPanel {
 
     private JTextField generarJTextField() {
         JTextField txt = new JTextField();
-        txt.setFont(new Font("Cascadia Mono", Font.PLAIN, 12));
+        txt.setFont(new Font(Ventana.FONT, Font.PLAIN, 12));
         txt.setForeground(Color.BLACK);
 
         return txt;
+    }
+
+    private void colocarJButton(int ancho) {
+        btnJugar = new JButton("P L A Y");
+        btnJugar.setBackground(new Color(250, 241, 255));
+        btnJugar.setFocusPainted(false);
+        btnJugar.setFont(new Font(Ventana.FONT, Font.BOLD, 20));
+        btnJugar.setBounds((ancho - 170) / 2, 200, 170, 50);
+        btnJugar.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String g1 = txtJugador1.getText();
+                String g2 = txtJugador2.getText();
+
+                if (g1.equals("") || g2.equals("")) {
+                    return;
+                }
+
+                Jugador gamer1 = new Jugador(g1);
+                Jugador gamer2 = new Jugador(g2);
+                VentanaJuego vj = new VentanaJuego(jframe, gamer1, gamer2);
+                vj.setLocation(jframe.getLocation());
+                vj.setVisible(true);
+                jframe.dispose();
+            }
+        });
+        this.add(btnJugar);
     }
 
     private JFrame jframe;
@@ -96,4 +128,5 @@ class PanelLocal extends JPanel {
     private JLabel lblJugador2;
     private JTextField txtJugador1;
     private JTextField txtJugador2;
+    private JButton btnJugar;
 }
