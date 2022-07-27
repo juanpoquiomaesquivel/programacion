@@ -9,7 +9,8 @@ Ejercicio 3:
 Traduzca las siguientes fórmulas a expresiones escritas en C, declarando para 
 ello las variables que considere necesarias:
 a. F = (9/5)C + 32
-b. f(x,y) = (1 + (x^2)/y)/((x^3)/(1+y))
+b. f(x,y) = (1 + x^2/y)/(x^3/(1+y))
+c. sqrt(1+(e^x/x^2)^2)
 
 Ejercicio 11:
 Un banco recibe todos los días del Banco Mundial una lista de cómo está el 

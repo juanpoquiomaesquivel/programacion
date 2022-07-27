@@ -15,4 +15,6 @@ int main()
     f = (1 + pow(x, 2) / y) / (pow(x, 3) / (1 + y));
 
     printf("\nEl resultado es: f = %.3lf\n", f);
+
+    return 0;
 }*/

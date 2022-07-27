@@ -17,3 +17,7 @@ comprobar que funciona.
 Ejercicio 3:
 Declara un String que contenga tu nombre, después muestra un mensaje de bienvenida 
 por consola. Por ejemplo: si introduzco «Fernando», me aparezca «Bienvenido Fernando».
+
+Ejercicio 4:
+Modifica la aplicación anterior, para que nos pida el nombre que queremos introducir 
+(recuerda usar JOptionPane).
