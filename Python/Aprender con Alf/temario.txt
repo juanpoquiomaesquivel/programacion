@@ -20,3 +20,7 @@ después de que el usuario lo introduzca muestre por pantalla la cadena
 Ejercicio 4:
 Escribir un programa que muestre por pantalla el resultado de la siguiente 
 operación aritmética ((3+2)/(2.5))^2.
+
+Ejercicio 5:
+Escribir un programa que pregunte al usuario por el número de horas trabajadas 
+y el coste por hora. Después debe mostrar por pantalla la paga que le corresponde.

@@ -21,3 +21,8 @@ por consola. Por ejemplo: si introduzco «Fernando», me aparezca «Bienvenido F
 Ejercicio 4:
 Modifica la aplicación anterior, para que nos pida el nombre que queremos introducir 
 (recuerda usar JOptionPane).
+
+Ejercicio 5:
+Haz una aplicación que calcule el área de un círculo(pi*R^2). El radio se pedirá por 
+teclado (recuerda pasar de String a double con Double.parseDouble). Usa la constante 
+PI y el método pow de Math.
