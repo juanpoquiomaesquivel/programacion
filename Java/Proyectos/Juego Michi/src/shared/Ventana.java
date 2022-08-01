@@ -1,10 +1,12 @@
 package shared;
 
-import javax.swing.JFrame;
+import java.awt.Window;
 
 public interface Ventana {
 
-    public JFrame getPadre();
+    public Window getPadre();
 
     public static final String FONT = "HP Simplified Jpan";
+    public static final int WINDOW = 0;
+    public static final int DIALOG = 1;
 }

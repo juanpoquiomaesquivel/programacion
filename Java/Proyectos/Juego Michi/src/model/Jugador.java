@@ -4,14 +4,10 @@ import java.io.Serializable;
 
 public class Jugador implements Serializable {
 
-    private String nickname;
-    private String figura;
-    private String ip;
-    private boolean turno;
-    private String jugada;
-
-    public Jugador(String nickname) {
+    public Jugador(String nickname, String figura, boolean turno) {
         this.nickname = nickname;
+        this.figura = figura;
+        this.turno = turno;
     }
 
     public String getNickname() {
@@ -53,4 +49,10 @@ public class Jugador implements Serializable {
     public void setJugada(String jugada) {
         this.jugada = jugada;
     }
+
+    private String nickname;
+    private String figura;
+    private String ip;
+    private boolean turno;
+    private String jugada;
 }

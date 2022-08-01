@@ -13,11 +13,11 @@ public class VentanaOnline extends JFrame implements Ventana {
         this.jfather = jfather;
         this.setLayout(null);
         this.setSize(ANCHO, ALTO + PanelSuperior.ALTO);
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(jfather);
         this.setUndecorated(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        panelSuperior = new PanelSuperior(this, ANCHO, "Juego Online");
+        panelSuperior = new PanelSuperior(this, Ventana.WINDOW, ANCHO, "Juego Online");
         this.add(panelSuperior);
 
         panelOnline = new PanelOnline(this, ANCHO, ALTO);

@@ -22,11 +22,11 @@ public class VentanaLocal extends JFrame implements Ventana {
         this.jfather = jfather;
         this.setLayout(null);
         this.setSize(ANCHO, ALTO + PanelSuperior.ALTO);
-        this.setLocationRelativeTo(null);
+        this.setLocationRelativeTo(jfather);
         this.setUndecorated(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        panelSuperior = new PanelSuperior(this, ANCHO, "Juego Local");
+        panelSuperior = new PanelSuperior(this, Ventana.WINDOW, ANCHO, "Juego Local");
         this.add(panelSuperior);
 
         panelLocal = new PanelLocal(this, ANCHO, ALTO);
@@ -112,9 +112,10 @@ class PanelLocal extends JPanel {
                     return;
                 }
 
-                Jugador gamer1 = new Jugador(g1);
-                Jugador gamer2 = new Jugador(g2);
+                Jugador gamer1 = new Jugador(g1, "X", true);
+                Jugador gamer2 = new Jugador(g2, "O", false);
                 VentanaJuego vj = new VentanaJuego(jframe, gamer1, gamer2);
+
                 vj.setLocation(jframe.getLocation());
                 vj.setVisible(true);
                 jframe.dispose();

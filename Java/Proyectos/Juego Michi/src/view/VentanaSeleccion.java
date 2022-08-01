@@ -25,7 +25,7 @@ public class VentanaSeleccion extends JFrame implements Ventana {
         this.setUndecorated(true);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        panelSuperior = new PanelSuperior(this, ANCHO, "MICHI :)");
+        panelSuperior = new PanelSuperior(this, Ventana.WINDOW, ANCHO, "MICHI :)");
         this.add(panelSuperior);
 
         panelSeleccion = new PanelSeleccion(this, ANCHO, ALTO);

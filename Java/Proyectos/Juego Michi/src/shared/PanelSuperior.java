@@ -12,10 +12,11 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import java.awt.Window;
 
 public class PanelSuperior extends JPanel {
 
-    public PanelSuperior(JFrame jframe, int ancho, String titulo) {
+    public PanelSuperior(Window frame, int tipo, int ancho, String titulo) {
         this.ancho = ancho;
         this.setLayout(null);
         this.setSize(ancho, ALTO);
@@ -25,13 +26,13 @@ public class PanelSuperior extends JPanel {
         this.lblTitulo = this.generarJLabel(titulo, Color.BLACK, Font.PLAIN, 12);
         this.lblTitulo.setBounds(3, 0, ancho / 2, ALTO);
         this.add(this.lblTitulo);
-
-        this.colocarJButtonMinimizar(jframe);
-        this.colocarJButtonCerrar(jframe);
-        this.colocarFondo(jframe, "fondo_.jpg");
+        if (tipo == Ventana.WINDOW)
+            this.colocarJButtonMinimizar(frame);
+        this.colocarJButtonCerrar(frame);
+        this.colocarFondo(frame, "fondo_.jpg");
     }
 
-    private void colocarFondo(JFrame jframe, String recurso) {
+    private void colocarFondo(Window frame, String recurso) {
         JLabel lbl = new JLabel(new ImageIcon(getClass().getResource("/img/" + recurso)));
         lbl.setBounds(0, 0, this.ancho, PanelSuperior.ALTO);
         lbl.addMouseListener(new MouseAdapter() {
@@ -46,7 +47,7 @@ public class PanelSuperior extends JPanel {
 
             @Override
             public void mouseDragged(MouseEvent me) {
-                jframe.setLocation(jframe.getLocation().x + me.getX() - x, jframe.getLocation().y + me.getY() - y);
+                frame.setLocation(frame.getLocation().x + me.getX() - x, frame.getLocation().y + me.getY() - y);
             }
         });
         this.add(lbl);
@@ -60,7 +61,7 @@ public class PanelSuperior extends JPanel {
         return lbl;
     }
 
-    private void colocarJButtonMinimizar(JFrame jframe) {
+    private void colocarJButtonMinimizar(Window frame) {
         JButton btn = new JButton(new ImageIcon(getClass().getResource("/img/minimizar.png")));
         btn.setBorderPainted(false);
         btn.setContentAreaFilled(false);
@@ -71,7 +72,7 @@ public class PanelSuperior extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                jframe.setExtendedState(JFrame.ICONIFIED);
+                ((JFrame) frame).setExtendedState(JFrame.ICONIFIED);
             }
         });
         btn.addMouseListener(new MouseAdapter() {
@@ -89,7 +90,7 @@ public class PanelSuperior extends JPanel {
         this.add(btn);
     }
 
-    private void colocarJButtonCerrar(JFrame jframe) {
+    private void colocarJButtonCerrar(Window frame) {
         JButton btn = new JButton(new ImageIcon(getClass().getResource("/img/cerrar.png")));
         btn.setBorderPainted(false);
         btn.setContentAreaFilled(false);
@@ -100,14 +101,14 @@ public class PanelSuperior extends JPanel {
 
             @Override
             public void actionPerformed(ActionEvent ae) {
-                JFrame aux = ((Ventana) jframe).getPadre();
+                Window aux = ((Ventana) frame).getPadre();
 
                 if (aux != null) {
-                    aux.setLocation(jframe.getLocation());
+                    aux.setLocation(frame.getLocation());
                     aux.setVisible(true);
                 }
 
-                jframe.dispose();
+                frame.dispose();
             }
         });
         btn.addMouseListener(new MouseAdapter() {
