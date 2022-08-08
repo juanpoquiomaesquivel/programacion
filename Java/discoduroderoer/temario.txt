@@ -26,3 +26,7 @@ Ejercicio 5:
 Haz una aplicación que calcule el área de un círculo(pi*R^2). El radio se pedirá por 
 teclado (recuerda pasar de String a double con Double.parseDouble). Usa la constante 
 PI y el método pow de Math.
+
+Ejercicio 6:
+Lee un número por teclado e indica si es divisible entre 2 (resto = 0). Si no lo es, 
+también debemos indicarlo.

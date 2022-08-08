@@ -22,6 +22,11 @@ d. (1 == x) || (10 > x++)
 e. (++x) + x
 f. x + (++x)
 
+Ejercicio 5:
+Diseñe un programa que lea los coeficientes de una ecuación de segundo grado 
+ax^2+bx+c=0 y calcule sus dos soluciones. Se supone que la ecuación tiene 
+soluciones reales.
+
 Ejercicio 11:
 Un banco recibe todos los días del Banco Mundial una lista de cómo está el 
 cambio de las divisas del mundo respecto del dólar americano (USD). Diseñar 

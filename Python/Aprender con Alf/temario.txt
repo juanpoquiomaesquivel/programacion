@@ -24,3 +24,9 @@ operación aritmética ((3+2)/(2.5))^2.
 Ejercicio 5:
 Escribir un programa que pregunte al usuario por el número de horas trabajadas 
 y el coste por hora. Después debe mostrar por pantalla la paga que le corresponde.
+
+Ejercicio 6:
+Escribir un programa que lea un entero positivo, n, introducido por el usuario y 
+después muestre en pantalla la suma de todos los enteros desde 1 hasta n. La suma 
+de los n primeros enteros positivos puede ser calculada de la siguiente forma: 
+suma = n(n+1)/2
