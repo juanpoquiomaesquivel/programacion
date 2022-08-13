@@ -2,6 +2,7 @@
     "files.associations": {
         "stdio.h": "c",
         "pila.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "cola.h": "c"
     }
 }
