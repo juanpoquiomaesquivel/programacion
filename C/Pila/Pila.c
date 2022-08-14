@@ -66,7 +66,7 @@ void mostrar(struct Nodo *tope)
 
     while (p != NULL)
     {
-        printf("%d\n", *(int *)(p->dato));
+        printf("%d\n", *(E *)(p->dato));
         p = p->abajo;
     }
 }

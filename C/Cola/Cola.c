@@ -88,7 +88,7 @@ void mostrar(struct Nodo *cabeza)
 
     while (p != NULL)
     {
-        printf("%d ", *(int *)(p->dato));
+        printf("%d ", *(E *)(p->dato));
         p = p->siguiente;
     }
 

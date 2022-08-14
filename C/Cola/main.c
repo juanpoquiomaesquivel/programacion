@@ -25,7 +25,8 @@ int main(int argc, char const *argv[])
 void menu()
 {
     struct Nodo *cola = NULL;
-    int opcion = SALIR, *dato = NULL;
+    int opcion = SALIR;
+    E *dato = NULL;
     char lista[][100] = {"Salir",
                          "Encolar",
                          "Decolar",
@@ -38,7 +39,7 @@ void menu()
     {
         puts("\n\t\t.: COLA :.\n");
 
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < sizeof(lista) / 100; i++)
             printf("[%d] : %s\n", i, lista[i]);
 
         printf("\n>> ");
@@ -51,7 +52,7 @@ void menu()
             return;
         case ENCOLAR:
             printf(">> ");
-            dato = (int *)malloc(sizeof(int));
+            dato = (E *)malloc(sizeof(E));
             scanf("%d", dato);
             encolar(&cola, dato);
             dato = NULL;
@@ -61,11 +62,11 @@ void menu()
             break;
         case FRENTE:
             if (frente(cola) != NULL)
-                printf("%d\n", *(int *)(frente(cola)));
+                printf("%d\n", *(E *)(frente(cola)));
             break;
         case ULTIMO:
             if (ultimo(cola) != NULL)
-                printf("%d\n", *(int *)(ultimo(cola)));
+                printf("%d\n", *(E *)(ultimo(cola)));
             break;
         case BORRAR:
             borrar(&cola);

@@ -2,6 +2,7 @@
 #define _COLA_H_
 
 typedef void *T;
+typedef int E;
 
 struct Nodo
 {
