@@ -3,20 +3,19 @@
 
 typedef void *T;
 typedef int E;
-
-struct Nodo
+typedef struct nodo
 {
     T dato;
-    struct Nodo *siguiente;
-};
+    struct nodo *siguiente;
+} Nodo;
 
-struct Nodo *nodo(T dato);
-void encolar(struct Nodo **cabeza, T dato);
-void decolar(struct Nodo **cabeza);
-T frente(struct Nodo *cabeza);
-T ultimo(struct Nodo *cabeza);
-void borrar(struct Nodo **cabeza);
-void mostrar(struct Nodo *cabeza);
-int estaVacia(struct Nodo *cabeza);
+Nodo *nodo(T dato);
+void encolar(Nodo **cabeza, T dato);
+void decolar(Nodo **cabeza);
+T frente(Nodo *cabeza);
+T ultimo(Nodo *cabeza);
+void borrar(Nodo **cabeza);
+void mostrar(Nodo *cabeza);
+int estaVacia(Nodo *cabeza);
 
 #endif

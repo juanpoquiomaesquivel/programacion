@@ -13,6 +13,14 @@ enum
     MOSTRAR
 };
 
+const char lista[][100] = {"Salir",
+                           "Encolar",
+                           "Decolar",
+                           "Frente",
+                           "Ultimo",
+                           "Borrar",
+                           "Mostrar"};
+
 void menu();
 
 int main(int argc, char const *argv[])
@@ -24,22 +32,15 @@ int main(int argc, char const *argv[])
 
 void menu()
 {
-    struct Nodo *cola = NULL;
-    int opcion = SALIR;
+    Nodo *cola = NULL;
+    int n = sizeof(lista) / sizeof(lista[0]), opcion = SALIR;
     E *dato = NULL;
-    char lista[][100] = {"Salir",
-                         "Encolar",
-                         "Decolar",
-                         "Frente",
-                         "Ultimo",
-                         "Borrar",
-                         "Mostrar"};
 
     while (1)
     {
         puts("\n\t\t.: COLA :.\n");
 
-        for (int i = 0; i < sizeof(lista) / 100; i++)
+        for (int i = 0; i < n; i++)
             printf("[%d] : %s\n", i, lista[i]);
 
         printf("\n>> ");

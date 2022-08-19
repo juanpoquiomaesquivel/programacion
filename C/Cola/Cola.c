@@ -2,13 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Nodo *nodo(T dato)
+Nodo *nodo(T dato)
 {
-    struct Nodo *nuevo = (struct Nodo *)malloc(sizeof(struct Nodo));
+    Nodo *nuevo = (Nodo *)malloc(sizeof(Nodo));
 
     if (nuevo == NULL)
     {
-        free(nuevo);
+        perror("[SISTEMA] :- <Memoria insuficiente> ");
         exit(EXIT_FAILURE);
     }
 
@@ -18,15 +18,15 @@ struct Nodo *nodo(T dato)
     return nuevo;
 }
 
-void encolar(struct Nodo **cabeza, T dato)
+void encolar(Nodo **cabeza, T dato)
 {
-    struct Nodo *nuevo = nodo(dato);
+    Nodo *nuevo = nodo(dato);
 
     if (estaVacia(*cabeza))
         *cabeza = nuevo;
     else
     {
-        struct Nodo *p = *cabeza;
+        Nodo *p = *cabeza;
 
         while (p->siguiente != NULL)
             p = p->siguiente;
@@ -35,18 +35,18 @@ void encolar(struct Nodo **cabeza, T dato)
     }
 }
 
-void decolar(struct Nodo **cabeza)
+void decolar(Nodo **cabeza)
 {
     if (!estaVacia(*cabeza))
     {
-        struct Nodo *p = *cabeza;
+        Nodo *p = *cabeza;
         *cabeza = (*cabeza)->siguiente;
         free(p->dato);
         free(p);
     }
 }
 
-T frente(struct Nodo *cabeza)
+T frente(Nodo *cabeza)
 {
     if (!estaVacia(cabeza))
         return cabeza->dato;
@@ -54,11 +54,11 @@ T frente(struct Nodo *cabeza)
         return NULL;
 }
 
-T ultimo(struct Nodo *cabeza)
+T ultimo(Nodo *cabeza)
 {
     if (!estaVacia(cabeza))
     {
-        struct Nodo *p = cabeza;
+        Nodo *p = cabeza;
 
         while (p->siguiente != NULL)
             p = p->siguiente;
@@ -69,9 +69,9 @@ T ultimo(struct Nodo *cabeza)
         return NULL;
 }
 
-void borrar(struct Nodo **cabeza)
+void borrar(Nodo **cabeza)
 {
-    struct Nodo *p = *cabeza;
+    Nodo *p = *cabeza;
 
     while (p != NULL)
     {
@@ -82,9 +82,9 @@ void borrar(struct Nodo **cabeza)
     }
 }
 
-void mostrar(struct Nodo *cabeza)
+void mostrar(Nodo *cabeza)
 {
-    struct Nodo *p = cabeza;
+    Nodo *p = cabeza;
 
     while (p != NULL)
     {
@@ -95,7 +95,7 @@ void mostrar(struct Nodo *cabeza)
     puts("");
 }
 
-int estaVacia(struct Nodo *cabeza)
+int estaVacia(Nodo *cabeza)
 {
     return cabeza == NULL;
 }

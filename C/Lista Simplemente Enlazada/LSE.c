@@ -2,13 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Nodo *nodo(T dato)
+Nodo *nodo(T dato)
 {
-    struct Nodo *nuevo = (struct Nodo *)malloc(sizeof(struct Nodo));
+    Nodo *nuevo = (Nodo *)malloc(sizeof(Nodo));
 
     if (nuevo == NULL)
     {
-        free(nuevo);
+        perror("[SISTEMA] :- <Memoria insuficiente> ");
         exit(EXIT_FAILURE);
     }
 
@@ -18,9 +18,9 @@ struct Nodo *nodo(T dato)
     return nuevo;
 }
 
-void insertarAlInicio(struct Nodo **cabeza, T dato)
+void insertarAlInicio(Nodo **cabeza, T dato)
 {
-    struct Nodo *nuevo = nodo(dato);
+    Nodo *nuevo = nodo(dato);
 
     if (!estaVacia(*cabeza))
         nuevo->siguiente = *cabeza;
@@ -28,15 +28,15 @@ void insertarAlInicio(struct Nodo **cabeza, T dato)
     *cabeza = nuevo;
 }
 
-void insertarAlFinal(struct Nodo **cabeza, T dato)
+void insertarAlFinal(Nodo **cabeza, T dato)
 {
-    struct Nodo *nuevo = nodo(dato);
+    Nodo *nuevo = nodo(dato);
 
     if (estaVacia(*cabeza))
         *cabeza = nuevo;
     else
     {
-        struct Nodo *p = *cabeza;
+        Nodo *p = *cabeza;
 
         while (p->siguiente != NULL)
             p = p->siguiente;
@@ -45,12 +45,12 @@ void insertarAlFinal(struct Nodo **cabeza, T dato)
     }
 }
 
-void insertarAntesDe(struct Nodo **cabeza, T dato, T x)
+void insertarAntesDe(Nodo **cabeza, T dato, T x)
 {
     if (!estaVacia(*cabeza))
     {
-        struct Nodo *p = *cabeza;
-        struct Nodo *_p = NULL;
+        Nodo *p = *cabeza;
+        Nodo *_p = NULL;
 
         while (p->siguiente != NULL && *(E *)(p->dato) != *(E *)x)
         {
@@ -60,7 +60,7 @@ void insertarAntesDe(struct Nodo **cabeza, T dato, T x)
 
         if (*(E *)(p->dato) == *(E *)x)
         {
-            struct Nodo *nuevo = nodo(dato);
+            Nodo *nuevo = nodo(dato);
             nuevo->siguiente = p;
 
             if (p == *cabeza)
@@ -71,18 +71,18 @@ void insertarAntesDe(struct Nodo **cabeza, T dato, T x)
     }
 }
 
-void insertarDespuesDe(struct Nodo **cabeza, T dato, T x)
+void insertarDespuesDe(Nodo **cabeza, T dato, T x)
 {
     if (!estaVacia(*cabeza))
     {
-        struct Nodo *p = *cabeza;
+        Nodo *p = *cabeza;
 
         while (p->siguiente != NULL && *(E *)(p->dato) != *(E *)(x))
             p = p->siguiente;
 
         if (*(E *)(p->dato) == *(E *)(x))
         {
-            struct Nodo *nuevo = nodo(dato);
+            Nodo *nuevo = nodo(dato);
 
             if (p->siguiente != NULL)
                 nuevo->siguiente = p->siguiente;
@@ -92,11 +92,11 @@ void insertarDespuesDe(struct Nodo **cabeza, T dato, T x)
     }
 }
 
-void reemplazarEn(struct Nodo *cabeza, T dato, T x)
+void reemplazarEn(Nodo *cabeza, T dato, T x)
 {
     if (!estaVacia(cabeza))
     {
-        struct Nodo *p = cabeza;
+        Nodo *p = cabeza;
 
         while (p->siguiente != NULL && *(E *)(p->dato) != *(E *)(x))
             p = p->siguiente;
@@ -109,23 +109,23 @@ void reemplazarEn(struct Nodo *cabeza, T dato, T x)
     }
 }
 
-void eliminarElPrimero(struct Nodo **cabeza)
+void eliminarElPrimero(Nodo **cabeza)
 {
     if (!estaVacia(*cabeza))
     {
-        struct Nodo *p = *cabeza;
+        Nodo *p = *cabeza;
         *cabeza = (*cabeza)->siguiente;
         free(p->dato);
         free(p);
     }
 }
 
-void eliminarElUltimo(struct Nodo **cabeza)
+void eliminarElUltimo(Nodo **cabeza)
 {
     if (!estaVacia(*cabeza))
     {
-        struct Nodo *p = *cabeza;
-        struct Nodo *_p = NULL;
+        Nodo *p = *cabeza;
+        Nodo *_p = NULL;
 
         while (p->siguiente != NULL)
         {
@@ -143,13 +143,13 @@ void eliminarElUltimo(struct Nodo **cabeza)
     }
 }
 
-void eliminarAntesDe(struct Nodo **cabeza, T x)
+void eliminarAntesDe(Nodo **cabeza, T x)
 {
     if (!estaVacia(*cabeza))
     {
-        struct Nodo *p = *cabeza;
-        struct Nodo *_p = NULL;
-        struct Nodo *__p = NULL;
+        Nodo *p = *cabeza;
+        Nodo *_p = NULL;
+        Nodo *__p = NULL;
 
         while (p->siguiente != NULL && *(E *)(p->dato) != *(E *)(x))
         {
@@ -172,11 +172,11 @@ void eliminarAntesDe(struct Nodo **cabeza, T x)
     }
 }
 
-void eliminarDespuesDe(struct Nodo **cabeza, T x)
+void eliminarDespuesDe(Nodo **cabeza, T x)
 {
     if (!estaVacia(*cabeza))
     {
-        struct Nodo *p = *cabeza;
+        Nodo *p = *cabeza;
 
         while (p->siguiente != NULL && *(E *)(p->dato) != *(E *)(x))
             p = p->siguiente;
@@ -184,7 +184,7 @@ void eliminarDespuesDe(struct Nodo **cabeza, T x)
         if (*(E *)(p->dato) == *(E *)(x))
             if (p->siguiente != NULL)
             {
-                struct Nodo *p_ = p->siguiente;
+                Nodo *p_ = p->siguiente;
                 p->siguiente = p_->siguiente;
                 free(p_->dato);
                 free(p_);
@@ -192,12 +192,12 @@ void eliminarDespuesDe(struct Nodo **cabeza, T x)
     }
 }
 
-void eliminarEn(struct Nodo **cabeza, T x)
+void eliminarEn(Nodo **cabeza, T x)
 {
     if (!estaVacia(*cabeza))
     {
-        struct Nodo *p = *cabeza;
-        struct Nodo *_p = NULL;
+        Nodo *p = *cabeza;
+        Nodo *_p = NULL;
 
         while (p->siguiente != NULL && *(E *)(p->dato) != *(E *)(x))
         {
@@ -218,7 +218,7 @@ void eliminarEn(struct Nodo **cabeza, T x)
     }
 }
 
-T obtenerElPrimero(struct Nodo *cabeza)
+T obtenerElPrimero(Nodo *cabeza)
 {
     if (!estaVacia(cabeza))
         return cabeza->dato;
@@ -226,11 +226,11 @@ T obtenerElPrimero(struct Nodo *cabeza)
     return NULL;
 }
 
-T obtenerElUltimo(struct Nodo *cabeza)
+T obtenerElUltimo(Nodo *cabeza)
 {
     if (!estaVacia(cabeza))
     {
-        struct Nodo *p = cabeza;
+        Nodo *p = cabeza;
 
         while (p->siguiente != NULL)
             p = p->siguiente;
@@ -241,12 +241,12 @@ T obtenerElUltimo(struct Nodo *cabeza)
     return NULL;
 }
 
-T obtenerAntesDe(struct Nodo *cabeza, T x)
+T obtenerAntesDe(Nodo *cabeza, T x)
 {
     if (!estaVacia(cabeza))
     {
-        struct Nodo *p = cabeza;
-        struct Nodo *_p = NULL;
+        Nodo *p = cabeza;
+        Nodo *_p = NULL;
 
         while (p->siguiente != NULL && *(E *)(p->dato) != *(E *)(x))
         {
@@ -262,11 +262,11 @@ T obtenerAntesDe(struct Nodo *cabeza, T x)
     return NULL;
 }
 
-T obtenerDespuesDe(struct Nodo *cabeza, T x)
+T obtenerDespuesDe(Nodo *cabeza, T x)
 {
     if (!estaVacia(cabeza))
     {
-        struct Nodo *p = cabeza;
+        Nodo *p = cabeza;
 
         while (p->siguiente != NULL && *(E *)(p->dato) != *(E *)(x))
             p = p->siguiente;
@@ -279,11 +279,11 @@ T obtenerDespuesDe(struct Nodo *cabeza, T x)
     return NULL;
 }
 
-T obtenerEn(struct Nodo *cabeza, int posicion)
+T obtenerEn(Nodo *cabeza, int posicion)
 {
     if (!estaVacia(cabeza))
     {
-        struct Nodo *p = cabeza;
+        Nodo *p = cabeza;
         int i = 0;
 
         while (p->siguiente != NULL && i != posicion)
@@ -299,11 +299,11 @@ T obtenerEn(struct Nodo *cabeza, int posicion)
     return NULL;
 }
 
-int buscar(struct Nodo *cabeza, T x)
+int buscar(Nodo *cabeza, T x)
 {
     if (!estaVacia(cabeza))
     {
-        struct Nodo *p = cabeza;
+        Nodo *p = cabeza;
         int i = 0;
 
         while (p->siguiente != NULL && *(E *)(p->dato) != *(E *)(x))
@@ -319,9 +319,9 @@ int buscar(struct Nodo *cabeza, T x)
     return -1;
 }
 
-void borrar(struct Nodo **cabeza)
+void borrar(Nodo **cabeza)
 {
-    struct Nodo *p = *cabeza;
+    Nodo *p = *cabeza;
 
     while (p != NULL)
     {
@@ -332,9 +332,9 @@ void borrar(struct Nodo **cabeza)
     }
 }
 
-void mostrar(struct Nodo *cabeza)
+void mostrar(Nodo *cabeza)
 {
-    struct Nodo *p = cabeza;
+    Nodo *p = cabeza;
 
     while (p != NULL)
     {
@@ -345,7 +345,7 @@ void mostrar(struct Nodo *cabeza)
     puts("");
 }
 
-int estaVacia(struct Nodo *cabeza)
+int estaVacia(Nodo *cabeza)
 {
     return cabeza == NULL;
 }

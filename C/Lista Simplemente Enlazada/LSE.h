@@ -3,32 +3,31 @@
 
 typedef void *T;
 typedef int E;
-
-struct Nodo
+typedef struct nodo
 {
     T dato;
-    struct Nodo *siguiente;
-};
+    struct nodo *siguiente;
+} Nodo;
 
-struct Nodo *nodo(T dato);
-void insertarAlInicio(struct Nodo **cabeza, T dato);
-void insertarAlFinal(struct Nodo **cabeza, T dato);
-void insertarAntesDe(struct Nodo **cabeza, T dato, T x);
-void insertarDespuesDe(struct Nodo **cabeza, T dato, T x);
-void reemplazarEn(struct Nodo *cabeza, T dato, T x);
-void eliminarElPrimero(struct Nodo **cabeza);
-void eliminarElUltimo(struct Nodo **cabeza);
-void eliminarAntesDe(struct Nodo **cabeza, T x);
-void eliminarDespuesDe(struct Nodo **cabeza, T x);
-void eliminarEn(struct Nodo **cabeza, T x);
-T obtenerElPrimero(struct Nodo *cabeza);
-T obtenerElUltimo(struct Nodo *cabeza);
-T obtenerAntesDe(struct Nodo *cabeza, T x);
-T obtenerDespuesDe(struct Nodo *cabeza, T x);
-T obtenerEn(struct Nodo *cabeza, int posicion);
-int buscar(struct Nodo *cabeza, T x);
-void borrar(struct Nodo **cabeza);
-void mostrar(struct Nodo *cabeza);
-int estaVacia(struct Nodo *cabeza);
+Nodo *nodo(T dato);
+void insertarAlInicio(Nodo **cabeza, T dato);
+void insertarAlFinal(Nodo **cabeza, T dato);
+void insertarAntesDe(Nodo **cabeza, T dato, T x);
+void insertarDespuesDe(Nodo **cabeza, T dato, T x);
+void reemplazarEn(Nodo *cabeza, T dato, T x);
+void eliminarElPrimero(Nodo **cabeza);
+void eliminarElUltimo(Nodo **cabeza);
+void eliminarAntesDe(Nodo **cabeza, T x);
+void eliminarDespuesDe(Nodo **cabeza, T x);
+void eliminarEn(Nodo **cabeza, T x);
+T obtenerElPrimero(Nodo *cabeza);
+T obtenerElUltimo(Nodo *cabeza);
+T obtenerAntesDe(Nodo *cabeza, T x);
+T obtenerDespuesDe(Nodo *cabeza, T x);
+T obtenerEn(Nodo *cabeza, int posicion);
+int buscar(Nodo *cabeza, T x);
+void borrar(Nodo **cabeza);
+void mostrar(Nodo *cabeza);
+int estaVacia(Nodo *cabeza);
 
 #endif

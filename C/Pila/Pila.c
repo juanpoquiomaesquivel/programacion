@@ -2,13 +2,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct Nodo *nodo(T dato)
+Nodo *nodo(T dato)
 {
-    struct Nodo *nuevo = (struct Nodo *)malloc(sizeof(struct Nodo));
+    Nodo *nuevo = (Nodo *)malloc(sizeof(Nodo));
 
     if (nuevo == NULL)
     {
-        free(nuevo);
+        perror("[SISTEMA] :- <Memoria insuficiente> ");
         exit(EXIT_FAILURE);
     }
 
@@ -18,9 +18,9 @@ struct Nodo *nodo(T dato)
     return nuevo;
 }
 
-void empilar(struct Nodo **tope, T dato)
+void empilar(Nodo **tope, T dato)
 {
-    struct Nodo *nuevo = nodo(dato);
+    Nodo *nuevo = nodo(dato);
 
     if (!estaVacia(*tope))
         nuevo->abajo = *tope;
@@ -28,18 +28,18 @@ void empilar(struct Nodo **tope, T dato)
     *tope = nuevo;
 }
 
-void depilar(struct Nodo **tope)
+void depilar(Nodo **tope)
 {
     if (!estaVacia(*tope))
     {
-        struct Nodo *p = *tope;
+        Nodo *p = *tope;
         *tope = (*tope)->abajo;
         free(p->dato);
         free(p);
     }
 }
 
-T cima(struct Nodo *tope)
+T cima(Nodo *tope)
 {
     if (!estaVacia(tope))
         return tope->dato;
@@ -47,9 +47,9 @@ T cima(struct Nodo *tope)
         return NULL;
 }
 
-void borrar(struct Nodo **tope)
+void borrar(Nodo **tope)
 {
-    struct Nodo *p = *tope;
+    Nodo *p = *tope;
 
     while (p != NULL)
     {
@@ -60,9 +60,9 @@ void borrar(struct Nodo **tope)
     }
 }
 
-void mostrar(struct Nodo *tope)
+void mostrar(Nodo *tope)
 {
-    struct Nodo *p = tope;
+    Nodo *p = tope;
 
     while (p != NULL)
     {
@@ -71,7 +71,7 @@ void mostrar(struct Nodo *tope)
     }
 }
 
-int estaVacia(struct Nodo *tope)
+int estaVacia(Nodo *tope)
 {
     return tope == NULL;
 }
