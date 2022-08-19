@@ -1,23 +1,23 @@
-#include "Cola.h"
+#include "Ordenamiento.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 enum
 {
     SALIR,
-    ENCOLAR,
-    DECOLAR,
-    FRENTE,
-    ULTIMO,
+    BURBUJA,
+    INSERCION_DIRECTA,
+    SELECCION_DIRECTA,
+    SHELL,
     BORRAR,
     MOSTRAR
 };
 
 const char lista[][100] = {"Salir",
-                           "Encolar",
-                           "Decolar",
-                           "Frente",
-                           "Ultimo",
+                           "Burbuja",
+                           "Insercion Directa",
+                           "Seleccion Directa",
+                           "Shell",
                            "Borrar",
                            "Mostrar"};
 
@@ -32,13 +32,13 @@ int main(int argc, char const *argv[])
 
 void menu()
 {
-    Nodo *cola = NULL;
+    int N = 5;
+    int *vector = crearVector(N), *auxVector = NULL;
     int n = sizeof(lista) / sizeof(lista[0]), opcion = SALIR;
-    E *dato = NULL;
 
     while (true)
     {
-        puts("\n\t\t.: COLA :.\n");
+        puts("\n\t\t.: ALGORITMOS DE ORDENAMIENTO :.\n");
 
         for (int i = 0; i < n; i++)
             printf("[%d] : %s\n", i, lista[i]);
@@ -49,34 +49,31 @@ void menu()
         switch (opcion)
         {
         case SALIR:
+            liberarVector(&vector);
             puts("[SISTEMA] :- <Programa terminado>");
             return;
-        case ENCOLAR:
-            printf(">> ");
-            dato = (E *)malloc(sizeof(E));
-            scanf("%d", dato);
-            encolar(&cola, dato);
-            dato = NULL;
+        case BURBUJA:
+            auxVector = burbuja(vector, N);
             break;
-        case DECOLAR:
-            decolar(&cola);
+        case INSERCION_DIRECTA:
+            auxVector = insercionDirecta(vector, N);
             break;
-        case FRENTE:
-            if (frente(cola) != NULL)
-                printf("%d\n", *(E *)(frente(cola)));
+        case SELECCION_DIRECTA:
+            auxVector = seleccionDirecta(vector, N);
             break;
-        case ULTIMO:
-            if (ultimo(cola) != NULL)
-                printf("%d\n", *(E *)(ultimo(cola)));
+        case SHELL:
+            auxVector = shell(vector, N);
             break;
         case BORRAR:
-            borrar(&cola);
             break;
         case MOSTRAR:
-            mostrar(cola);
             break;
         default:
             puts("[SISTEMA] :- <Opcion incorrecta>");
         }
+
+        mostrar(vector, N);
+        mostrar(auxVector, N);
+        liberarVector(&auxVector);
     }
 }

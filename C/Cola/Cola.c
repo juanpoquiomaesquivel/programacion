@@ -95,7 +95,7 @@ void mostrar(Nodo *cabeza)
     puts("");
 }
 
-int estaVacia(Nodo *cabeza)
+bool estaVacia(Nodo *cabeza)
 {
     return cabeza == NULL;
 }

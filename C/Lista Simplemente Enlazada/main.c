@@ -60,7 +60,7 @@ void menu()
     int n = sizeof(lista) / sizeof(lista[0]), opcion = SALIR, posicion = 0;
     E *dato = NULL, *x = NULL;
 
-    while (1)
+    while (true)
     {
         puts("\n\t\t.: LISTA SIMPLEMENTE ENLAZADA :.\n");
 

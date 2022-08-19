@@ -34,7 +34,7 @@ void menu()
     int n = sizeof(lista) / sizeof(lista[0]), opcion = SALIR;
     E *dato = NULL;
 
-    while (1)
+    while (true)
     {
         puts("\n\t\t.: PILA :.\n");
 

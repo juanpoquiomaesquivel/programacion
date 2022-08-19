@@ -8,6 +8,11 @@ typedef struct nodo
     T dato;
     struct nodo *siguiente;
 } Nodo;
+typedef enum
+{
+    false,
+    true
+} bool;
 
 Nodo *nodo(T dato);
 void insertarAlInicio(Nodo **cabeza, T dato);
@@ -28,6 +33,6 @@ T obtenerEn(Nodo *cabeza, int posicion);
 int buscar(Nodo *cabeza, T x);
 void borrar(Nodo **cabeza);
 void mostrar(Nodo *cabeza);
-int estaVacia(Nodo *cabeza);
+bool estaVacia(Nodo *cabeza);
 
 #endif

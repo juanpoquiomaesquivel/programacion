@@ -8,6 +8,11 @@ typedef struct nodo
     T dato;
     struct nodo *siguiente;
 } Nodo;
+typedef enum
+{
+    false,
+    true
+} bool;
 
 Nodo *nodo(T dato);
 void encolar(Nodo **cabeza, T dato);
@@ -16,6 +21,6 @@ T frente(Nodo *cabeza);
 T ultimo(Nodo *cabeza);
 void borrar(Nodo **cabeza);
 void mostrar(Nodo *cabeza);
-int estaVacia(Nodo *cabeza);
+bool estaVacia(Nodo *cabeza);
 
 #endif

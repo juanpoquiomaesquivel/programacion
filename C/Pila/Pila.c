@@ -71,7 +71,7 @@ void mostrar(Nodo *tope)
     }
 }
 
-int estaVacia(Nodo *tope)
+bool estaVacia(Nodo *tope)
 {
     return tope == NULL;
 }
