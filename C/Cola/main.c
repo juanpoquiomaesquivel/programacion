@@ -49,6 +49,7 @@ void menu()
         switch (opcion)
         {
         case SALIR:
+            borrar(&cola);
             puts("[SISTEMA] :- <Programa terminado>");
             return;
         case ENCOLAR:

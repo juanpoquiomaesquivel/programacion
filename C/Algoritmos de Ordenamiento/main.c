@@ -9,8 +9,9 @@ enum
     INSERCION_DIRECTA,
     SELECCION_DIRECTA,
     SHELL,
-    BORRAR,
-    MOSTRAR
+    QUICK_SORT,
+    HEAP_SORT,
+    MERGE_SORT
 };
 
 const char lista[][100] = {"Salir",
@@ -18,8 +19,9 @@ const char lista[][100] = {"Salir",
                            "Insercion Directa",
                            "Seleccion Directa",
                            "Shell",
-                           "Borrar",
-                           "Mostrar"};
+                           "Quick Sort",
+                           "Heap Sort",
+                           "Merge Sort"};
 
 void menu();
 
@@ -64,9 +66,14 @@ void menu()
         case SHELL:
             auxVector = shell(vector, N);
             break;
-        case BORRAR:
+        case QUICK_SORT:
+            auxVector = quickSort(vector, N);
             break;
-        case MOSTRAR:
+        case HEAP_SORT:
+            auxVector = heapSort(vector, N);
+            break;
+        case MERGE_SORT:
+            auxVector = mergeSort(vector, N);
             break;
         default:
             puts("[SISTEMA] :- <Opcion incorrecta>");

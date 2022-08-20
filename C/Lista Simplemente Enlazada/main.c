@@ -73,6 +73,7 @@ void menu()
         switch (opcion)
         {
         case SALIR:
+            borrar(&lse);
             puts("[SISTEMA] :- <Programa terminado>");
             return;
         case INSERTAR_AL_INICIO:

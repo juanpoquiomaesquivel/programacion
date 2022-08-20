@@ -47,6 +47,7 @@ void menu()
         switch (opcion)
         {
         case SALIR:
+            borrar(&pila);
             puts("[SISTEMA] :- <Programa terminado>");
             return;
         case EMPILAR:
