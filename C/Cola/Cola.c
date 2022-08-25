@@ -2,13 +2,39 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#ifdef FLUSH
+#ifndef FLUSH_FUNCTION
+#define FLUSH_FUNCTION
+void flush()
+{
+    if (!feof(stdin) && !ferror(stdin))
+        while (getchar() != '\n')
+            ;
+}
+#endif
+#endif
+
+#ifdef ERROR_MEMORY
+#ifndef ERROR_MEMORY_FUNCTION
+#define ERROR_MEMORY_FUNCTION
+void error(void *ptr)
+{
+    if (ptr == NULL)
+    {
+        perror(NO_MEMORY);
+        exit(EXIT_FAILURE);
+    }
+}
+#endif
+#endif
+
 Nodo *nodo(T dato)
 {
     Nodo *nuevo = (Nodo *)malloc(sizeof(Nodo));
 
     if (nuevo == NULL)
     {
-        perror("[SISTEMA] :- <Memoria insuficiente> ");
+        perror(NO_MEMORY);
         exit(EXIT_FAILURE);
     }
 

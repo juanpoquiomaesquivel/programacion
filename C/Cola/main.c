@@ -1,6 +1,23 @@
 #include "Cola.h"
+#include "Entrada.h"
 #include <stdio.h>
 #include <stdlib.h>
+
+#ifndef LEN_STR
+#define LEN_STR 100
+#endif
+
+#ifndef EXIT_OPTION
+#define EXIT_OPTION "[SISTEMA] :- <Programa finalizado>"
+#endif
+
+#ifndef NO_OPTION
+#define NO_OPTION "[SISTEMA] :- <Opcion incorrecta>"
+#endif
+
+#ifndef CONTINUE_OPTION
+#define CONTINUE_OPTION "[SISTEMA] :- <Presione ENTER para continuar>"
+#endif
 
 enum
 {
@@ -13,13 +30,13 @@ enum
     MOSTRAR
 };
 
-const char lista[][100] = {"Salir",
-                           "Encolar",
-                           "Decolar",
-                           "Frente",
-                           "Ultimo",
-                           "Borrar",
-                           "Mostrar"};
+const char lista[][LEN_STR] = {"Salir",
+                               "Encolar",
+                               "Decolar",
+                               "Frente",
+                               "Ultimo",
+                               "Borrar",
+                               "Mostrar"};
 
 void menu();
 
@@ -32,30 +49,32 @@ int main(int argc, char const *argv[])
 
 void menu()
 {
+    const unsigned int n = sizeof(lista) / sizeof(lista[0]);
+    short int opcion = SALIR;
     Nodo *cola = NULL;
-    int n = sizeof(lista) / sizeof(lista[0]), opcion = SALIR;
     E *dato = NULL;
 
     while (true)
     {
+        system("cls");
         puts("\n\t\t.: COLA :.\n");
 
         for (int i = 0; i < n; i++)
             printf("[%d] : %s\n", i, lista[i]);
 
         printf("\n>> ");
-        scanf("%d", &opcion);
+        scanf("%hd", &opcion);
+        flush();
 
         switch (opcion)
         {
         case SALIR:
             borrar(&cola);
-            puts("[SISTEMA] :- <Programa terminado>");
+            puts(EXIT_OPTION);
+
             return;
         case ENCOLAR:
-            printf(">> ");
-            dato = (E *)malloc(sizeof(E));
-            scanf("%d", dato);
+            leerInteger(&dato);
             encolar(&cola, dato);
             dato = NULL;
             break;
@@ -77,7 +96,10 @@ void menu()
             mostrar(cola);
             break;
         default:
-            puts("[SISTEMA] :- <Opcion incorrecta>");
+            puts(NO_OPTION);
         }
+
+        puts(CONTINUE_OPTION);
+        flush();
     }
 }

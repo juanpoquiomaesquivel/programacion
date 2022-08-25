@@ -1,4 +1,4 @@
-#include "LCSE.h"
+#include "LCDE.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -13,6 +13,7 @@ Nodo *nodo(T dato)
     }
 
     nuevo->dato = dato;
+    nuevo->anterior = NULL;
     nuevo->siguiente = NULL;
 
     return nuevo;
@@ -25,16 +26,15 @@ void insertarAlInicio(Nodo **cabeza, T dato)
     if (estaVacia(*cabeza))
     {
         *cabeza = nuevo;
+        (*cabeza)->anterior = *cabeza;
         (*cabeza)->siguiente = *cabeza;
     }
     else
     {
-        Nodo *p = *cabeza;
-
-        while (p->siguiente != *cabeza)
-            p = p->siguiente;
-
+        Nodo *p = (*cabeza)->anterior;
+        nuevo->anterior = p;
         nuevo->siguiente = *cabeza;
+        (*cabeza)->anterior = nuevo;
         *cabeza = nuevo;
         p->siguiente = *cabeza;
     }
@@ -47,16 +47,15 @@ void insertarAlFinal(Nodo **cabeza, T dato)
     if (estaVacia(*cabeza))
     {
         *cabeza = nuevo;
+        (*cabeza)->anterior = *cabeza;
         (*cabeza)->siguiente = *cabeza;
     }
     else
     {
-        Nodo *p = *cabeza;
-
-        while (p->siguiente != *cabeza)
-            p = p->siguiente;
-
+        Nodo *p = (*cabeza)->anterior;
+        (*cabeza)->anterior = nuevo;
         p->siguiente = nuevo;
+        nuevo->anterior = p;
         nuevo->siguiente = *cabeza;
     }
 }
@@ -66,13 +65,9 @@ void insertarAntesDe(Nodo **cabeza, T dato, T x)
     if (!estaVacia(*cabeza))
     {
         Nodo *p = *cabeza;
-        Nodo *_p = NULL;
 
         while (p->siguiente != *cabeza && *(E *)(p->dato) != *(E *)(x))
-        {
-            _p = p;
             p = p->siguiente;
-        }
 
         if (*(E *)(p->dato) == *(E *)(x))
         {
@@ -80,19 +75,19 @@ void insertarAntesDe(Nodo **cabeza, T dato, T x)
 
             if (p == *cabeza)
             {
-                Nodo *q = *cabeza;
-
-                while (q->siguiente != *cabeza)
-                    q = q->siguiente;
-
+                Nodo *q = (*cabeza)->anterior;
+                nuevo->anterior = q;
                 nuevo->siguiente = *cabeza;
+                (*cabeza)->anterior = nuevo;
                 *cabeza = nuevo;
                 q->siguiente = *cabeza;
             }
             else
             {
-                _p->siguiente = nuevo;
+                p->anterior->siguiente = nuevo;
+                nuevo->anterior = p->anterior;
                 nuevo->siguiente = p;
+                p->anterior = nuevo;
             }
         }
     }
@@ -114,11 +109,15 @@ void insertarDespuesDe(Nodo **cabeza, T dato, T x)
             if (p->siguiente == *cabeza)
             {
                 p->siguiente = nuevo;
+                nuevo->anterior = p;
                 nuevo->siguiente = *cabeza;
+                (*cabeza)->anterior = nuevo;
             }
             else
             {
+                nuevo->anterior = p;
                 nuevo->siguiente = p->siguiente;
+                p->siguiente->anterior = nuevo;
                 p->siguiente = nuevo;
             }
         }
@@ -152,12 +151,9 @@ void eliminarElPrimero(Nodo **cabeza)
             *cabeza = NULL;
         else
         {
-            Nodo *q = *cabeza;
-
-            while (q->siguiente != *cabeza)
-                q = q->siguiente;
-
+            Nodo *q = (*cabeza)->anterior;
             *cabeza = (*cabeza)->siguiente;
+            (*cabeza)->anterior = q;
             q->siguiente = *cabeza;
         }
 
@@ -170,19 +166,15 @@ void eliminarElUltimo(Nodo **cabeza)
 {
     if (!estaVacia(*cabeza))
     {
-        Nodo *p = *cabeza;
-        Nodo *_p = NULL;
-
-        while (p->siguiente != *cabeza)
-        {
-            _p = p;
-            p = p->siguiente;
-        }
+        Nodo *p = (*cabeza)->anterior;
 
         if (p == *cabeza)
             *cabeza = NULL;
         else
-            _p->siguiente = *cabeza;
+        {
+            (*cabeza)->anterior = p->anterior;
+            p->anterior->siguiente = *cabeza;
+        }
 
         free(p->dato);
         free(p);
@@ -194,15 +186,9 @@ void eliminarAntesDe(Nodo **cabeza, T x)
     if (!estaVacia(*cabeza))
     {
         Nodo *p = *cabeza;
-        Nodo *_p = NULL;
-        Nodo *__p = NULL;
 
         while (p->siguiente != *cabeza && *(E *)(p->dato) != *(E *)(x))
-        {
-            __p = _p;
-            _p = p;
             p = p->siguiente;
-        }
 
         if (*(E *)(p->dato) == *(E *)(x))
         {
@@ -216,34 +202,29 @@ void eliminarAntesDe(Nodo **cabeza, T x)
                 }
                 else
                 {
-                    Nodo *q = *cabeza;
-                    Nodo *_q = NULL;
-
-                    while (q->siguiente != *cabeza)
-                    {
-                        _q = q;
-                        q = q->siguiente;
-                    }
-
-                    _q->siguiente = *cabeza;
+                    Nodo *q = (*cabeza)->anterior;
+                    q->anterior->siguiente = *cabeza;
+                    (*cabeza)->anterior = q->anterior;
                     free(q->dato);
                     free(q);
                 }
             }
             else
             {
+                Nodo *_p = p->anterior;
+
                 if (_p == *cabeza)
                 {
-                    Nodo *q = *cabeza;
-
-                    while (q->siguiente != *cabeza)
-                        q = q->siguiente;
-
+                    Nodo *q = (*cabeza)->anterior;
                     *cabeza = (*cabeza)->siguiente;
+                    (*cabeza)->anterior = q;
                     q->siguiente = *cabeza;
                 }
                 else
-                    __p->siguiente = p;
+                {
+                    _p->anterior->siguiente = p;
+                    p->anterior = _p->anterior;
+                }
 
                 free(_p->dato);
                 free(_p);
@@ -276,6 +257,7 @@ void eliminarDespuesDe(Nodo **cabeza, T x)
                 else
                 {
                     *cabeza = (*cabeza)->siguiente;
+                    (*cabeza)->anterior = p;
                     p->siguiente = *cabeza;
                     free(p_->dato);
                     free(p_);
@@ -284,6 +266,7 @@ void eliminarDespuesDe(Nodo **cabeza, T x)
             else
             {
                 p->siguiente = p_->siguiente;
+                p_->siguiente->anterior = p;
                 free(p_->dato);
                 free(p_);
             }
@@ -296,13 +279,9 @@ void eliminarEn(Nodo **cabeza, T x)
     if (!estaVacia(*cabeza))
     {
         Nodo *p = *cabeza;
-        Nodo *_p = NULL;
 
         while (p->siguiente != *cabeza && *(E *)(p->dato) != *(E *)(x))
-        {
-            _p = p;
             p = p->siguiente;
-        }
 
         if (*(E *)(p->dato) == *(E *)(x))
         {
@@ -312,17 +291,17 @@ void eliminarEn(Nodo **cabeza, T x)
                     *cabeza = NULL;
                 else
                 {
-                    Nodo *q = *cabeza;
-
-                    while (q->siguiente != *cabeza)
-                        q = q->siguiente;
-
+                    Nodo *q = (*cabeza)->anterior;
                     *cabeza = (*cabeza)->siguiente;
+                    (*cabeza)->anterior = q;
                     q->siguiente = *cabeza;
                 }
             }
             else
-                _p->siguiente = p->siguiente;
+            {
+                p->anterior->siguiente = p->siguiente;
+                p->siguiente->anterior = p->anterior;
+            }
 
             free(p->dato);
             free(p);
@@ -341,14 +320,7 @@ T obtenerElPrimero(Nodo *cabeza)
 T obtenerElUltimo(Nodo *cabeza)
 {
     if (!estaVacia(cabeza))
-    {
-        Nodo *p = cabeza;
-
-        while (p->siguiente != cabeza)
-            p = p->siguiente;
-
-        return p->dato;
-    }
+        return cabeza->anterior->dato;
 
     return NULL;
 }
@@ -358,28 +330,12 @@ T obtenerAntesDe(Nodo *cabeza, T x)
     if (!estaVacia(cabeza))
     {
         Nodo *p = cabeza;
-        Nodo *_p = NULL;
 
         while (p->siguiente != cabeza && *(E *)(p->dato) != *(E *)(x))
-        {
-            _p = p;
             p = p->siguiente;
-        }
 
         if (*(E *)(p->dato) == *(E *)(x))
-        {
-            if (p == cabeza)
-            {
-                Nodo *q = cabeza;
-
-                while (q->siguiente != cabeza)
-                    q = q->siguiente;
-
-                return q->dato;
-            }
-            else
-                return _p->dato;
-        }
+            return p->anterior->dato;
     }
 
     return NULL;
@@ -446,11 +402,7 @@ void borrar(Nodo **cabeza)
     if (!estaVacia(*cabeza))
     {
         Nodo *p = *cabeza;
-        Nodo *q = *cabeza;
-
-        while (q->siguiente != *cabeza)
-            q = q->siguiente;
-
+        Nodo *q = (*cabeza)->anterior;
         q->siguiente = NULL;
 
         do
