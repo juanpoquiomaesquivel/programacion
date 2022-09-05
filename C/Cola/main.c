@@ -1,23 +1,8 @@
-#include "Cola.h"
-#include "Entrada.h"
 #include <stdio.h>
 #include <stdlib.h>
-
-#ifndef LEN_STR
-#define LEN_STR 100
-#endif
-
-#ifndef EXIT_OPTION
-#define EXIT_OPTION "[SISTEMA] :- <Programa finalizado>"
-#endif
-
-#ifndef NO_OPTION
-#define NO_OPTION "[SISTEMA] :- <Opcion incorrecta>"
-#endif
-
-#ifndef CONTINUE_OPTION
-#define CONTINUE_OPTION "[SISTEMA] :- <Presione ENTER para continuar>"
-#endif
+#include "Cola.h"
+#include "Entrada.h"
+#include "Libreria.h"
 
 enum
 {
@@ -30,13 +15,13 @@ enum
     MOSTRAR
 };
 
-const char lista[][LEN_STR] = {"Salir",
-                               "Encolar",
-                               "Decolar",
-                               "Frente",
-                               "Ultimo",
-                               "Borrar",
-                               "Mostrar"};
+const char lista[][100] = {"Salir",
+                           "Encolar",
+                           "Decolar",
+                           "Frente",
+                           "Ultimo",
+                           "Borrar",
+                           "Mostrar"};
 
 void menu();
 

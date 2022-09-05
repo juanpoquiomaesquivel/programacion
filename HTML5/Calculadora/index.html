@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Calculadora</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+    <script src="Display.js" type="text/javascript"></script>
+    <script src="Calculator.js" type="text/javascript"></script>
+    <script src="index.js" type="text/javascript" defer></script>
+  </head>
+
+  <body>
+    <div id="container-calculator-div">
+      <div id="calculator-div">
+        <form id="calculator-form">
+          <table id="calculator-table">
+            <tr>
+              <td colspan="4">
+                <div id="display">
+                  <div id="previousDisplay"></div>
+                  <div id="actualDisplay"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <input
+                  type="button"
+                  value="C"
+                  class="cleaner"
+                  onclick="displayContent.clean()"
+                />
+              </td>
+              <td>
+                <input
+                  type="button"
+                  value="←"
+                  class="cleaner"
+                  onclick="displayContent.cleanAll()"
+                />
+              </td>
+              <td><input type="button" value="/" class="operator" /></td>
+            </tr>
+            <tr>
+              <td><input type="button" value="7" class="number" /></td>
+              <td><input type="button" value="8" class="number" /></td>
+              <td><input type="button" value="9" class="number" /></td>
+              <td><input type="button" value="*" class="operator" /></td>
+            </tr>
+            <tr>
+              <td><input type="button" value="4" class="number" /></td>
+              <td><input type="button" value="5" class="number" /></td>
+              <td><input type="button" value="6" class="number" /></td>
+              <td><input type="button" value="-" class="number" /></td>
+            </tr>
+            <tr>
+              <td><input type="button" value="1" class="number" /></td>
+              <td><input type="button" value="2" class="number" /></td>
+              <td><input type="button" value="3" class="number" /></td>
+              <td><input type="button" value="+" class="operator" /></td>
+            </tr>
+            <tr>
+              <td colspan="2">
+                <input type="button" value="0" class="number" />
+              </td>
+              <td><input type="button" value="." class="number" /></td>
+              <td><input type="button" value="=" class="operator" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
