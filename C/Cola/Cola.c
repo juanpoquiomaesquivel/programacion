@@ -6,13 +6,7 @@
 Nodo *nodo(T dato)
 {
     Nodo *nuevo = (Nodo *)malloc(sizeof(Nodo));
-
-    if (nuevo == NULL)
-    {
-        perror(NO_MEMORY);
-        exit(EXIT_FAILURE);
-    }
-
+    memory_error(nuevo);
     nuevo->dato = dato;
     nuevo->siguiente = NULL;
 

@@ -1,23 +1,8 @@
 #include "Entrada.h"
+#include "Libreria.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#ifndef LEN_STR
-#define LEN_STR 100
-#endif
-
-#ifndef EXIT_OPTION
-#define EXIT_OPTION "[SISTEMA] :- <Programa finalizado>"
-#endif
-
-#ifndef NO_OPTION
-#define NO_OPTION "[SISTEMA] :- <Opcion incorrecta>"
-#endif
-
-#ifndef CONTINUE_OPTION
-#define CONTINUE_OPTION "[SISTEMA] :- <Presione ENTER para continuar>"
-#endif
 
 enum
 {
@@ -29,12 +14,12 @@ enum
     CHAR,
 };
 
-const char lista[][LEN_STR] = {"Salir",
-                               "Leer 'int'",
-                               "Leer 'double'",
-                               "Leer 'float'",
-                               "Leer 'string'",
-                               "Leer 'char'"};
+const char lista[][100] = {"Salir",
+                           "Leer 'int'",
+                           "Leer 'double'",
+                           "Leer 'float'",
+                           "Leer 'string'",
+                           "Leer 'char'"};
 
 void menu();
 
@@ -48,12 +33,12 @@ int main(int argc, char const *argv[])
 void menu()
 {
     const unsigned int n = sizeof(lista) / sizeof(lista[0]);
-    short int opcion = SALIR;
-    int *var_i = NULL;
-    double *var_d = NULL;
-    float *var_f = NULL;
-    char *var_s = NULL;
-    char *var_c = NULL;
+    short int *opcion = NULL;
+    int *entero = NULL;
+    double *real = NULL;
+    float *flotante = NULL;
+    char *cadena = NULL;
+    char *caracter = NULL;
 
     while (true)
     {
@@ -63,51 +48,53 @@ void menu()
         for (int i = 0; i < n; i++)
             printf("[%d] : %s\n", i, lista[i]);
 
-        printf("\n>> ");
-        scanf("%hd", &opcion);
-        flush();
+        puts("");
+        opcion = lectura("%hd");
 
-        switch (opcion)
+        switch (*opcion)
         {
         case SALIR:
+            free(opcion);
             puts(EXIT_OPTION);
 
             return;
         case INTEGER:
-            leerInteger(&var_i);
-            printf(":- El valor 'int' es: %d\n", *var_i);
-            free(var_i);
-            var_i = NULL;
+            entero = lectura("%d");
+            printf(":- El valor 'int' es: %d\n", *entero);
+            free(entero);
+            entero = NULL;
             break;
         case DOUBLE:
-            leerDouble(&var_d);
-            printf(":- El valor 'double' es: %lf\n", *var_d);
-            free(var_d);
-            var_d = NULL;
+            real = lectura("%lf");
+            printf(":- El valor 'double' es: %lf\n", *real);
+            free(real);
+            real = NULL;
             break;
         case FLOAT:
-            leerFloat(&var_f);
-            printf(":- El valor 'float' es: %f\n", *var_f);
-            free(var_f);
-            var_f = NULL;
+            flotante = lectura("%f");
+            printf(":- El valor 'float' es: %f\n", *flotante);
+            free(flotante);
+            flotante = NULL;
             break;
         case STRING:
-            leerString(&var_s);
-            printf(":- El valor 'string' es: %s\n", var_s);
-            free(var_s);
-            var_s = NULL;
+            cadena = lectura("%s");
+            printf(":- El valor 'string' es: %s\n", cadena);
+            free(cadena);
+            cadena = NULL;
             break;
         case CHAR:
-            leerChar(&var_c);
-            printf(":- El valor 'char' es: %c\n", *var_c);
-            free(var_c);
-            var_c = NULL;
+            caracter = lectura("%c");
+            printf(":- El valor 'char' es: %c\n", *caracter);
+            free(caracter);
+            caracter = NULL;
             break;
         default:
             puts(NO_OPTION);
         }
 
+        free(opcion);
+        opcion = NULL;
         puts(CONTINUE_OPTION);
-        flush();
+        flush_buffer();
     }
 }

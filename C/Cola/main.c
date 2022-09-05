@@ -49,7 +49,7 @@ void menu()
 
         printf("\n>> ");
         scanf("%hd", &opcion);
-        flush();
+        flush_buffer();
 
         switch (opcion)
         {
@@ -85,6 +85,6 @@ void menu()
         }
 
         puts(CONTINUE_OPTION);
-        flush();
+        flush_buffer();
     }
 }

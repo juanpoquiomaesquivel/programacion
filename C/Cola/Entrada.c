@@ -1,4 +1,5 @@
 #include "Entrada.h"
+#include "Libreria.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,7 +8,7 @@ void leerInteger(int **var)
 {
     int x;
     int *ptr = (int *)malloc(sizeof(int));
-    error(ptr);
+    memory_error(ptr);
     lectura(ptr, "%d");
     *var = ptr;
 }
@@ -16,7 +17,7 @@ void leerDouble(double **var)
 {
     int x;
     double *ptr = (double *)malloc(sizeof(double));
-    error(ptr);
+    memory_error(ptr);
     lectura(ptr, "%lf");
     *var = ptr;
 }
@@ -25,7 +26,7 @@ void leerFloat(float **var)
 {
     int x;
     float *ptr = (float *)malloc(sizeof(float));
-    error(ptr);
+    memory_error(ptr);
     lectura(ptr, "%f");
     *var = ptr;
 }
@@ -43,7 +44,7 @@ void leerChar(char **var)
 {
     int x;
     char *ptr = (char *)malloc(sizeof(char));
-    error(ptr);
+    memory_error(ptr);
     lectura(ptr, "%c");
     *var = ptr;
 }
@@ -77,6 +78,6 @@ void lectura(void *ptr, const char *formato)
                 puts("[SISTEMA] :- <Ingrese valor 'char'>");
         }
 
-        flush();
+        flush_buffer();
     } while (x == 0);
 }
