@@ -1,5 +1,5 @@
-const displayPreviousValue = document.getElementById("previousDisplay");
-const displayActualValue = document.getElementById("actualDisplay");
+const displayPreviousValue = document.getElementById("previous-display");
+const displayActualValue = document.getElementById("actual-display");
 const numberButtons = document.querySelectorAll(".number");
 const operatorButtons = document.querySelectorAll(".operator");
 
@@ -13,6 +13,6 @@ numberButtons.forEach((button) => {
 
 operatorButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    displayContent.compute(button.value);
+    displayContent.compute(button.name);
   });
 });

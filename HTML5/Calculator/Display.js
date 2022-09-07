@@ -3,14 +3,14 @@ class Display {
     this.displayPreviousValue = displayPreviousValue;
     this.displayActualValue = displayActualValue;
     this.calculator = new Calculator();
-    this.previousValue = "";
-    this.actualValue = "";
     this.operationType = undefined;
-    this.signs = {
-      addition: "+",
-      subtraction: "-",
-      multiplication: "*",
-      division: "/",
+    this.actualValue = "";
+    this.previousValue = "";
+    this.symbols = {
+      add: "+",
+      subtract: "-",
+      multiply: "*",
+      divide: "/",
     };
   }
 
@@ -27,22 +27,24 @@ class Display {
   }
 
   addValue(number) {
-    if (number == "." && this.actualValue.includes(".")) return;
+    if (number === "." && this.actualValue.includes(".")) return;
 
     this.actualValue = this.actualValue.toString() + number.toString();
     this.print();
   }
 
   print() {
-    this.displayActualValue.value = this.actualValue;
-    this.displayPreviousValue.value = `${this.previousValue} ${this.signs[this.operationType] || ''}`;
+    this.displayActualValue.textContent = this.actualValue;
+    this.displayPreviousValue.textContent = `${this.previousValue} ${
+      this.symbols[this.operationType] || ""
+    }`;
   }
 
   calculate() {
     const previousValue = parseFloat(this.previousValue);
     const actualValue = parseFloat(this.actualValue);
 
-    if (isNaN(previousValue) && isNaN(actualValue)) return;
+    if (isNaN(previousValue) || isNaN(actualValue)) return;
 
     this.actualValue = this.calculator[this.operationType](
       previousValue,
@@ -51,7 +53,7 @@ class Display {
   }
 
   compute(operationType) {
-    this.operationType !== '=' && this.calculate();
+    this.operationType !== "equal" && this.calculate();
     this.operationType = operationType;
     this.previousValue = this.actualValue || this.previousValue;
     this.actualValue = "";

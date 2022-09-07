@@ -1,25 +1,26 @@
 @import url("https://fonts.googleapis.com/css2?family=Titillium+Web:wght@300&display=swap");
 
 * {
+  color: black;
   font-family: "Titillium Web", sans-serif;
-  color: blueviolet;
+  font-weight: bold;
 }
 
 html {
+  align-items: center;
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 #container {
-  width: 300px;
-  height: 450px;
-  padding: 5px;
-  background-color: rgba(137, 43, 226, 0.245);
-  border-color: blueviolet;
-  border-width: 7px;
-  border-style: outset;
+  background-color: rgba(0, 255, 255, 0.111);
+  border-color: aqua;
   border-radius: 10px;
+  border-style: outset;
+  border-width: 5px;
+  height: 400px;
+  padding: 5px;
+  width: 300px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   -ms-border-radius: 10px;
@@ -27,65 +28,86 @@ html {
 }
 
 #title {
-  width: 100%;
-  height: 50px;
-  margin: 0px;
-  display: flex;
-  justify-content: center;
   align-items: center;
+  display: flex;
+  font-size: auto;
+  height: 10%;
+  justify-content: center;
+  margin: 0px;
+  user-select: none;
+  width: 100%;
 }
 
 #calculator {
+  border-collapse: collapse;
+  height: 90%;
   width: 100%;
-  height: 400px;
-}
-
-#display-container {
-  width: 100%;
-  height: 90px;
-  display: grid;
-  background-color: rgba(137, 43, 226, 0.445);
-  border-radius: 5px;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  -ms-border-radius: 5px;
-  -o-border-radius: 5px;
 }
 
 #previous-display,
 #actual-display {
-  width: 100%;
-  grid-column: 1 / 4;
+  background-color: rgba(0, 255, 255, 0.479);
+  direction: rtl;
+  max-width: 100px;
+  overflow: hidden;
   text-align: right;
   user-select: none;
-  word-break: break-all;
 }
 
 #previous-display {
-  height: 60px;
+  border-radius: 10px 10px 0px 0px;
   font-size: 30px;
+  height: 60px;
+  padding: 0px 5px 0px 5px;
+  -webkit-border-radius: 10px 10px 0px 0px;
+  -moz-border-radius: 10px 10px 0px 0px;
+  -ms-border-radius: 10px 10px 0px 0px;
+  -o-border-radius: 10px 10px 0px 0px;
 }
 
 #actual-display {
+  border-radius: 0px 0px 10px 10px;
+  font-size: 20px;
+  font-weight: lighter;
   height: 30px;
-  font-size: 15px;
+  padding: 0px 5px 0px 5px;
+  -webkit-border-radius: 0px 0px 10px 10px;
+  -moz-border-radius: 0px 0px 10px 10px;
+  -ms-border-radius: 0px 0px 10px 10px;
+  -o-border-radius: 0px 0px 10px 10px;
 }
 
-input {
-  width: 100%;
-  height: 100%;
-  font-size: 20px;
-  background-color: rgba(255, 255, 255, 0.267);
-  border-color: blueviolet;
-  border-width: 2px;
+td {
+  width: 25%;
+}
+
+.number,
+.operator,
+.other {
+  background-color: rgba(0, 255, 255, 0.153);
+  border-color: aqua;
   border-radius: 5px;
+  border-style: outset;
+  font-size: 20px;
+  height: 90%;
+  width: 100%;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
   -ms-border-radius: 5px;
   -o-border-radius: 5px;
 }
 
-input:hover {
-  color: white;
-  background-color: rgba(137, 43, 226, 0.308);
+.number:hover,
+.operator:hover,
+.other:hover {
+  background-color: rgba(0, 255, 255, 0.041);
+  border-style: inset;
+  color: rgba(0, 140, 255, 0.545);
+}
+
+.number:active,
+.operator:active,
+.other:active {
+  background-color: white;
+  color: rgba(0, 140, 255, 0.845);
 }
