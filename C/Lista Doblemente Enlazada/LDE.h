@@ -1,6 +1,8 @@
 #ifndef _LDE_H_
 #define _LDE_H_
 
+#include "Libreria.h"
+
 typedef void *T;
 typedef int E;
 typedef struct nodo
@@ -9,11 +11,6 @@ typedef struct nodo
     struct nodo *anterior;
     struct nodo *siguiente;
 } Nodo;
-typedef enum
-{
-    false,
-    true
-} bool;
 
 Nodo *nodo(T dato);
 void insertarAlInicio(Nodo **cabeza, T dato);

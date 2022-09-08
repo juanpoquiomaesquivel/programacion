@@ -1,6 +1,8 @@
-#include "LDE.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "Entrada.h"
+#include "LDE.h"
+#include "Libreria.h"
 
 enum
 {
@@ -56,159 +58,143 @@ int main(int argc, char const *argv[])
 
 void menu()
 {
-    Nodo *lse = NULL;
-    int n = sizeof(lista) / sizeof(lista[0]), opcion = SALIR, posicion = 0;
+    const unsigned int n = sizeof(lista) / sizeof(lista[0]);
+    short int *opcion = NULL;
+    Nodo *lde = NULL;
     E *dato = NULL, *x = NULL;
+    int *posicion = NULL;
 
     while (true)
     {
+        system("cls");
         puts("\n\t\t.: LISTA DOBLEMENTE ENLAZADA :.\n");
 
         for (int i = 0; i < n; i++)
             printf("[%d] : %s\n", i, lista[i]);
 
-        printf("\n>> ");
-        scanf("%d", &opcion);
+        puts("");
+        opcion = lectura("%hd");
 
-        switch (opcion)
+        switch (*opcion)
         {
         case SALIR:
-            borrar(&lse);
-            puts("[SISTEMA] :- <Programa terminado>");
+            borrar(&lde);
+            free(opcion);
+            puts(EXIT_OPTION);
+
             return;
         case INSERTAR_AL_INICIO:
-            printf(">> ");
-            dato = (E *)malloc(sizeof(E));
-            scanf("%d", dato);
-            insertarAlInicio(&lse, dato);
+            dato = lectura("%d");
+            insertarAlInicio(&lde, dato);
             dato = NULL;
             break;
         case INSERTAR_AL_FINAL:
-            printf(">> ");
-            dato = (E *)malloc(sizeof(E));
-            scanf("%d", dato);
-            insertarAlFinal(&lse, dato);
+            dato = lectura("%d");
+            insertarAlFinal(&lde, dato);
             dato = NULL;
             break;
         case INSERTAR_ANTES_DE:
-            printf(">> ");
-            dato = (E *)malloc(sizeof(E));
-            scanf("%d", dato);
-            printf(">> ");
-            x = (E *)malloc(sizeof(E));
-            scanf("%d", x);
-            insertarAntesDe(&lse, dato, x);
+            dato = lectura("%d");
+            x = lectura("%d");
+            insertarAntesDe(&lde, dato, x);
             dato = NULL;
             free(x);
             x = NULL;
             break;
         case INSERTAR_DESPUES_DE:
-            printf(">> ");
-            dato = (E *)malloc(sizeof(E));
-            scanf("%d", dato);
-            printf(">> ");
-            x = (E *)malloc(sizeof(E));
-            scanf("%d", x);
-            insertarDespuesDe(&lse, dato, x);
+            dato = lectura("%d");
+            x = lectura("%d");
+            insertarDespuesDe(&lde, dato, x);
             dato = NULL;
             free(x);
             x = NULL;
             break;
         case REEMPLAZAR_EN:
-            printf(">> ");
-            dato = (E *)malloc(sizeof(E));
-            scanf("%d", dato);
-            printf(">> ");
-            x = (E *)malloc(sizeof(E));
-            scanf("%d", x);
-            reemplazarEn(lse, dato, x);
+            dato = lectura("%d");
+            x = lectura("%d");
+            reemplazarEn(lde, dato, x);
             dato = NULL;
             free(x);
             x = NULL;
             break;
         case ELIMINAR_EL_PRIMERO:
-            eliminarElPrimero(&lse);
+            eliminarElPrimero(&lde);
             break;
         case ELIMINAR_EL_ULTIMO:
-            eliminarElUltimo(&lse);
+            eliminarElUltimo(&lde);
             break;
         case ELIMINAR_ANTES_DE:
-            printf(">> ");
-            x = (E *)malloc(sizeof(E));
-            scanf("%d", x);
-            eliminarAntesDe(&lse, x);
+            x = lectura("%d");
+            eliminarAntesDe(&lde, x);
             free(x);
             x = NULL;
             break;
         case ELIMINAR_DESPUES_DE:
-            printf(">> ");
-            x = (E *)malloc(sizeof(E));
-            scanf("%d", x);
-            eliminarDespuesDe(&lse, x);
+            x = lectura("%d");
+            eliminarDespuesDe(&lde, x);
             free(x);
             x = NULL;
             break;
         case ELIMINAR_EN:
-            printf(">> ");
-            x = (E *)malloc(sizeof(E));
-            scanf("%d", x);
-            eliminarEn(&lse, x);
+            x = lectura("%d");
+            eliminarEn(&lde, x);
             free(x);
             x = NULL;
             break;
         case OBTENER_EL_PRIMERO:
-            if (obtenerElPrimero(lse) != NULL)
-                printf("%d\n", *(E *)(obtenerElPrimero(lse)));
+            if (obtenerElPrimero(lde) != NULL)
+                printf("%d\n", *(E *)(obtenerElPrimero(lde)));
             break;
         case OBTENER_EL_ULTIMO:
-            if (obtenerElUltimo(lse) != NULL)
-                printf("%d\n", *(E *)(obtenerElUltimo(lse)));
+            if (obtenerElUltimo(lde) != NULL)
+                printf("%d\n", *(E *)(obtenerElUltimo(lde)));
             break;
         case OBTENER_ANTES_DE:
-            printf(">> ");
-            x = (E *)malloc(sizeof(E));
-            scanf("%d", x);
+            x = lectura("%d");
 
-            if (obtenerAntesDe(lse, x) != NULL)
-                printf("%d\n", *(E *)(obtenerAntesDe(lse, x)));
+            if (obtenerAntesDe(lde, x) != NULL)
+                printf("%d\n", *(E *)(obtenerAntesDe(lde, x)));
 
             free(x);
             x = NULL;
             break;
         case OBTENER_DESPUES_DE:
-            printf(">> ");
-            x = (E *)malloc(sizeof(E));
-            scanf("%d", x);
+            x = lectura("%d");
 
-            if (obtenerDespuesDe(lse, x) != NULL)
-                printf("%d\n", *(E *)(obtenerDespuesDe(lse, x)));
+            if (obtenerDespuesDe(lde, x) != NULL)
+                printf("%d\n", *(E *)(obtenerDespuesDe(lde, x)));
 
             free(x);
             x = NULL;
             break;
         case OBTENER_EN:
-            printf(">> ");
-            scanf("%d", &posicion);
+            posicion = lectura("%d");
 
-            if (obtenerEn(lse, posicion) != NULL)
-                printf("%d\n", *(E *)(obtenerEn(lse, posicion)));
+            if (obtenerEn(lde, *posicion) != NULL)
+                printf("%d\n", *(E *)(obtenerEn(lde, *posicion)));
+
+            free(posicion);
+            posicion = NULL;
             break;
         case BUSCAR:
-            printf(">> ");
-            x = (E *)malloc(sizeof(E));
-            scanf("%d", x);
-            printf("%d\n", buscar(lse, x));
+            x = lectura("%d");
+            printf("%d\n", buscar(lde, x));
             free(x);
             x = NULL;
             break;
         case BORRAR:
-            borrar(&lse);
+            borrar(&lde);
             break;
         case MOSTRAR:
-            mostrar(lse);
+            mostrar(lde);
             break;
         default:
-            puts("[SISTEMA] :- <Opcion incorrecta>");
+            puts(NO_OPTION);
         }
+
+        free(opcion);
+        opcion = NULL;
+        puts(CONTINUE_OPTION);
+        flush_buffer();
     }
 }

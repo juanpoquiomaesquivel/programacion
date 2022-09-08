@@ -1,6 +1,8 @@
-#include "Pila.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "Entrada.h"
+#include "Libreria.h"
+#include "Pila.h"
 
 enum
 {
@@ -30,30 +32,32 @@ int main(int argc, char const *argv[])
 
 void menu()
 {
+    const unsigned int n = sizeof(lista) / sizeof(lista[0]);
+    short int *opcion = NULL;
     Nodo *pila = NULL;
-    int n = sizeof(lista) / sizeof(lista[0]), opcion = SALIR;
     E *dato = NULL;
 
     while (true)
     {
+        system("cls");
         puts("\n\t\t.: PILA :.\n");
 
         for (int i = 0; i < n; i++)
             printf("[%d] : %s\n", i, lista[i]);
 
-        printf("\n>> ");
-        scanf("%d", &opcion);
+        puts("");
+        opcion = lectura("%hd");
 
-        switch (opcion)
+        switch (*opcion)
         {
         case SALIR:
             borrar(&pila);
-            puts("[SISTEMA] :- <Programa terminado>");
+            free(opcion);
+            puts(EXIT_OPTION);
+
             return;
         case EMPILAR:
-            printf(">> ");
-            dato = (E *)malloc(sizeof(E));
-            scanf("%d", dato);
+            dato = lectura("%d");
             empilar(&pila, dato);
             dato = NULL;
             break;
@@ -71,7 +75,12 @@ void menu()
             mostrar(pila);
             break;
         default:
-            puts("[SISTEMA] :- <Opcion incorrecta>");
+            puts(NO_OPTION);
         }
+
+        free(opcion);
+        opcion = NULL;
+        puts(CONTINUE_OPTION);
+        flush_buffer();
     }
 }

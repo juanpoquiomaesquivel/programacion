@@ -1,4 +1,5 @@
 #include "LSE.h"
+#include "Libreria.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -102,7 +103,7 @@ void reemplazarEn(Nodo *cabeza, T dato, T x)
             p = p->siguiente;
 
         if (*(E *)(p->dato) == *(E *)(x))
-        {    
+        {
             free(p->dato);
             p->dato = dato;
         }

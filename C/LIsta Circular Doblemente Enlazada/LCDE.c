@@ -1,4 +1,5 @@
 #include "LCDE.h"
+#include "Libreria.h"
 #include <stdio.h>
 #include <stdlib.h>
 

@@ -35,7 +35,7 @@ int main(int argc, char const *argv[])
 void menu()
 {
     const unsigned int n = sizeof(lista) / sizeof(lista[0]);
-    short int opcion = SALIR;
+    short int *opcion = NULL;
     Nodo *cola = NULL;
     E *dato = NULL;
 
@@ -47,19 +47,19 @@ void menu()
         for (int i = 0; i < n; i++)
             printf("[%d] : %s\n", i, lista[i]);
 
-        printf("\n>> ");
-        scanf("%hd", &opcion);
-        flush_buffer();
+        puts("");
+        opcion = lectura("%hd");
 
-        switch (opcion)
+        switch (*opcion)
         {
         case SALIR:
             borrar(&cola);
+            free(opcion);
             puts(EXIT_OPTION);
 
             return;
         case ENCOLAR:
-            leerInteger(&dato);
+            dato = lectura("%d");
             encolar(&cola, dato);
             dato = NULL;
             break;
@@ -84,6 +84,8 @@ void menu()
             puts(NO_OPTION);
         }
 
+        free(opcion);
+        opcion = NULL;
         puts(CONTINUE_OPTION);
         flush_buffer();
     }

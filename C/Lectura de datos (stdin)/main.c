@@ -8,16 +8,16 @@ enum
 {
     SALIR,
     INTEGER,
-    DOUBLE,
     FLOAT,
+    DOUBLE,
     STRING,
     CHAR,
 };
 
 const char lista[][100] = {"Salir",
                            "Leer 'int'",
-                           "Leer 'double'",
                            "Leer 'float'",
+                           "Leer 'double'",
                            "Leer 'string'",
                            "Leer 'char'"};
 
@@ -64,17 +64,17 @@ void menu()
             free(entero);
             entero = NULL;
             break;
-        case DOUBLE:
-            real = lectura("%lf");
-            printf(":- El valor 'double' es: %lf\n", *real);
-            free(real);
-            real = NULL;
-            break;
         case FLOAT:
             flotante = lectura("%f");
             printf(":- El valor 'float' es: %f\n", *flotante);
             free(flotante);
             flotante = NULL;
+            break;
+        case DOUBLE:
+            real = lectura("%lf");
+            printf(":- El valor 'double' es: %lf\n", *real);
+            free(real);
+            real = NULL;
             break;
         case STRING:
             cadena = lectura("%s");

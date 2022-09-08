@@ -1,6 +1,8 @@
 #ifndef _LSE_H_
 #define _LSE_H_
 
+#include "Libreria.h"
+
 typedef void *T;
 typedef int E;
 typedef struct nodo
@@ -8,11 +10,6 @@ typedef struct nodo
     T dato;
     struct nodo *siguiente;
 } Nodo;
-typedef enum
-{
-    false,
-    true
-} bool;
 
 Nodo *nodo(T dato);
 void insertarAlInicio(Nodo **cabeza, T dato);

@@ -4,80 +4,86 @@
 #include <stdlib.h>
 #include <string.h>
 
-void leerInteger(int **var)
+#ifdef LECTURA
+#ifndef FUNCTION_LECTURA
+void *lectura(const char *formato)
 {
-    int x;
-    int *ptr = (int *)malloc(sizeof(int));
-    memory_error(ptr);
-    lectura(ptr, "%d");
-    *var = ptr;
-}
+    void *ptr;
 
-void leerDouble(double **var)
-{
-    int x;
-    double *ptr = (double *)malloc(sizeof(double));
-    memory_error(ptr);
-    lectura(ptr, "%lf");
-    *var = ptr;
-}
+    if (strcmp(formato, "%s"))
+    {
+        if (!strcmp(formato, "%d"))
+            ptr = (int *)malloc(sizeof(int));
+        else if (!strcmp(formato, "%hd"))
+            ptr = (short int *)malloc(sizeof(short int));
+        else if (!strcmp(formato, "%ld"))
+            ptr = (long int *)malloc(sizeof(long int));
+        else if (!strcmp(formato, "%f"))
+            ptr = (float *)malloc(sizeof(float));
+        else if (!strcmp(formato, "%lf"))
+            ptr = (double *)malloc(sizeof(double));
+        else if (!strcmp(formato, "%Lf"))
+            ptr = (long double *)malloc(sizeof(long double));
+        else if (!strcmp(formato, "%c"))
+            ptr = (char *)malloc(sizeof(char));
 
-void leerFloat(float **var)
-{
-    int x;
-    float *ptr = (float *)malloc(sizeof(float));
-    memory_error(ptr);
-    lectura(ptr, "%f");
-    *var = ptr;
-}
+        memory_error(ptr);
+        int x = -1;
 
-void leerString(char **var)
-{
-    printf(">> ");
-    char buffer[LEN_STR_INPUT];
-    fgets(buffer, LEN_STR_INPUT, stdin);
-    buffer[strcspn(buffer, "\n")] = '\0';
-    *var = strdup(buffer);
-}
+        do
+        {
+            printf(">> ");
 
-void leerChar(char **var)
-{
-    int x;
-    char *ptr = (char *)malloc(sizeof(char));
-    memory_error(ptr);
-    lectura(ptr, "%c");
-    *var = ptr;
-}
+            if (!strcmp(formato, "%d"))
+            {
+                if (!(x = scanf(formato, (int *)ptr)))
+                    puts("[SISTEMA] :- <Ingrese valor 'int'>");
+            }
+            else if (!strcmp(formato, "%hd"))
+            {
+                if (!(x = scanf(formato, (short int *)ptr)))
+                    puts("[SISTEMA] :- <Ingrese valor 'short int'>");
+            }
+            else if (!strcmp(formato, "%ld"))
+            {
+                if (!(x = scanf(formato, (long int *)ptr)))
+                    puts("[SISTEMA] :- <Ingrese valor 'long int'>");
+            }
+            else if (!strcmp(formato, "%f"))
+            {
+                if (!(x = scanf(formato, (float *)ptr)))
+                    puts("[SISTEMA] :- <Ingrese valor 'float'>");
+            }
+            else if (!strcmp(formato, "%lf"))
+            {
+                if (!(x = scanf(formato, (double *)ptr)))
+                    puts("[SISTEMA] :- <Ingrese valor 'double'>");
+            }
+            else if (!strcmp(formato, "%Lf"))
+            {
+                if (!(x = scanf(formato, (long double *)ptr)))
+                    puts("[SISTEMA] :- <Ingrese valor 'long double'>");
+            }
+            else if (!strcmp(formato, "%c"))
+            {
+                if (!(x = scanf(formato, (char *)ptr)))
+                    puts("[SISTEMA] :- <Ingrese valor 'char'>");
+            }
 
-void lectura(void *ptr, const char *formato)
-{
-    int x = -1;
-
-    do
+            flush_buffer();
+        } while (!x);
+    }
+    else
     {
         printf(">> ");
+        char buffer[LEN_STR_INPUT];
+        fgets(buffer, LEN_STR_INPUT, stdin);
+        buffer[strcspn(buffer, "\n")] = '\0';
+        ptr = strdup(buffer);
+        memory_error(ptr);
+    }
 
-        if (strcmp(formato, "%d") == 0)
-        {
-            if ((x = scanf(formato, (int *)ptr)) == 0)
-                puts("[SISTEMA] :- <Ingrese valor 'int'>");
-        }
-        else if (strcmp(formato, "%lf") == 0)
-        {
-            if ((x = scanf(formato, (double *)ptr)) == 0)
-                puts("[SISTEMA] :- <Ingrese valor 'double'>");
-        }
-        else if (strcmp(formato, "%f") == 0)
-        {
-            if ((x = scanf(formato, (float *)ptr)) == 0)
-                puts("[SISTEMA] :- <Ingrese valor 'float'>");
-        }
-        else if (strcmp(formato, "%c") == 0)
-        {
-            if ((x = scanf(formato, (char *)ptr)) == 0)
-                puts("[SISTEMA] :- <Ingrese valor 'char'>");
-        }
-
-        flush_buffer();
-    } while (x == 0);
+    return ptr;
 }
+#endif
+#endif

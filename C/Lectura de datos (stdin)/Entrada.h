@@ -5,6 +5,9 @@
 #define LEN_STR_INPUT 1000
 #endif
 
-void* lectura(const char *formato);
+#ifndef LECTURA
+#define LECTURA
+void *lectura(const char *formato);
+#endif
 
 #endif

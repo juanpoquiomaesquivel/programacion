@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #ifdef FLUSH_BUFFER
+#ifndef FUNCTION_FLUSH_BUFFER
 void flush_buffer()
 {
     if (!feof(stdin) && !ferror(stdin))
@@ -10,8 +11,10 @@ void flush_buffer()
             ;
 }
 #endif
+#endif
 
 #ifdef MEMORY_ERROR
+#ifndef FUNCTION_MEMORY_ERROR
 void memory_error(void *ptr)
 {
     if (ptr == NULL)
@@ -20,4 +23,5 @@ void memory_error(void *ptr)
         exit(EXIT_FAILURE);
     }
 }
+#endif
 #endif
