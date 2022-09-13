@@ -11,7 +11,7 @@ typedef struct nodo
     struct nodo *abajo;
 } Nodo;
 
-Nodo *nodo(T dato);
+Nodo *nuevoNodo(T dato);
 void empilar(Nodo **tope, T dato);
 void depilar(Nodo **tope);
 T cima(Nodo *tope);

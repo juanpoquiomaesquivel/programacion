@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-Nodo *nodo(T dato)
+Nodo *nuevoNodo(T dato)
 {
     Nodo *nuevo = (Nodo *)malloc(sizeof(Nodo));
     memory_error(nuevo);
@@ -15,7 +15,7 @@ Nodo *nodo(T dato)
 
 void encolar(Nodo **cabeza, T dato)
 {
-    Nodo *nuevo = nodo(dato);
+    Nodo *nuevo = nuevoNodo(dato);
 
     if (estaVacia(*cabeza))
         *cabeza = nuevo;
@@ -66,28 +66,36 @@ T ultimo(Nodo *cabeza)
 
 void borrar(Nodo **cabeza)
 {
-    Nodo *p = *cabeza;
-
-    while (p != NULL)
+    if (!estaVacia(*cabeza))
     {
-        *cabeza = (*cabeza)->siguiente;
-        free(p->dato);
-        free(p);
-        p = *cabeza;
+        Nodo *p = *cabeza;
+
+        do
+        {
+            *cabeza = (*cabeza)->siguiente;
+            free(p->dato);
+            free(p);
+            p = *cabeza;
+        } while (p != NULL);
     }
 }
 
 void mostrar(Nodo *cabeza)
 {
-    Nodo *p = cabeza;
+    printf("COLA => { ");
 
-    while (p != NULL)
+    if (!estaVacia(cabeza))
     {
-        printf("%d ", *(E *)(p->dato));
-        p = p->siguiente;
+        Nodo *p = cabeza;
+
+        do
+        {
+            printf("%d -> ", *(E *)(p->dato));
+            p = p->siguiente;
+        } while (p != NULL);
     }
 
-    puts("");
+    puts(" }");
 }
 
 bool estaVacia(Nodo *cabeza)

@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-Nodo *nodo(T dato)
+Nodo *nuevoNodo(T dato)
 {
     Nodo *nuevo = (Nodo *)malloc(sizeof(Nodo));
 
@@ -22,7 +22,7 @@ Nodo *nodo(T dato)
 
 void insertarAlInicio(Nodo **cabeza, T dato)
 {
-    Nodo *nuevo = nodo(dato);
+    Nodo *nuevo = nuevoNodo(dato);
 
     if (estaVacia(*cabeza))
     {
@@ -43,7 +43,7 @@ void insertarAlInicio(Nodo **cabeza, T dato)
 
 void insertarAlFinal(Nodo **cabeza, T dato)
 {
-    Nodo *nuevo = nodo(dato);
+    Nodo *nuevo = nuevoNodo(dato);
 
     if (estaVacia(*cabeza))
     {
@@ -72,7 +72,7 @@ void insertarAntesDe(Nodo **cabeza, T dato, T x)
 
         if (*(E *)(p->dato) == *(E *)(x))
         {
-            Nodo *nuevo = nodo(dato);
+            Nodo *nuevo = nuevoNodo(dato);
 
             if (p == *cabeza)
             {
@@ -105,7 +105,7 @@ void insertarDespuesDe(Nodo **cabeza, T dato, T x)
 
         if (*(E *)(p->dato) == *(E *)(x))
         {
-            Nodo *nuevo = nodo(dato);
+            Nodo *nuevo = nuevoNodo(dato);
 
             if (p->siguiente == *cabeza)
             {

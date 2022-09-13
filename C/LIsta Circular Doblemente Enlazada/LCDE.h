@@ -12,7 +12,7 @@ typedef struct nodo
     struct nodo *siguiente;
 } Nodo;
 
-Nodo *nodo(T dato);
+Nodo *nuevoNodo(T dato);
 void insertarAlInicio(Nodo **cabeza, T dato);
 void insertarAlFinal(Nodo **cabeza, T dato);
 void insertarAntesDe(Nodo **cabeza, T dato, T x);

@@ -11,7 +11,7 @@ typedef struct nodo
     struct nodo *siguiente;
 } Nodo;
 
-Nodo *nodo(T dato);
+Nodo *nuevoNodo(T dato);
 void encolar(Nodo **cabeza, T dato);
 void decolar(Nodo **cabeza);
 T frente(Nodo *cabeza);

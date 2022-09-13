@@ -3,16 +3,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-Nodo *nodo(T dato)
+Nodo *nuevoNodo(T dato)
 {
     Nodo *nuevo = (Nodo *)malloc(sizeof(Nodo));
-
-    if (nuevo == NULL)
-    {
-        perror("[SISTEMA] :- <Memoria insuficiente> ");
-        exit(EXIT_FAILURE);
-    }
-
+    memory_error(nuevo);
     nuevo->dato = dato;
     nuevo->abajo = NULL;
 
@@ -21,7 +15,7 @@ Nodo *nodo(T dato)
 
 void empilar(Nodo **tope, T dato)
 {
-    Nodo *nuevo = nodo(dato);
+    Nodo *nuevo = nuevoNodo(dato);
 
     if (!estaVacia(*tope))
         nuevo->abajo = *tope;
@@ -50,26 +44,36 @@ T cima(Nodo *tope)
 
 void borrar(Nodo **tope)
 {
-    Nodo *p = *tope;
-
-    while (p != NULL)
+    if (!estaVacia(*tope))
     {
-        *tope = (*tope)->abajo;
-        free(p->dato);
-        free(p);
-        p = *tope;
+        Nodo *p = *tope;
+
+        while (p != NULL)
+        {
+            *tope = (*tope)->abajo;
+            free(p->dato);
+            free(p);
+            p = *tope;
+        }
     }
 }
 
 void mostrar(Nodo *tope)
 {
-    Nodo *p = tope;
+    printf("PILA => { ");
 
-    while (p != NULL)
+    if (!estaVacia(tope))
     {
-        printf("%d\n", *(E *)(p->dato));
-        p = p->abajo;
+        Nodo *p = tope;
+
+        do
+        {
+            printf("%d ->", *(E *)(p->dato));
+            p = p->abajo;
+        } while (p != NULL);
     }
+
+    puts(" }");
 }
 
 bool estaVacia(Nodo *tope)
