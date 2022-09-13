@@ -1,11 +1,7 @@
 #ifndef _ORDENAMIENTO_H_
 #define _ORDENAMIENTO_H_
 
-typedef enum
-{
-    false,
-    true
-} bool;
+#include "Libreria.h"
 
 int *crearVector(int n);
 void liberarVector(int **vector);

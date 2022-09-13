@@ -2,6 +2,8 @@
     "files.associations": {
         "cola.h": "c",
         "entrada.h": "c",
-        "libreria.h": "c"
+        "libreria.h": "c",
+        "ordenamiento.h": "c",
+        "arreglo.h": "c"
     }
 }

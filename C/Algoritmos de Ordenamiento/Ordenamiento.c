@@ -1,4 +1,5 @@
 #include "Ordenamiento.h"
+#include "Libreria.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

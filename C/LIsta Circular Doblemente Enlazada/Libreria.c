@@ -4,6 +4,7 @@
 
 #ifdef FLUSH_BUFFER
 #ifndef FUNCTION_FLUSH_BUFFER
+#define FUNCTION_FLUSH_BUFFER
 void flush_buffer()
 {
     if (!feof(stdin) && !ferror(stdin))
@@ -15,6 +16,7 @@ void flush_buffer()
 
 #ifdef MEMORY_ERROR
 #ifndef FUNCTION_MEMORY_ERROR
+#define FUNCTION_MEMORY_ERROR
 void memory_error(void *ptr)
 {
     if (ptr == NULL)

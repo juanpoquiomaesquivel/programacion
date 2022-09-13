@@ -6,6 +6,7 @@
 
 #ifdef LECTURA
 #ifndef FUNCTION_LECTURA
+#define FUNCTION_LECTURA
 void *lectura(const char *formato)
 {
     void *ptr;
