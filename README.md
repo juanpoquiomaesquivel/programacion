@@ -1,2 +1,2 @@
 # programacion
-Repositorio de problemas resueltos en lenguajes C/C++, Java, Python, etc.
+Repositorio de código en lenguajes C/C++, Java, Python, etc.
