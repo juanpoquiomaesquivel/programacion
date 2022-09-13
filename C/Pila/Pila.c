@@ -68,7 +68,7 @@ void mostrar(Nodo *tope)
 
         do
         {
-            printf("%d ->", *(E *)(p->dato));
+            printf("%d -> ", *(E *)(p->dato));
             p = p->abajo;
         } while (p != NULL);
     }
