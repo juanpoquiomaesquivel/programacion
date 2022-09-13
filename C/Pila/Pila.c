@@ -48,13 +48,13 @@ void borrar(Nodo **tope)
     {
         Nodo *p = *tope;
 
-        while (p != NULL)
+        do
         {
             *tope = (*tope)->abajo;
             free(p->dato);
             free(p);
             p = *tope;
-        }
+        } while (p != NULL);
     }
 }
 
