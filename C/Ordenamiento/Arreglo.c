@@ -31,11 +31,8 @@ void mostrarVector(int *vector, const unsigned int n)
     printf("VECTOR => [ ");
 
     if (vector != NULL)
-    {
-
         for (int i = 0; i < n; i++)
             printf("<%d> : %d, ", i, vector[i]);
-    }
 
     puts(" ]");
 }
@@ -78,8 +75,6 @@ void mostrarMatriz(int **matriz, const unsigned int filas, const unsigned int co
     printf("MATRIZ => [ ");
 
     if (matriz != NULL)
-    {
-
         for (int i = 0; i < filas; i++)
         {
             printf("[ ");
@@ -89,7 +84,6 @@ void mostrarMatriz(int **matriz, const unsigned int filas, const unsigned int co
 
             printf(" ], ");
         }
-    }
 
     puts(" ]");
 }
