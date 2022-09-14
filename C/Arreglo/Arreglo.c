@@ -28,15 +28,16 @@ void liberarVector(int **vector)
 
 void mostrarVector(int *vector, const unsigned int n)
 {
+    printf("VECTOR => [ ");
+
     if (vector != NULL)
     {
-        printf("VECTOR => [");
 
         for (int i = 0; i < n; i++)
             printf("<%d> : %d, ", i, vector[i]);
-
-        puts("]");
     }
+
+    puts(" ]");
 }
 
 int **crearMatriz(const unsigned int filas, const unsigned int columnas)
@@ -74,20 +75,21 @@ void liberarMatriz(int ***matriz, const unsigned int filas)
 
 void mostrarMatriz(int **matriz, const unsigned int filas, const unsigned int columnas)
 {
+    printf("MATRIZ => [ ");
+
     if (matriz != NULL)
     {
-        printf("MATRIZ => [");
 
         for (int i = 0; i < filas; i++)
         {
-            printf("[");
+            printf("[ ");
 
             for (int j = 0; j < columnas; j++)
                 printf("<%d, %d> : %d, ", i, j, matriz[i][j]);
 
-            printf("], ");
+            printf(" ], ");
         }
-
-        puts("]");
     }
+
+    puts(" ]");
 }
