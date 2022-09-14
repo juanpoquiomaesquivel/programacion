@@ -1,6 +1,9 @@
-#include "Ordenamiento.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include "Arreglo.h"
+#include "Entrada.h"
+#include "Libreria.h"
+#include "Ordenamiento.h"
 
 enum
 {
@@ -34,25 +37,29 @@ int main(int argc, char const *argv[])
 
 void menu()
 {
-    int N = 5;
+    const unsigned int n = sizeof(lista) / sizeof(lista[0]);
+    short int *opcion = NULL;
+    const unsigned int N = 10;
     int *vector = crearVector(N), *auxVector = NULL;
-    int n = sizeof(lista) / sizeof(lista[0]), opcion = SALIR;
 
     while (true)
     {
+        system("cls");
         puts("\n\t\t.: ALGORITMOS DE ORDENAMIENTO :.\n");
 
         for (int i = 0; i < n; i++)
             printf("[%d] : %s\n", i, lista[i]);
 
-        printf("\n>> ");
-        scanf("%d", &opcion);
+        puts("");
+        opcion = lectura("%hd");
 
-        switch (opcion)
+        switch (*opcion)
         {
         case SALIR:
             liberarVector(&vector);
-            puts("[SISTEMA] :- <Programa terminado>");
+            free(opcion);
+            puts(EXIT_OPTION);
+
             return;
         case BURBUJA:
             auxVector = burbuja(vector, N);
@@ -76,11 +83,15 @@ void menu()
             auxVector = mergeSort(vector, N);
             break;
         default:
-            puts("[SISTEMA] :- <Opcion incorrecta>");
+            puts(NO_OPTION);
         }
 
-        mostrar(vector, N);
-        mostrar(auxVector, N);
+        mostrarVector(vector, N);
+        mostrarVector(auxVector, N);
         liberarVector(&auxVector);
+        free(opcion);
+        opcion = NULL;
+        puts(CONTINUE_OPTION);
+        flush_buffer();
     }
 }

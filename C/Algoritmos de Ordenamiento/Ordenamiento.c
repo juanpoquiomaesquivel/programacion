@@ -5,47 +5,6 @@
 #include <string.h>
 #include <time.h>
 
-int *crearVector(int n)
-{
-    int *vector = (int *)malloc(n * sizeof(int));
-
-    if (vector == NULL)
-    {
-        perror("[SISTEMA] :- <Memoria insuficiente> ");
-        exit(EXIT_FAILURE);
-    }
-
-    srand(time(NULL));
-    int M = 1, N = 100;
-
-    for (int i = 0; i < n; i++)
-        vector[i] = rand() % (N - M + 1) + M;
-
-    return vector;
-}
-
-void liberarVector(int **vector)
-{
-    if (*vector != NULL)
-    {
-        free(*vector);
-        *vector = NULL;
-    }
-}
-
-void mostrar(int *vector, int n)
-{
-    if (vector != NULL)
-    {
-        printf("vector[] = {");
-
-        for (int i = 0; i < n; i++)
-            printf("<%d> : %d, ", i, vector[i]);
-
-        puts("}");
-    }
-}
-
 int *burbuja(int *vector, int n)
 {
     int *auxVector = (int *)malloc(n * sizeof(int));

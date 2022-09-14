@@ -3,9 +3,6 @@
 
 #include "Libreria.h"
 
-int *crearVector(int n);
-void liberarVector(int **vector);
-void mostrar(int *vector, int n);
 int *burbuja(int *vector, int n);
 int *insercionDirecta(int *vector, int n);
 int *seleccionDirecta(int *vector, int n);

@@ -22,8 +22,7 @@ const char lista[][100] = {
     "Mostrar Vector",
     "Crear Matriz",
     "Liberar Matriz",
-    "Mostrar Matriz"
-};
+    "Mostrar Matriz"};
 
 void menu();
 
@@ -38,9 +37,9 @@ void menu()
 {
     const unsigned int n = sizeof(lista) / sizeof(lista[0]);
     short int *opcion = NULL;
+    const unsigned int N = 10, filas = 5, columnas = 5;
     int *vector = NULL;
     int **matriz = NULL;
-    const unsigned int ene = 10, filas = 5, columnas = 5;
 
     while (true)
     {
@@ -64,12 +63,12 @@ void menu()
             return;
         case VECTOR_CREAR:
             liberarVector(&vector);
-            vector = crearVector(ene);
+            vector = crearVector(N);
             break;
         case VECTOR_LIBERAR:
             liberarVector(&vector);
         case VECTOR_MOSTRAR:
-            mostrarVector(vector, ene);
+            mostrarVector(vector, N);
             break;
         case MATRIZ_CREAR:
             liberarMatriz(&matriz, filas);
