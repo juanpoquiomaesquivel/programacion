@@ -68,15 +68,15 @@ void borrar(Nodo **cabeza)
 {
     if (!estaVacia(*cabeza))
     {
-        Nodo *p = *cabeza;
+        Nodo *p;
 
         do
         {
+            p = *cabeza;
             *cabeza = (*cabeza)->siguiente;
             free(p->dato);
             free(p);
-            p = *cabeza;
-        } while (p != NULL);
+        } while (*cabeza != NULL);
     }
 }
 
