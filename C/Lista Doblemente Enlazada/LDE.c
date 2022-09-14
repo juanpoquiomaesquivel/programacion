@@ -6,13 +6,7 @@
 Nodo *nuevoNodo(T dato)
 {
     Nodo *nuevo = (Nodo *)malloc(sizeof(Nodo));
-
-    if (nuevo == NULL)
-    {
-        perror("[SISTEMA] :- <Memoria insuficiente> ");
-        exit(EXIT_FAILURE);
-    }
-
+    memory_error(nuevo);
     nuevo->dato = dato;
     nuevo->anterior = NULL;
     nuevo->siguiente = NULL;
@@ -344,28 +338,36 @@ int buscar(Nodo *cabeza, T x)
 
 void borrar(Nodo **cabeza)
 {
-    Nodo *p = *cabeza;
-
-    while (p != NULL)
+    if (!estaVacia(*cabeza))
     {
-        *cabeza = (*cabeza)->siguiente;
-        free(p->dato);
-        free(p);
-        p = *cabeza;
+        Nodo *p;
+
+        do
+        {
+            p = *cabeza;
+            *cabeza = (*cabeza)->siguiente;
+            free(p->dato);
+            free(p);
+        } while (*cabeza != NULL);
     }
 }
 
 void mostrar(Nodo *cabeza)
 {
-    Nodo *p = cabeza;
+    printf("LDE => { ");
 
-    while (p != NULL)
+    if (!estaVacia(cabeza))
     {
-        printf("%d ", *(int *)(p->dato));
-        p = p->siguiente;
+        Nodo *p = cabeza;
+
+        do
+        {
+            printf("%d -> ", *(E *)(p->dato));
+            p = p->siguiente;
+        } while (p != NULL);
     }
 
-    puts("");
+    puts(" }");
 }
 
 bool estaVacia(Nodo *cabeza)
