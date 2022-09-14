@@ -46,15 +46,15 @@ void borrar(Nodo **tope)
 {
     if (!estaVacia(*tope))
     {
-        Nodo *p = *tope;
+        Nodo *p;
 
         do
         {
+            p = *tope;
             *tope = (*tope)->abajo;
             free(p->dato);
             free(p);
-            p = *tope;
-        } while (p != NULL);
+        } while (*tope != NULL);
     }
 }
 
