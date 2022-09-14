@@ -6,13 +6,7 @@
 Nodo *nuevoNodo(T dato)
 {
     Nodo *nuevo = (Nodo *)malloc(sizeof(Nodo));
-
-    if (nuevo == NULL)
-    {
-        perror("[SISTEMA] :- <Memoria insuficiente> ");
-        exit(EXIT_FAILURE);
-    }
-
+    memory_error(nuevo);
     nuevo->dato = dato;
     nuevo->anterior = NULL;
     nuevo->siguiente = NULL;
@@ -402,34 +396,36 @@ void borrar(Nodo **cabeza)
 {
     if (!estaVacia(*cabeza))
     {
-        Nodo *p = *cabeza;
+        Nodo *p;
         Nodo *q = (*cabeza)->anterior;
         q->siguiente = NULL;
 
         do
         {
+            p = *cabeza;
             *cabeza = (*cabeza)->siguiente;
             free(p->dato);
             free(p);
-            p = *cabeza;
-        } while (p != NULL);
+        } while (*cabeza != NULL);
     }
 }
 
 void mostrar(Nodo *cabeza)
 {
+    printf("LCDE => { ");
+
     if (!estaVacia(cabeza))
     {
         Nodo *p = cabeza;
 
         do
         {
-            printf("%d ", *(int *)(p->dato));
+            printf("%d -> ", *(E *)(p->dato));
             p = p->siguiente;
         } while (p != cabeza);
-
-        puts("");
     }
+
+    puts(" }");
 }
 
 bool estaVacia(Nodo *cabeza)
