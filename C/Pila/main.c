@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "Entrada.h"
@@ -32,55 +33,56 @@ int main(int argc, char const *argv[])
 
 void menu()
 {
-    const unsigned int n = sizeof(lista) / sizeof(lista[0]);
+    const size_t n = sizeof(lista) / sizeof(lista[0]);
     short int *opcion = NULL;
-    Nodo *pila = NULL;
-    E *dato = NULL;
+    jxp_Pila pila = {.tope = NULL};
+    T dato = NULL;
 
     while (true)
     {
         system("cls");
         puts("\n\t\t.: PILA :.\n");
 
-        for (int i = 0; i < n; i++)
+        for (size_t i = 0; i < n; i++)
             printf("[%d] : %s\n", i, lista[i]);
 
         puts("");
-        opcion = lectura("%hd");
+        opcion = leerEntrada("%hd");
 
         switch (*opcion)
         {
         case SALIR:
-            borrar(&pila);
+            jxp_borrar(&pila.tope);
             free(opcion);
-            puts(EXIT_OPTION);
+            puts(MS_PROGRAMA_FINALIZADO);
 
             return;
         case EMPILAR:
-            dato = lectura("%d");
-            empilar(&pila, dato);
+            dato = leerEntrada("%d");
+            jxp_empilar(&pila.tope, dato);
             dato = NULL;
             break;
         case DEPILAR:
-            depilar(&pila);
+            printf("%s\n", jxp_depilar(&pila.tope) ? "true" : "false");
             break;
         case CIMA:
-            if (cima(pila) != NULL)
-                printf("%d\n", *(E *)(cima(pila)));
+            dato = jxp_cima(pila.tope);
+            (dato != NULL) ? printf("%d\n", *(E *)dato) : puts("NULL");
+            dato = NULL;
             break;
         case BORRAR:
-            borrar(&pila);
+            printf("%s\n", (jxp_borrar(&pila.tope) ? "true" : "false"));
             break;
         case MOSTRAR:
-            mostrar(pila);
+            jxp_mostrar(pila.tope);
             break;
         default:
-            puts(NO_OPTION);
+            puts(MS_OPCION_INCORRECTA);
         }
 
         free(opcion);
         opcion = NULL;
-        puts(CONTINUE_OPTION);
-        flush_buffer();
+        puts(MS_OPCION_CONTINUAR);
+        limpiarBuffer();
     }
 }

@@ -1,52 +1,57 @@
 #include "Pila.h"
 #include "Libreria.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-Nodo *nuevoNodo(T dato)
+jxp_Nodo *jxp_crearNodo(T dato)
 {
-    Nodo *nuevo = (Nodo *)malloc(sizeof(Nodo));
-    memory_error(nuevo);
+    jxp_Nodo *nuevo = (jxp_Nodo *)malloc(sizeof(jxp_Nodo));
+    errorDeMemoria(nuevo);
     nuevo->dato = dato;
     nuevo->abajo = NULL;
 
     return nuevo;
 }
 
-void empilar(Nodo **tope, T dato)
+void jxp_empilar(jxp_Nodo **tope, T dato)
 {
-    Nodo *nuevo = nuevoNodo(dato);
+    jxp_Nodo *nuevo = jxp_crearNodo(dato);
 
-    if (!estaVacia(*tope))
+    if (!jxp_estaVacia(*tope))
         nuevo->abajo = *tope;
 
     *tope = nuevo;
 }
 
-void depilar(Nodo **tope)
+bool jxp_depilar(jxp_Nodo **tope)
 {
-    if (!estaVacia(*tope))
+    if (!jxp_estaVacia(*tope))
     {
-        Nodo *p = *tope;
+        jxp_Nodo *p = *tope;
         *tope = (*tope)->abajo;
         free(p->dato);
         free(p);
+
+        return true;
     }
+    
+    return false;
 }
 
-T cima(Nodo *tope)
+T jxp_cima(jxp_Nodo *tope)
 {
-    if (!estaVacia(tope))
+    if (!jxp_estaVacia(tope))
         return tope->dato;
     else
         return NULL;
 }
 
-void borrar(Nodo **tope)
+bool jxp_borrar(jxp_Nodo **tope)
 {
-    if (!estaVacia(*tope))
+    if (!jxp_estaVacia(*tope))
     {
-        Nodo *p;
+        jxp_Nodo *p;
 
         do
         {
@@ -55,16 +60,20 @@ void borrar(Nodo **tope)
             free(p->dato);
             free(p);
         } while (*tope != NULL);
+
+        return true;
     }
+
+    return false;
 }
 
-void mostrar(Nodo *tope)
+void jxp_mostrar(jxp_Nodo *tope)
 {
     printf("PILA => { ");
 
-    if (!estaVacia(tope))
+    if (!jxp_estaVacia(tope))
     {
-        Nodo *p = tope;
+        jxp_Nodo *p = tope;
 
         do
         {
@@ -76,7 +85,7 @@ void mostrar(Nodo *tope)
     puts(" }");
 }
 
-bool estaVacia(Nodo *tope)
+bool jxp_estaVacia(jxp_Nodo *tope)
 {
     return tope == NULL;
 }
