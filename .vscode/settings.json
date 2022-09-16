@@ -4,6 +4,8 @@
         "entrada.h": "c",
         "libreria.h": "c",
         "ordenamiento.h": "c",
-        "arreglo.h": "c"
+        "arreglo.h": "c",
+        "typeinfo": "c",
+        "stdio.h": "c"
     }
 }

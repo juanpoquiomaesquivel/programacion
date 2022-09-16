@@ -2,28 +2,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#ifdef FLUSH_BUFFER
-#ifndef FUNCTION_FLUSH_BUFFER
-#define FUNCTION_FLUSH_BUFFER
-void flush_buffer()
+#ifdef ERROR_DE_MEMORIA
+#ifndef FUNCION_ERROR_DE_MEMORIA
+#define FUNCION_ERROR_DE_MEMORIA
+void errorDeMemoria(T ptr)
 {
-    if (!feof(stdin) && !ferror(stdin))
-        while (getchar() != '\n')
-            ;
+    if (ptr == NULL)
+    {
+        perror(MS_INSUFICIENTE_MEMORIA);
+        exit(EXIT_FAILURE);
+    }
 }
 #endif
 #endif
 
-#ifdef MEMORY_ERROR
-#ifndef FUNCTION_MEMORY_ERROR
-#define FUNCTION_MEMORY_ERROR
-void memory_error(void *ptr)
+#ifdef LIMPIAR_BUFFER
+#ifndef FUNCION_LIMPIAR_BUFFER
+#define FUNCION_LIMPIAR_BUFFER
+void limpiarBuffer()
 {
-    if (ptr == NULL)
-    {
-        perror(NO_MEMORY);
-        exit(EXIT_FAILURE);
-    }
+    if (!feof(stdin) && !ferror(stdin))
+        while (getchar() != '\n')
+            ;
 }
 #endif
 #endif

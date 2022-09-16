@@ -1,8 +1,9 @@
-#include "Entrada.h"
-#include "Libreria.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "Entrada.h"
+#include "Libreria.h"
 
 enum
 {
@@ -32,69 +33,56 @@ int main(int argc, char const *argv[])
 
 void menu()
 {
-    const unsigned int n = sizeof(lista) / sizeof(lista[0]);
+    const size_t n = sizeof(lista) / sizeof(lista[0]);
     short int *opcion = NULL;
-    int *entero = NULL;
-    double *real = NULL;
-    float *flotante = NULL;
-    char *cadena = NULL;
-    char *caracter = NULL;
+    T variable = NULL;
 
     while (true)
     {
         system("cls");
         puts("\n\t\t.: LECTURA DE DATOS (stdin) :.\n");
 
-        for (int i = 0; i < n; i++)
+        for (size_t i = 0; i < n; i++)
             printf("[%d] : %s\n", i, lista[i]);
 
         puts("");
-        opcion = lectura("%hd");
+        opcion = leerEntrada("%hd");
 
         switch (*opcion)
         {
         case SALIR:
             free(opcion);
-            puts(EXIT_OPTION);
+            puts(MS_PROGRAMA_FINALIZADO);
 
             return;
         case INTEGER:
-            entero = lectura("%d");
-            printf(":- El valor 'int' es: %d\n", *entero);
-            free(entero);
-            entero = NULL;
+            variable = leerEntrada("%d");
+            printf("El valor 'int' es: %d\n", *(int *)variable);
             break;
         case FLOAT:
-            flotante = lectura("%f");
-            printf(":- El valor 'float' es: %f\n", *flotante);
-            free(flotante);
-            flotante = NULL;
-            break;
+            variable = leerEntrada("%f");
+            printf("El valor 'float' es: %f\n", *(float *)variable);
         case DOUBLE:
-            real = lectura("%lf");
-            printf(":- El valor 'double' es: %lf\n", *real);
-            free(real);
-            real = NULL;
+            variable = leerEntrada("%lf");
+            printf("El valor 'double' es: %lf\n", *(double *)variable);
             break;
         case STRING:
-            cadena = lectura("%s");
-            printf(":- El valor 'string' es: %s\n", cadena);
-            free(cadena);
-            cadena = NULL;
+            variable = leerEntrada("%s");
+            printf("El valor 'string' es: %s\n", (char *)variable);
             break;
         case CHAR:
-            caracter = lectura("%c");
-            printf(":- El valor 'char' es: %c\n", *caracter);
-            free(caracter);
-            caracter = NULL;
+            variable = leerEntrada("%c");
+            printf("El valor 'char' es: %c\n", *(char *)variable);
             break;
         default:
-            puts(NO_OPTION);
+            puts(MS_OPCION_INCORRECTA);
         }
 
+        free(variable);
+        variable = NULL;
         free(opcion);
         opcion = NULL;
-        puts(CONTINUE_OPTION);
-        flush_buffer();
+        puts(MS_OPCION_CONTINUAR);
+        limpiarBuffer();
     }
 }

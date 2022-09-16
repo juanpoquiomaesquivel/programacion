@@ -1,23 +1,27 @@
 #ifndef _COLA_H_
 #define _COLA_H_
 
+#include <stdbool.h>
 #include "Libreria.h"
 
-typedef void *T;
-typedef int E;
-typedef struct nodo
+typedef struct jxc_nodo
 {
     T dato;
-    struct nodo *siguiente;
-} Nodo;
+    struct jxc_nodo *siguiente;
+} jxc_Nodo;
 
-Nodo *nuevoNodo(T dato);
-void encolar(Nodo **cabeza, T dato);
-void decolar(Nodo **cabeza);
-T frente(Nodo *cabeza);
-T ultimo(Nodo *cabeza);
-void borrar(Nodo **cabeza);
-void mostrar(Nodo *cabeza);
-bool estaVacia(Nodo *cabeza);
+typedef struct jxc_cola
+{
+    jxc_Nodo *cabeza;
+} jxc_Cola;
+
+jxc_Nodo *jxc_crearNodo(T dato);
+void jxc_encolar(jxc_Nodo **cabeza, T dato);
+bool jxc_decolar(jxc_Nodo **cabeza);
+T jxc_frente(jxc_Nodo *cabeza);
+T jx_ultimo(jxc_Nodo *cabeza);
+bool jxc_borrar(jxc_Nodo **cabeza);
+void jxc_mostrar(jxc_Nodo *cabeza);
+bool jxc_estaVacia(jxc_Nodo *cabeza);
 
 #endif

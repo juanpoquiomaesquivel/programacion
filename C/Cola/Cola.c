@@ -1,27 +1,28 @@
 #include "Cola.h"
 #include "Libreria.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-Nodo *nuevoNodo(T dato)
+jxc_Nodo *jxc_crearNodo(T dato)
 {
-    Nodo *nuevo = (Nodo *)malloc(sizeof(Nodo));
-    memory_error(nuevo);
+    jxc_Nodo *nuevo = (jxc_Nodo *)malloc(sizeof(jxc_Nodo));
+    errorDeMemoria(nuevo);
     nuevo->dato = dato;
     nuevo->siguiente = NULL;
 
     return nuevo;
 }
 
-void encolar(Nodo **cabeza, T dato)
+void jxc_encolar(jxc_Nodo **cabeza, T dato)
 {
-    Nodo *nuevo = nuevoNodo(dato);
+    jxc_Nodo *nuevo = jxc_crearNodo(dato);
 
-    if (estaVacia(*cabeza))
+    if (jxc_estaVacia(*cabeza))
         *cabeza = nuevo;
     else
     {
-        Nodo *p = *cabeza;
+        jxc_Nodo *p = *cabeza;
 
         while (p->siguiente != NULL)
             p = p->siguiente;
@@ -30,30 +31,34 @@ void encolar(Nodo **cabeza, T dato)
     }
 }
 
-void decolar(Nodo **cabeza)
+bool jxc_decolar(jxc_Nodo **cabeza)
 {
-    if (!estaVacia(*cabeza))
+    if (!jxc_estaVacia(*cabeza))
     {
-        Nodo *p = *cabeza;
+        jxc_Nodo *p = *cabeza;
         *cabeza = (*cabeza)->siguiente;
         free(p->dato);
         free(p);
+
+        return true;
     }
+
+    return false;
 }
 
-T frente(Nodo *cabeza)
+T jxc_frente(jxc_Nodo *cabeza)
 {
-    if (!estaVacia(cabeza))
+    if (!jxc_estaVacia(cabeza))
         return cabeza->dato;
     else
         return NULL;
 }
 
-T ultimo(Nodo *cabeza)
+T jx_ultimo(jxc_Nodo *cabeza)
 {
-    if (!estaVacia(cabeza))
+    if (!jxc_estaVacia(cabeza))
     {
-        Nodo *p = cabeza;
+        jxc_Nodo *p = cabeza;
 
         while (p->siguiente != NULL)
             p = p->siguiente;
@@ -64,11 +69,11 @@ T ultimo(Nodo *cabeza)
         return NULL;
 }
 
-void borrar(Nodo **cabeza)
+bool jxc_borrar(jxc_Nodo **cabeza)
 {
-    if (!estaVacia(*cabeza))
+    if (!jxc_estaVacia(*cabeza))
     {
-        Nodo *p;
+        jxc_Nodo *p;
 
         do
         {
@@ -77,16 +82,20 @@ void borrar(Nodo **cabeza)
             free(p->dato);
             free(p);
         } while (*cabeza != NULL);
+
+        return true;
     }
+
+    return false;
 }
 
-void mostrar(Nodo *cabeza)
+void jxc_mostrar(jxc_Nodo *cabeza)
 {
     printf("COLA => { ");
 
-    if (!estaVacia(cabeza))
+    if (!jxc_estaVacia(cabeza))
     {
-        Nodo *p = cabeza;
+        jxc_Nodo *p = cabeza;
 
         do
         {
@@ -98,7 +107,7 @@ void mostrar(Nodo *cabeza)
     puts(" }");
 }
 
-bool estaVacia(Nodo *cabeza)
+bool jxc_estaVacia(jxc_Nodo *cabeza)
 {
     return cabeza == NULL;
 }

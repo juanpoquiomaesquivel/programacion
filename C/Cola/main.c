@@ -34,59 +34,61 @@ int main(int argc, char const *argv[])
 
 void menu()
 {
-    const unsigned int n = sizeof(lista) / sizeof(lista[0]);
+    const size_t n = sizeof(lista) / sizeof(lista[0]);
     short int *opcion = NULL;
-    Nodo *cola = NULL;
-    E *dato = NULL;
+    jxc_Cola cola = {.cabeza = NULL};
+    T dato = NULL;
 
     while (true)
     {
         system("cls");
         puts("\n\t\t.: COLA :.\n");
 
-        for (int i = 0; i < n; i++)
+        for (size_t i = 0; i < n; i++)
             printf("[%d] : %s\n", i, lista[i]);
 
         puts("");
-        opcion = lectura("%hd");
+        opcion = leerEntrada("%hd");
 
         switch (*opcion)
         {
         case SALIR:
-            borrar(&cola);
+            jxc_borrar(&cola.cabeza);
             free(opcion);
-            puts(EXIT_OPTION);
+            puts(MS_PROGRAMA_FINALIZADO);
 
             return;
         case ENCOLAR:
-            dato = lectura("%d");
-            encolar(&cola, dato);
+            dato = leerEntrada("%d");
+            jxc_encolar(&cola.cabeza, dato);
             dato = NULL;
             break;
         case DECOLAR:
-            decolar(&cola);
+            printf("%s\n", (jxc_decolar(&cola.cabeza) ? "true" : "false"));
             break;
         case FRENTE:
-            if (frente(cola) != NULL)
-                printf("%d\n", *(E *)(frente(cola)));
+            dato = jxc_frente(cola.cabeza);
+            (dato != NULL) ? printf("%d\n", *(E *)dato) : puts("NULL");
+            dato = NULL;
             break;
         case ULTIMO:
-            if (ultimo(cola) != NULL)
-                printf("%d\n", *(E *)(ultimo(cola)));
+            dato = jx_ultimo(cola.cabeza);
+            (dato != NULL) ? printf("%d\n", *(E *)dato) : puts("NULL");
+            dato = NULL;
             break;
         case BORRAR:
-            borrar(&cola);
+            printf("%s\n", (jxc_borrar(&cola.cabeza) ? "true" : "false"));
             break;
         case MOSTRAR:
-            mostrar(cola);
+            jxc_mostrar(cola.cabeza);
             break;
         default:
-            puts(NO_OPTION);
+            puts(MS_OPCION_INCORRECTA);
         }
 
         free(opcion);
         opcion = NULL;
-        puts(CONTINUE_OPTION);
-        flush_buffer();
+        puts(MS_OPCION_CONTINUAR);
+        limpiarBuffer();
     }
 }
