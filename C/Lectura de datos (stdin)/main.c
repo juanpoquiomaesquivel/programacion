@@ -46,7 +46,7 @@ void menu()
             printf("[%d] : %s\n", i, lista[i]);
 
         puts("");
-        opcion = (short int *)leerEntrada("%hd");
+        opcion = (short int *)leerEntrada("%hd", "Ingrese una opcion");
 
         switch (*opcion)
         {
@@ -56,23 +56,23 @@ void menu()
 
             return;
         case INTEGER:
-            variable = leerEntrada("%d");
+            variable = leerEntrada("%d", "Ingrese un entero");
             printf("El valor 'int' es: %d\n", *(int *)variable);
             break;
         case FLOAT:
-            variable = leerEntrada("%f");
+            variable = leerEntrada("%f", "Ingrese un decimal");
             printf("El valor 'float' es: %f\n", *(float *)variable);
             break;
         case DOUBLE:
-            variable = leerEntrada("%lf");
+            variable = leerEntrada("%lf", "Ingrese un real");
             printf("El valor 'double' es: %lf\n", *(double *)variable);
             break;
         case STRING:
-            variable = leerEntrada("%s");
+            variable = leerEntrada("%s", "Ingrese una cadena");
             printf("El valor 'string' es: %s\n", (char *)variable);
             break;
         case CHAR:
-            variable = leerEntrada("%c");
+            variable = leerEntrada("%c", "Ingrese un caracter");
             printf("El valor 'char' es: %c\n", *(char *)variable);
             break;
         default:

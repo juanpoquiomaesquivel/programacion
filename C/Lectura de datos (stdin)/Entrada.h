@@ -33,7 +33,7 @@
 
 #ifndef LEER_ENTRADA
 #define LEER_ENTRADA
-void *leerEntrada(const char *formato);
+void *leerEntrada(const char *formato, const char *mensaje);
 #endif
 
 #endif
