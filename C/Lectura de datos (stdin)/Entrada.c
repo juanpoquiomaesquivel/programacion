@@ -7,9 +7,9 @@
 #ifdef LEER_ENTRADA
 #ifndef FUNCION_LEER_ENTRADA
 #define FUNCION_LEER_ENTRADA
-T leerEntrada(const char *formato)
+void *leerEntrada(const char *formato)
 {
-    T ptr;
+    void *ptr;
 
     if (strcmp(formato, "%s"))
     {

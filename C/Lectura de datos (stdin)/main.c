@@ -35,7 +35,7 @@ void menu()
 {
     const size_t n = sizeof(lista) / sizeof(lista[0]);
     short int *opcion = NULL;
-    T variable = NULL;
+    void *variable = NULL;
 
     while (true)
     {
@@ -46,7 +46,7 @@ void menu()
             printf("[%d] : %s\n", i, lista[i]);
 
         puts("");
-        opcion = leerEntrada("%hd");
+        opcion = (short int *)leerEntrada("%hd");
 
         switch (*opcion)
         {
@@ -62,6 +62,7 @@ void menu()
         case FLOAT:
             variable = leerEntrada("%f");
             printf("El valor 'float' es: %f\n", *(float *)variable);
+            break;
         case DOUBLE:
             variable = leerEntrada("%lf");
             printf("El valor 'double' es: %lf\n", *(double *)variable);
