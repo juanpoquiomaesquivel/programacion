@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-jxc_Nodo *jxc_crearNodo(T dato)
+jxc_Nodo *jxc_crearNodo(void *dato)
 {
     jxc_Nodo *nuevo = (jxc_Nodo *)malloc(sizeof(jxc_Nodo));
     errorDeMemoria(nuevo);
@@ -14,7 +14,13 @@ jxc_Nodo *jxc_crearNodo(T dato)
     return nuevo;
 }
 
-void jxc_encolar(jxc_Nodo **cabeza, T dato)
+void jxc_borrarNodo(jxc_Nodo *nodo, void (*func)(void *p))
+{
+    func(nodo->dato);
+    free(nodo);
+}
+
+void jxc_encolar(jxc_Nodo **cabeza, void *dato)
 {
     jxc_Nodo *nuevo = jxc_crearNodo(dato);
 
@@ -31,14 +37,13 @@ void jxc_encolar(jxc_Nodo **cabeza, T dato)
     }
 }
 
-bool jxc_decolar(jxc_Nodo **cabeza)
+bool jxc_decolar(jxc_Nodo **cabeza, void (*func)(void *p))
 {
     if (!jxc_estaVacia(*cabeza))
     {
         jxc_Nodo *p = *cabeza;
         *cabeza = (*cabeza)->siguiente;
-        free(p->dato);
-        free(p);
+        jxc_borrarNodo(p, func);
 
         return true;
     }
@@ -46,7 +51,7 @@ bool jxc_decolar(jxc_Nodo **cabeza)
     return false;
 }
 
-T jxc_frente(jxc_Nodo *cabeza)
+void *jxc_frente(jxc_Nodo *cabeza)
 {
     if (!jxc_estaVacia(cabeza))
         return cabeza->dato;
@@ -54,7 +59,7 @@ T jxc_frente(jxc_Nodo *cabeza)
         return NULL;
 }
 
-T jx_ultimo(jxc_Nodo *cabeza)
+void *jx_ultimo(jxc_Nodo *cabeza)
 {
     if (!jxc_estaVacia(cabeza))
     {
@@ -69,7 +74,7 @@ T jx_ultimo(jxc_Nodo *cabeza)
         return NULL;
 }
 
-bool jxc_borrar(jxc_Nodo **cabeza)
+bool jxc_borrar(jxc_Nodo **cabeza, void (*func)(void *p))
 {
     if (!jxc_estaVacia(*cabeza))
     {
@@ -79,8 +84,7 @@ bool jxc_borrar(jxc_Nodo **cabeza)
         {
             p = *cabeza;
             *cabeza = (*cabeza)->siguiente;
-            free(p->dato);
-            free(p);
+            jxc_borrarNodo(p, func);
         } while (*cabeza != NULL);
 
         return true;
@@ -89,17 +93,20 @@ bool jxc_borrar(jxc_Nodo **cabeza)
     return false;
 }
 
-void jxc_mostrar(jxc_Nodo *cabeza)
+void jxc_mostrar(jxc_Nodo *cabeza, char *(*func)(const void *p))
 {
     printf("COLA => { ");
 
     if (!jxc_estaVacia(cabeza))
     {
         jxc_Nodo *p = cabeza;
+        char *txt;
 
         do
         {
-            printf("%d -> ", *(E *)(p->dato));
+            txt = func(p->dato);
+            printf("%s -> ", txt);
+            free(txt);
             p = p->siguiente;
         } while (p != NULL);
     }

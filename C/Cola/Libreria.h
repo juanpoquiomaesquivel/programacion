@@ -1,16 +1,6 @@
 #ifndef _LIBRERIA_H_
 #define _LIBRERIA_H_
 
-#ifndef T_GENERICO
-#define T_GENERICO
-typedef void *T;
-#endif
-
-#ifndef E_DATO
-#define E_DATO
-typedef int E;
-#endif
-
 #ifndef MS_INSUFICIENTE_MEMORIA
 #define MS_INSUFICIENTE_MEMORIA "[SISTEMA] :- <No hay memoria suficiente> "
 #endif
@@ -29,7 +19,7 @@ typedef int E;
 
 #ifndef ERROR_DE_MEMORIA
 #define ERROR_DE_MEMORIA
-void errorDeMemoria(T ptr);
+void errorDeMemoria(void *ptr);
 #endif
 
 #ifndef LIMPIAR_BUFFER

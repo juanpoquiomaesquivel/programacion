@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "Cola.h"
 #include "Entrada.h"
 #include "Libreria.h"
+#include "Persona.h"
 
 enum
 {
@@ -37,7 +39,7 @@ void menu()
     const size_t n = sizeof(lista) / sizeof(lista[0]);
     short int *opcion = NULL;
     jxc_Cola cola = {.cabeza = NULL};
-    T dato = NULL;
+    void *dato = NULL;
 
     while (true)
     {
@@ -48,39 +50,39 @@ void menu()
             printf("[%d] : %s\n", i, lista[i]);
 
         puts("");
-        opcion = leerEntrada("%hd");
+        opcion = (short int *)leerEntrada("%hd", "Ingrese una opcion");
 
         switch (*opcion)
         {
         case SALIR:
-            jxc_borrar(&cola.cabeza);
+            jxc_borrar(&cola.cabeza, borrarPersona);
             free(opcion);
             puts(MS_PROGRAMA_FINALIZADO);
 
             return;
         case ENCOLAR:
-            dato = leerEntrada("%d");
+            dato = crearPersona();
             jxc_encolar(&cola.cabeza, dato);
             dato = NULL;
             break;
         case DECOLAR:
-            printf("%s\n", (jxc_decolar(&cola.cabeza) ? "true" : "false"));
+            printf("%s\n", (jxc_decolar(&cola.cabeza, borrarPersona) ? "true" : "false"));
             break;
         case FRENTE:
             dato = jxc_frente(cola.cabeza);
-            (dato != NULL) ? printf("%d\n", *(E *)dato) : puts("NULL");
+            (dato != NULL) ? printf("%s\n", mostrarPersona(dato)) : puts("NULL");
             dato = NULL;
             break;
         case ULTIMO:
             dato = jx_ultimo(cola.cabeza);
-            (dato != NULL) ? printf("%d\n", *(E *)dato) : puts("NULL");
+            (dato != NULL) ? printf("%s\n", mostrarPersona(dato)) : puts("NULL");
             dato = NULL;
             break;
         case BORRAR:
-            printf("%s\n", (jxc_borrar(&cola.cabeza) ? "true" : "false"));
+            printf("%s\n", (jxc_borrar(&cola.cabeza, borrarPersona) ? "true" : "false"));
             break;
         case MOSTRAR:
-            jxc_mostrar(cola.cabeza);
+            jxc_mostrar(cola.cabeza, mostrarPersona);
             break;
         default:
             puts(MS_OPCION_INCORRECTA);
