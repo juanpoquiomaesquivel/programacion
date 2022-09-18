@@ -14,9 +14,9 @@ jxp_Nodo *jxp_crearNodo(void *dato)
     return nuevo;
 }
 
-void jxp_borrarNodo(jxp_Nodo *nodo, void (*func)(void *p))
+void jxp_borrarNodo(jxp_Nodo *nodo, void (*del)(void *p))
 {
-    func(nodo->dato);
+    del(nodo->dato);
     free(nodo);
 }
 

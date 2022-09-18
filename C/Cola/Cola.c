@@ -14,9 +14,9 @@ jxc_Nodo *jxc_crearNodo(void *dato)
     return nuevo;
 }
 
-void jxc_borrarNodo(jxc_Nodo *nodo, void (*func)(void *p))
+void jxc_borrarNodo(jxc_Nodo *nodo, void (*del)(void *p))
 {
-    func(nodo->dato);
+    del(nodo->dato);
     free(nodo);
 }
 
@@ -37,13 +37,13 @@ void jxc_encolar(jxc_Nodo **cabeza, void *dato)
     }
 }
 
-bool jxc_decolar(jxc_Nodo **cabeza, void (*func)(void *p))
+bool jxc_decolar(jxc_Nodo **cabeza, void (*del)(void *p))
 {
     if (!jxc_estaVacia(*cabeza))
     {
         jxc_Nodo *p = *cabeza;
         *cabeza = (*cabeza)->siguiente;
-        jxc_borrarNodo(p, func);
+        jxc_borrarNodo(p, del);
 
         return true;
     }
@@ -74,7 +74,7 @@ void *jx_ultimo(jxc_Nodo *cabeza)
         return NULL;
 }
 
-bool jxc_borrar(jxc_Nodo **cabeza, void (*func)(void *p))
+bool jxc_borrar(jxc_Nodo **cabeza, void (*del)(void *p))
 {
     if (!jxc_estaVacia(*cabeza))
     {
@@ -84,7 +84,7 @@ bool jxc_borrar(jxc_Nodo **cabeza, void (*func)(void *p))
         {
             p = *cabeza;
             *cabeza = (*cabeza)->siguiente;
-            jxc_borrarNodo(p, func);
+            jxc_borrarNodo(p, del);
         } while (*cabeza != NULL);
 
         return true;
@@ -93,7 +93,7 @@ bool jxc_borrar(jxc_Nodo **cabeza, void (*func)(void *p))
     return false;
 }
 
-void jxc_mostrar(jxc_Nodo *cabeza, char *(*func)(const void *p))
+void jxc_mostrar(jxc_Nodo *cabeza, char *(*str)(const void *p))
 {
     printf("COLA => { ");
 
@@ -104,7 +104,7 @@ void jxc_mostrar(jxc_Nodo *cabeza, char *(*func)(const void *p))
 
         do
         {
-            txt = func(p->dato);
+            txt = str(p->dato);
             printf("%s -> ", txt);
             free(txt);
             p = p->siguiente;
