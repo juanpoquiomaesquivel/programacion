@@ -1,35 +1,40 @@
 #ifndef _LSE_H_
 #define _LSE_H_
 
+#include <stdbool.h>
 #include "Libreria.h"
 
-typedef void *T;
-typedef int E;
-typedef struct nodo
+typedef struct jxls_nodo
 {
-    T dato;
-    struct nodo *siguiente;
-} Nodo;
+    void *dato;
+    struct jxls_nodo *siguiente;
+} jxls_Nodo;
 
-Nodo *nuevoNodo(T dato);
-void insertarAlInicio(Nodo **cabeza, T dato);
-void insertarAlFinal(Nodo **cabeza, T dato);
-void insertarAntesDe(Nodo **cabeza, T dato, T x);
-void insertarDespuesDe(Nodo **cabeza, T dato, T x);
-void reemplazarEn(Nodo *cabeza, T dato, T x);
-void eliminarElPrimero(Nodo **cabeza);
-void eliminarElUltimo(Nodo **cabeza);
-void eliminarAntesDe(Nodo **cabeza, T x);
-void eliminarDespuesDe(Nodo **cabeza, T x);
-void eliminarEn(Nodo **cabeza, T x);
-T obtenerElPrimero(Nodo *cabeza);
-T obtenerElUltimo(Nodo *cabeza);
-T obtenerAntesDe(Nodo *cabeza, T x);
-T obtenerDespuesDe(Nodo *cabeza, T x);
-T obtenerEn(Nodo *cabeza, int posicion);
-int buscar(Nodo *cabeza, T x);
-void borrar(Nodo **cabeza);
-void mostrar(Nodo *cabeza);
-bool estaVacia(Nodo *cabeza);
+typedef struct jxls_lse
+{
+    jxls_Nodo *cabeza;
+} jxls_LSE;
+
+jxls_Nodo *jxls_crearNodo(void *dato);
+void jxls_borrarNodo(jxls_Nodo *nodo, void (*del)(void *p));
+void jxls_insertarAlInicio(jxls_Nodo **cabeza, void *dato);
+void jxls_insertarAlFinal(jxls_Nodo **cabeza, void *dato);
+bool jxls_insertarAntesDe(jxls_Nodo **cabeza, void *dato, void *x, bool (*cmp)(const void *p, const void *q));
+bool jxls_insertarDespuesDe(jxls_Nodo **cabeza, void *dato, void *x, bool (*cmp)(const void *p, const void *q));
+bool jxls_reemplazarEn(jxls_Nodo *cabeza, void *dato, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q));
+bool jxls_eliminarElPrimero(jxls_Nodo **cabeza, void (*del)(void *p));
+bool jxls_eliminarElUltimo(jxls_Nodo **cabeza, void (*del)(void *p));
+bool jxls_eliminarAntesDe(jxls_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q));
+bool jxls_eliminarDespuesDe(jxls_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q));
+bool jxls_eliminarEn(jxls_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q));
+void *jxls_obtenerElPrimero(jxls_Nodo *cabeza);
+void *jxls_obtenerElUltimo(jxls_Nodo *cabeza);
+void *jxls_obtenerAntesDe(jxls_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q));
+void *jxls_obtenerDespuesDe(jxls_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q));
+void *jxls_obtenerEn(jxls_Nodo *cabeza, int posicion);
+int jxls_buscar(jxls_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q));
+bool jxls_borrar(jxls_Nodo **cabeza, void (*del)(void *p));
+void jxls_mostrar(jxls_Nodo *cabeza, char *(*str)(const void *p));
+bool jxls_estaVacia(jxls_Nodo *cabeza);
 
 #endif

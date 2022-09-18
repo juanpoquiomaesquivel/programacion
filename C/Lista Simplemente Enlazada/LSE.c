@@ -1,37 +1,44 @@
 #include "LSE.h"
 #include "Libreria.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
-Nodo *nuevoNodo(T dato)
+jxls_Nodo *jxls_crearNodo(void *dato)
 {
-    Nodo *nuevo = (Nodo *)malloc(sizeof(Nodo));
-    memory_error(nuevo);
+    jxls_Nodo *nuevo = (jxls_Nodo *)malloc(sizeof(jxls_Nodo));
+    errorDeMemoria(nuevo);
     nuevo->dato = dato;
     nuevo->siguiente = NULL;
 
     return nuevo;
 }
 
-void insertarAlInicio(Nodo **cabeza, T dato)
+void jxls_borrarNodo(jxls_Nodo *nodo, void (*del)(void *p))
 {
-    Nodo *nuevo = nuevoNodo(dato);
+    del(nodo->dato);
+    free(nodo);
+}
 
-    if (!estaVacia(*cabeza))
+void jxls_insertarAlInicio(jxls_Nodo **cabeza, void *dato)
+{
+    jxls_Nodo *nuevo = jxls_crearNodo(dato);
+
+    if (!jxls_estaVacia(*cabeza))
         nuevo->siguiente = *cabeza;
 
     *cabeza = nuevo;
 }
 
-void insertarAlFinal(Nodo **cabeza, T dato)
+void jxls_insertarAlFinal(jxls_Nodo **cabeza, void *dato)
 {
-    Nodo *nuevo = nuevoNodo(dato);
+    jxls_Nodo *nuevo = jxls_crearNodo(dato);
 
-    if (estaVacia(*cabeza))
+    if (jxls_estaVacia(*cabeza))
         *cabeza = nuevo;
     else
     {
-        Nodo *p = *cabeza;
+        jxls_Nodo *p = *cabeza;
 
         while (p->siguiente != NULL)
             p = p->siguiente;
@@ -40,87 +47,102 @@ void insertarAlFinal(Nodo **cabeza, T dato)
     }
 }
 
-void insertarAntesDe(Nodo **cabeza, T dato, T x)
+bool jxls_insertarAntesDe(jxls_Nodo **cabeza, void *dato, void *x, bool (*cmp)(const void *p, const void *q))
 {
-    if (!estaVacia(*cabeza))
+    if (!jxls_estaVacia(*cabeza))
     {
-        Nodo *p = *cabeza;
-        Nodo *_p = NULL;
+        jxls_Nodo *p = *cabeza;
+        jxls_Nodo *_p = NULL;
 
-        while (p->siguiente != NULL && *(E *)(p->dato) != *(E *)x)
+        while (p->siguiente != NULL && !cmp(p->dato, x))
         {
             _p = p;
             p = p->siguiente;
         }
 
-        if (*(E *)(p->dato) == *(E *)x)
+        if (cmp(p->dato, x))
         {
-            Nodo *nuevo = nuevoNodo(dato);
+            jxls_Nodo *nuevo = jxls_crearNodo(dato);
             nuevo->siguiente = p;
 
             if (p == *cabeza)
                 *cabeza = nuevo;
             else
                 _p->siguiente = nuevo;
+
+            return true;
         }
     }
+
+    return false;
 }
 
-void insertarDespuesDe(Nodo **cabeza, T dato, T x)
+bool jxls_insertarDespuesDe(jxls_Nodo **cabeza, void *dato, void *x, bool (*cmp)(const void *p, const void *q))
 {
-    if (!estaVacia(*cabeza))
+    if (!jxls_estaVacia(*cabeza))
     {
-        Nodo *p = *cabeza;
+        jxls_Nodo *p = *cabeza;
 
-        while (p->siguiente != NULL && *(E *)(p->dato) != *(E *)(x))
+        while (p->siguiente != NULL && !cmp(p->dato, x))
             p = p->siguiente;
 
-        if (*(E *)(p->dato) == *(E *)(x))
+        if (cmp(p->dato, x))
         {
-            Nodo *nuevo = nuevoNodo(dato);
+            jxls_Nodo *nuevo = jxls_crearNodo(dato);
 
             if (p->siguiente != NULL)
                 nuevo->siguiente = p->siguiente;
 
             p->siguiente = nuevo;
+
+            return true;
         }
     }
+
+    return false;
 }
 
-void reemplazarEn(Nodo *cabeza, T dato, T x)
+bool jxls_reemplazarEn(jxls_Nodo *cabeza, void *dato, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q))
 {
-    if (!estaVacia(cabeza))
+    if (!jxls_estaVacia(cabeza))
     {
-        Nodo *p = cabeza;
+        jxls_Nodo *p = cabeza;
 
-        while (p->siguiente != NULL && *(E *)(p->dato) != *(E *)(x))
+        while (p->siguiente != NULL && !cmp(p->dato, x))
             p = p->siguiente;
 
-        if (*(E *)(p->dato) == *(E *)(x))
+        if (cmp(p->dato, x))
         {
-            free(p->dato);
+            del(p->dato);
             p->dato = dato;
+
+            return true;
         }
     }
+
+    return false;
 }
 
-void eliminarElPrimero(Nodo **cabeza)
+bool jxls_eliminarElPrimero(jxls_Nodo **cabeza, void (*del)(void *p))
 {
-    if (!estaVacia(*cabeza))
+    if (!jxls_estaVacia(*cabeza))
     {
-        Nodo *p = *cabeza;
+        jxls_Nodo *p = *cabeza;
         *cabeza = (*cabeza)->siguiente;
-        free(p->dato);
-        free(p);
+        jxls_borrarNodo(p, del);
+
+        return true;
     }
+    else
+        return false;
 }
 
-void eliminarElUltimo(Nodo **cabeza)
+bool jxls_eliminarElUltimo(jxls_Nodo **cabeza, void (*del)(void *p))
 {
-    if (!estaVacia(*cabeza))
+    if (!jxls_estaVacia(*cabeza))
     {
-        Nodo *p = *cabeza;
-        Nodo *_p = NULL;
+        jxls_Nodo *p = *cabeza;
+        jxls_Nodo *_p = NULL;
 
         while (p->siguiente != NULL)
         {
@@ -133,27 +155,30 @@ void eliminarElUltimo(Nodo **cabeza)
         else
             _p->siguiente = NULL;
 
-        free(p->dato);
-        free(p);
+        jxls_borrarNodo(p, del);
+
+        return true;
     }
+    else
+        return false;
 }
 
-void eliminarAntesDe(Nodo **cabeza, T x)
+bool jxls_eliminarAntesDe(jxls_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q))
 {
-    if (!estaVacia(*cabeza))
+    if (!jxls_estaVacia(*cabeza))
     {
-        Nodo *p = *cabeza;
-        Nodo *_p = NULL;
-        Nodo *__p = NULL;
+        jxls_Nodo *p = *cabeza;
+        jxls_Nodo *_p = NULL;
+        jxls_Nodo *__p = NULL;
 
-        while (p->siguiente != NULL && *(E *)(p->dato) != *(E *)(x))
+        while (p->siguiente != NULL && !cmp(p->dato, x))
         {
             __p = _p;
             _p = p;
             p = p->siguiente;
         }
 
-        if (*(E *)(p->dato) == *(E *)(x))
+        if (cmp(p->dato, x))
             if (p != *cabeza)
             {
                 if (_p == *cabeza)
@@ -161,71 +186,80 @@ void eliminarAntesDe(Nodo **cabeza, T x)
                 else
                     __p->siguiente = p;
 
-                free(_p->dato);
-                free(_p);
+                jxls_borrarNodo(_p, del);
+
+                return true;
             }
     }
+
+    return false;
 }
 
-void eliminarDespuesDe(Nodo **cabeza, T x)
+bool jxls_eliminarDespuesDe(jxls_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q))
 {
-    if (!estaVacia(*cabeza))
+    if (!jxls_estaVacia(*cabeza))
     {
-        Nodo *p = *cabeza;
+        jxls_Nodo *p = *cabeza;
 
-        while (p->siguiente != NULL && *(E *)(p->dato) != *(E *)(x))
+        while (p->siguiente != NULL && !cmp(p->dato, x))
             p = p->siguiente;
 
-        if (*(E *)(p->dato) == *(E *)(x))
+        if (cmp(p->dato, x))
             if (p->siguiente != NULL)
             {
-                Nodo *p_ = p->siguiente;
+                jxls_Nodo *p_ = p->siguiente;
                 p->siguiente = p_->siguiente;
-                free(p_->dato);
-                free(p_);
+                jxls_borrarNodo(p_, del);
+
+                return true;
             }
     }
+
+    return false;
 }
 
-void eliminarEn(Nodo **cabeza, T x)
+bool jxls_eliminarEn(jxls_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q))
 {
-    if (!estaVacia(*cabeza))
+    if (!jxls_estaVacia(*cabeza))
     {
-        Nodo *p = *cabeza;
-        Nodo *_p = NULL;
+        jxls_Nodo *p = *cabeza;
+        jxls_Nodo *_p = NULL;
 
-        while (p->siguiente != NULL && *(E *)(p->dato) != *(E *)(x))
+        while (p->siguiente != NULL && !cmp(p->dato, x))
         {
             _p = p;
             p = p->siguiente;
         }
 
-        if (*(E *)(p->dato) == *(E *)(x))
+        if (cmp(p->dato, x))
         {
             if (p == *cabeza)
                 *cabeza = (*cabeza)->siguiente;
             else
                 _p->siguiente = p->siguiente;
 
-            free(p->dato);
-            free(p);
+            jxls_borrarNodo(p, del);
+
+            return true;
         }
     }
+
+    return false;
 }
 
-T obtenerElPrimero(Nodo *cabeza)
+void *jxls_obtenerElPrimero(jxls_Nodo *cabeza)
 {
-    if (!estaVacia(cabeza))
+    if (!jxls_estaVacia(cabeza))
         return cabeza->dato;
 
     return NULL;
 }
 
-T obtenerElUltimo(Nodo *cabeza)
+void *jxls_obtenerElUltimo(jxls_Nodo *cabeza)
 {
-    if (!estaVacia(cabeza))
+    if (!jxls_estaVacia(cabeza))
     {
-        Nodo *p = cabeza;
+        jxls_Nodo *p = cabeza;
 
         while (p->siguiente != NULL)
             p = p->siguiente;
@@ -236,20 +270,20 @@ T obtenerElUltimo(Nodo *cabeza)
     return NULL;
 }
 
-T obtenerAntesDe(Nodo *cabeza, T x)
+void *jxls_obtenerAntesDe(jxls_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q))
 {
-    if (!estaVacia(cabeza))
+    if (!jxls_estaVacia(cabeza))
     {
-        Nodo *p = cabeza;
-        Nodo *_p = NULL;
+        jxls_Nodo *p = cabeza;
+        jxls_Nodo *_p = NULL;
 
-        while (p->siguiente != NULL && *(E *)(p->dato) != *(E *)(x))
+        while (p->siguiente != NULL && !cmp(p->dato, x))
         {
             _p = p;
             p = p->siguiente;
         }
 
-        if (*(E *)(p->dato) == *(E *)(x))
+        if (cmp(p->dato, x))
             if (p != cabeza)
                 return _p->dato;
     }
@@ -257,16 +291,16 @@ T obtenerAntesDe(Nodo *cabeza, T x)
     return NULL;
 }
 
-T obtenerDespuesDe(Nodo *cabeza, T x)
+void *jxls_obtenerDespuesDe(jxls_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q))
 {
-    if (!estaVacia(cabeza))
+    if (!jxls_estaVacia(cabeza))
     {
-        Nodo *p = cabeza;
+        jxls_Nodo *p = cabeza;
 
-        while (p->siguiente != NULL && *(E *)(p->dato) != *(E *)(x))
+        while (p->siguiente != NULL && !cmp(p->dato, x))
             p = p->siguiente;
 
-        if (*(E *)(p->dato) == *(E *)(x))
+        if (cmp(p->dato, x))
             if (p->siguiente != NULL)
                 return p->siguiente->dato;
     }
@@ -274,11 +308,11 @@ T obtenerDespuesDe(Nodo *cabeza, T x)
     return NULL;
 }
 
-T obtenerEn(Nodo *cabeza, int posicion)
+void *jxls_obtenerEn(jxls_Nodo *cabeza, int posicion)
 {
-    if (!estaVacia(cabeza))
+    if (!jxls_estaVacia(cabeza))
     {
-        Nodo *p = cabeza;
+        jxls_Nodo *p = cabeza;
         int i = 0;
 
         while (p->siguiente != NULL && i != posicion)
@@ -294,53 +328,59 @@ T obtenerEn(Nodo *cabeza, int posicion)
     return NULL;
 }
 
-int buscar(Nodo *cabeza, T x)
+int jxls_buscar(jxls_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q))
 {
-    if (!estaVacia(cabeza))
+    if (!jxls_estaVacia(cabeza))
     {
-        Nodo *p = cabeza;
+        jxls_Nodo *p = cabeza;
         int i = 0;
 
-        while (p->siguiente != NULL && *(E *)(p->dato) != *(E *)(x))
+        while (p->siguiente != NULL && !cmp(p->dato, x))
         {
             p = p->siguiente;
             i++;
         }
 
-        if (*(E *)(p->dato) == *(E *)(x))
+        if (cmp(p->dato, x))
             return i;
     }
 
     return -1;
 }
 
-void borrar(Nodo **cabeza)
+bool jxls_borrar(jxls_Nodo **cabeza, void (*del)(void *p))
 {
-    if (!estaVacia(*cabeza))
+    if (!jxls_estaVacia(*cabeza))
     {
-        Nodo *p;
+        jxls_Nodo *p;
 
         do
         {
             p = *cabeza;
             *cabeza = (*cabeza)->siguiente;
-            free(p->dato);
-            free(p);
+            jxls_borrarNodo(p, del);
         } while (*cabeza != NULL);
+
+        return true;
     }
+    else
+        return false;
 }
 
-void mostrar(Nodo *cabeza)
+void jxls_mostrar(jxls_Nodo *cabeza, char *(*str)(const void *p))
 {
     printf("LSE => { ");
 
-    if (!estaVacia(cabeza))
+    if (!jxls_estaVacia(cabeza))
     {
-        Nodo *p = cabeza;
+        jxls_Nodo *p = cabeza;
+        char *txt;
 
         do
         {
-            printf("%d -> ", *(E *)(p->dato));
+            txt = str(p->dato);
+            printf("%s -> ", txt);
+            free(txt);
             p = p->siguiente;
         } while (p != NULL);
     }
@@ -348,7 +388,7 @@ void mostrar(Nodo *cabeza)
     puts(" }");
 }
 
-bool estaVacia(Nodo *cabeza)
+bool jxls_estaVacia(jxls_Nodo *cabeza)
 {
     return cabeza == NULL;
 }
