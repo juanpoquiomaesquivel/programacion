@@ -74,7 +74,7 @@ void menu()
             printf("[%d] : %s\n", i, lista[i]);
 
         puts("");
-        opcion = leerEntrada("%hd", "Ingrese una opcion");
+        opcion = (short int *)leerEntrada("%hd", "Ingrese una opcion");
 
         switch (*opcion)
         {
