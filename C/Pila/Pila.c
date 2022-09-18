@@ -30,13 +30,13 @@ void jxp_empilar(jxp_Nodo **tope, void *dato)
     *tope = nuevo;
 }
 
-bool jxp_depilar(jxp_Nodo **tope, void (*func)(void *p))
+bool jxp_depilar(jxp_Nodo **tope, void (*del)(void *p))
 {
     if (!jxp_estaVacia(*tope))
     {
         jxp_Nodo *p = *tope;
         *tope = (*tope)->abajo;
-        jxp_borrarNodo(p, func);
+        jxp_borrarNodo(p, del);
 
         return true;
     }
@@ -52,7 +52,7 @@ void *jxp_cima(jxp_Nodo *tope)
         return NULL;
 }
 
-bool jxp_borrar(jxp_Nodo **tope, void (*func)(void *p))
+bool jxp_borrar(jxp_Nodo **tope, void (*del)(void *p))
 {
     if (!jxp_estaVacia(*tope))
     {
@@ -62,7 +62,7 @@ bool jxp_borrar(jxp_Nodo **tope, void (*func)(void *p))
         {
             p = *tope;
             *tope = (*tope)->abajo;
-            jxp_borrarNodo(p, func);
+            jxp_borrarNodo(p, del);
         } while (*tope != NULL);
 
         return true;
@@ -71,7 +71,7 @@ bool jxp_borrar(jxp_Nodo **tope, void (*func)(void *p))
     return false;
 }
 
-void jxp_mostrar(jxp_Nodo *tope, char *(*func)(const void *p))
+void jxp_mostrar(jxp_Nodo *tope, char *(*str)(const void *p))
 {
     printf("PILA => { ");
 
@@ -82,7 +82,7 @@ void jxp_mostrar(jxp_Nodo *tope, char *(*func)(const void *p))
 
         do
         {
-            txt = func(p->dato);
+            txt = str(p->dato);
             printf("%s -> ", txt);
             free(txt);
             p = p->abajo;

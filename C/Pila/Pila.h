@@ -16,12 +16,12 @@ typedef struct jxp_pila
 } jxp_Pila;
 
 jxp_Nodo *jxp_crearNodo(void *dato);
-void jxp_borrarNodo(jxp_Nodo *nodo, void (*func)(void *p));
+void jxp_borrarNodo(jxp_Nodo *nodo, void (*del)(void *p));
 void jxp_empilar(jxp_Nodo **tope, void *dato);
-bool jxp_depilar(jxp_Nodo **tope, void (*func)(void *p));
+bool jxp_depilar(jxp_Nodo **tope, void (*del)(void *p));
 void *jxp_cima(jxp_Nodo *tope);
-bool jxp_borrar(jxp_Nodo **tope, void (*func)(void *p));
-void jxp_mostrar(jxp_Nodo *tope, char *(*func)(const void *p));
+bool jxp_borrar(jxp_Nodo **tope, void (*del)(void *p));
+void jxp_mostrar(jxp_Nodo *tope, char *(*str)(const void *p));
 bool jxp_estaVacia(jxp_Nodo *tope);
 
 #endif
