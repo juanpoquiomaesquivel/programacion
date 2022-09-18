@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "Entrada.h"
 #include "Libreria.h"
+#include "Persona.h"
 #include "Pila.h"
 
 enum
@@ -36,7 +37,7 @@ void menu()
     const size_t n = sizeof(lista) / sizeof(lista[0]);
     short int *opcion = NULL;
     jxp_Pila pila = {.tope = NULL};
-    T dato = NULL;
+    void *dato = NULL;
 
     while (true)
     {
@@ -47,34 +48,34 @@ void menu()
             printf("[%d] : %s\n", i, lista[i]);
 
         puts("");
-        opcion = leerEntrada("%hd");
+        opcion = (short int *)leerEntrada("%hd", "Ingrese una opcion");
 
         switch (*opcion)
         {
         case SALIR:
-            jxp_borrar(&pila.tope);
+            jxp_borrar(&pila.tope, borrarPersona);
             free(opcion);
             puts(MS_PROGRAMA_FINALIZADO);
 
             return;
         case EMPILAR:
-            dato = leerEntrada("%d");
+            dato = crearPersona();
             jxp_empilar(&pila.tope, dato);
             dato = NULL;
             break;
         case DEPILAR:
-            printf("%s\n", jxp_depilar(&pila.tope) ? "true" : "false");
+            printf("%s\n", jxp_depilar(&pila.tope, borrarPersona) ? "true" : "false");
             break;
         case CIMA:
             dato = jxp_cima(pila.tope);
-            (dato != NULL) ? printf("%d\n", *(E *)dato) : puts("NULL");
+            (dato != NULL) ? printf("%s\n", mostrarPersona(dato)) : puts("NULL");
             dato = NULL;
             break;
         case BORRAR:
-            printf("%s\n", (jxp_borrar(&pila.tope) ? "true" : "false"));
+            printf("%s\n", (jxp_borrar(&pila.tope, borrarPersona) ? "true" : "false"));
             break;
         case MOSTRAR:
-            jxp_mostrar(pila.tope);
+            jxp_mostrar(pila.tope, mostrarPersona);
             break;
         default:
             puts(MS_OPCION_INCORRECTA);

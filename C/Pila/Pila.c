@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-jxp_Nodo *jxp_crearNodo(T dato)
+jxp_Nodo *jxp_crearNodo(void *dato)
 {
     jxp_Nodo *nuevo = (jxp_Nodo *)malloc(sizeof(jxp_Nodo));
     errorDeMemoria(nuevo);
@@ -14,7 +14,13 @@ jxp_Nodo *jxp_crearNodo(T dato)
     return nuevo;
 }
 
-void jxp_empilar(jxp_Nodo **tope, T dato)
+void jxp_borrarNodo(jxp_Nodo *nodo, void (*func)(void *p))
+{
+    func(nodo->dato);
+    free(nodo);
+}
+
+void jxp_empilar(jxp_Nodo **tope, void *dato)
 {
     jxp_Nodo *nuevo = jxp_crearNodo(dato);
 
@@ -24,22 +30,21 @@ void jxp_empilar(jxp_Nodo **tope, T dato)
     *tope = nuevo;
 }
 
-bool jxp_depilar(jxp_Nodo **tope)
+bool jxp_depilar(jxp_Nodo **tope, void (*func)(void *p))
 {
     if (!jxp_estaVacia(*tope))
     {
         jxp_Nodo *p = *tope;
         *tope = (*tope)->abajo;
-        free(p->dato);
-        free(p);
+        jxp_borrarNodo(p, func);
 
         return true;
     }
-    
+
     return false;
 }
 
-T jxp_cima(jxp_Nodo *tope)
+void *jxp_cima(jxp_Nodo *tope)
 {
     if (!jxp_estaVacia(tope))
         return tope->dato;
@@ -47,7 +52,7 @@ T jxp_cima(jxp_Nodo *tope)
         return NULL;
 }
 
-bool jxp_borrar(jxp_Nodo **tope)
+bool jxp_borrar(jxp_Nodo **tope, void (*func)(void *p))
 {
     if (!jxp_estaVacia(*tope))
     {
@@ -57,8 +62,7 @@ bool jxp_borrar(jxp_Nodo **tope)
         {
             p = *tope;
             *tope = (*tope)->abajo;
-            free(p->dato);
-            free(p);
+            jxp_borrarNodo(p, func);
         } while (*tope != NULL);
 
         return true;
@@ -67,17 +71,20 @@ bool jxp_borrar(jxp_Nodo **tope)
     return false;
 }
 
-void jxp_mostrar(jxp_Nodo *tope)
+void jxp_mostrar(jxp_Nodo *tope, char *(*func)(const void *p))
 {
     printf("PILA => { ");
 
     if (!jxp_estaVacia(tope))
     {
         jxp_Nodo *p = tope;
+        char *txt;
 
         do
         {
-            printf("%d -> ", *(E *)(p->dato));
+            txt = func(p->dato);
+            printf("%s -> ", txt);
+            free(txt);
             p = p->abajo;
         } while (p != NULL);
     }

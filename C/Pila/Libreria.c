@@ -5,7 +5,7 @@
 #ifdef ERROR_DE_MEMORIA
 #ifndef FUNCION_ERROR_DE_MEMORIA
 #define FUNCION_ERROR_DE_MEMORIA
-void errorDeMemoria(T ptr)
+void errorDeMemoria(void *ptr)
 {
     if (ptr == NULL)
     {
