@@ -1,35 +1,40 @@
 #ifndef _LCSE_H_
 #define _LCSE_H_
 
+#include <stdbool.h>
 #include "Libreria.h"
 
-typedef void *T;
-typedef int E;
-typedef struct nodo
+typedef struct jxlcs_nodo
 {
-    T dato;
-    struct nodo *siguiente;
-} Nodo;
+    void *dato;
+    struct jxlcs_nodo *siguiente;
+} jxlcs_Nodo;
 
-Nodo *nuevoNodo(T dato);
-void insertarAlInicio(Nodo **cabeza, T dato);
-void insertarAlFinal(Nodo **cabeza, T dato);
-void insertarAntesDe(Nodo **cabeza, T dato, T x);
-void insertarDespuesDe(Nodo **cabeza, T dato, T x);
-void reemplazarEn(Nodo *cabeza, T dato, T x);
-void eliminarElPrimero(Nodo **cabeza);
-void eliminarElUltimo(Nodo **cabeza);
-void eliminarAntesDe(Nodo **cabeza, T x);
-void eliminarDespuesDe(Nodo **cabeza, T x);
-void eliminarEn(Nodo **cabeza, T x);
-T obtenerElPrimero(Nodo *cabeza);
-T obtenerElUltimo(Nodo *cabeza);
-T obtenerAntesDe(Nodo *cabeza, T x);
-T obtenerDespuesDe(Nodo *cabeza, T x);
-T obtenerEn(Nodo *cabeza, int posicion);
-int buscar(Nodo *cabeza, T x);
-void borrar(Nodo **cabeza);
-void mostrar(Nodo *cabeza);
-bool estaVacia(Nodo *cabeza);
+typedef struct jxlcs_lcse
+{
+    jxlcs_Nodo *cabeza;
+} jxlcs_LCSE;
+
+jxlcs_Nodo *jxlcs_crearNodo(void *dato);
+void jxlcs_borrarNodo(jxlcs_Nodo *nodo, void (*del)(void *p));
+void jxlcs_insertarAlInicio(jxlcs_Nodo **cabeza, void *dato);
+void jxlcs_insertarAlFinal(jxlcs_Nodo **cabeza, void *dato);
+bool jxlcs_insertarAntesDe(jxlcs_Nodo **cabeza, void *dato, void *x, bool (*cmp)(const void *p, const void *q));
+bool jxlcs_insertarDespuesDe(jxlcs_Nodo **cabeza, void *dato, void *x, bool (*cmp)(const void *p, const void *q));
+bool jxlcs_reemplazarEn(jxlcs_Nodo *cabeza, void *dato, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q));
+bool jxlcs_eliminarElPrimero(jxlcs_Nodo **cabeza, void (*del)(void *p));
+bool jxlcs_eliminarElUltimo(jxlcs_Nodo **cabeza, void (*del)(void *p));
+bool jxlcs_eliminarAntesDe(jxlcs_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q));
+bool jxlcs_eliminarDespuesDe(jxlcs_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q));
+bool jxlcs_eliminarEn(jxlcs_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q));
+void *jxlcs_obtenerElPrimero(jxlcs_Nodo *cabeza);
+void *jxlcs_obtenerElUltimo(jxlcs_Nodo *cabeza);
+void *jxlcs_obtenerAntesDe(jxlcs_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q));
+void *jxlcs_obtenerDespuesDe(jxlcs_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q));
+void *jxlcs_obtenerEn(jxlcs_Nodo *cabeza, int posicion);
+int jxlcs_buscar(jxlcs_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q));
+bool jxlcs_borrar(jxlcs_Nodo **cabeza, void (*del)(void *p));
+void jxlcs_mostrar(jxlcs_Nodo *cabeza, char *(*str)(const void *p));
+bool jxlcs_estaVacia(jxlcs_Nodo *cabeza);
 
 #endif
