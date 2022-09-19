@@ -3,6 +3,7 @@
 #include "Entrada.h"
 #include "LDE.h"
 #include "Libreria.h"
+#include "Persona.h"
 
 enum
 {
@@ -58,10 +59,10 @@ int main(int argc, char const *argv[])
 
 void menu()
 {
-    const unsigned int n = sizeof(lista) / sizeof(lista[0]);
+    const size_t n = sizeof(lista) / sizeof(lista[0]);
     short int *opcion = NULL;
-    Nodo *lde = NULL;
-    E *dato = NULL, *x = NULL;
+    jxld_LDE lde = {.cabeza = NULL};
+    void *dato = NULL, *x = NULL;
     int *posicion = NULL;
 
     while (true)
@@ -73,128 +74,127 @@ void menu()
             printf("[%d] : %s\n", i, lista[i]);
 
         puts("");
-        opcion = lectura("%hd");
+        opcion = (short int *)leerEntrada("%hd", "Ingrese una opcion");
 
         switch (*opcion)
         {
         case SALIR:
-            borrar(&lde);
+            jxld_borrar(&lde.cabeza, borrarPersona);
             free(opcion);
-            puts(EXIT_OPTION);
+            puts(MS_PROGRAMA_FINALIZADO);
 
             return;
         case INSERTAR_AL_INICIO:
-            dato = lectura("%d");
-            insertarAlInicio(&lde, dato);
+            dato = crearPersona();
+            jxld_insertarAlInicio(&lde.cabeza, dato);
             dato = NULL;
             break;
         case INSERTAR_AL_FINAL:
-            dato = lectura("%d");
-            insertarAlFinal(&lde, dato);
+            dato = crearPersona();
+            jxld_insertarAlFinal(&lde.cabeza, dato);
             dato = NULL;
             break;
         case INSERTAR_ANTES_DE:
-            dato = lectura("%d");
-            x = lectura("%d");
-            insertarAntesDe(&lde, dato, x);
+            dato = crearPersona();
+            x = crearPersona();
+            printf("%s\n", (jxld_insertarAntesDe(&lde.cabeza, dato, x, compararPersona) ? "true" : "false"));
             dato = NULL;
-            free(x);
+            borrarPersona(x);
             x = NULL;
             break;
         case INSERTAR_DESPUES_DE:
-            dato = lectura("%d");
-            x = lectura("%d");
-            insertarDespuesDe(&lde, dato, x);
+            dato = crearPersona();
+            x = crearPersona();
+            printf("%s\n", (jxld_insertarDespuesDe(&lde.cabeza, dato, x, compararPersona) ? "true" : "false"));
             dato = NULL;
-            free(x);
+            borrarPersona(x);
             x = NULL;
             break;
         case REEMPLAZAR_EN:
-            dato = lectura("%d");
-            x = lectura("%d");
-            reemplazarEn(lde, dato, x);
+            dato = crearPersona();
+            x = crearPersona();
+            printf("%s\n", (jxld_reemplazarEn(lde.cabeza, dato, x, borrarPersona, compararPersona) ? "true" : "false"));
             dato = NULL;
-            free(x);
+            borrarPersona(x);
             x = NULL;
             break;
         case ELIMINAR_EL_PRIMERO:
-            eliminarElPrimero(&lde);
+            printf("%s\n", (jxld_eliminarElPrimero(&lde.cabeza, borrarPersona) ? "true" : "false"));
             break;
         case ELIMINAR_EL_ULTIMO:
-            eliminarElUltimo(&lde);
+            printf("%s\n", (jxld_eliminarElUltimo(&lde.cabeza, borrarPersona) ? "true" : "false"));
             break;
         case ELIMINAR_ANTES_DE:
-            x = lectura("%d");
-            eliminarAntesDe(&lde, x);
-            free(x);
+            x = crearPersona();
+            printf("%s\n", (jxld_eliminarAntesDe(&lde.cabeza, x, borrarPersona, compararPersona) ? "true" : "false"));
+            borrarPersona(x);
             x = NULL;
             break;
         case ELIMINAR_DESPUES_DE:
-            x = lectura("%d");
-            eliminarDespuesDe(&lde, x);
-            free(x);
+            x = crearPersona();
+            printf("%s\n", (jxld_eliminarDespuesDe(&lde.cabeza, x, borrarPersona, compararPersona) ? "true" : "false"));
+            borrarPersona(x);
             x = NULL;
             break;
         case ELIMINAR_EN:
-            x = lectura("%d");
-            eliminarEn(&lde, x);
-            free(x);
+            x = crearPersona();
+            printf("%s\n", (jxld_eliminarEn(&lde.cabeza, x, borrarPersona, compararPersona) ? "true" : "false"));
+            borrarPersona(x);
             x = NULL;
             break;
         case OBTENER_EL_PRIMERO:
-            if (obtenerElPrimero(lde) != NULL)
-                printf("%d\n", *(E *)(obtenerElPrimero(lde)));
+            dato = jxld_obtenerElPrimero(lde.cabeza);
+            (dato != NULL) ? printf("%s\n", mostrarPersona(dato)) : puts("NULL");
+            dato = NULL;
             break;
         case OBTENER_EL_ULTIMO:
-            if (obtenerElUltimo(lde) != NULL)
-                printf("%d\n", *(E *)(obtenerElUltimo(lde)));
+            dato = jxld_obtenerElUltimo(lde.cabeza);
+            (dato != NULL) ? printf("%s\n", mostrarPersona(dato)) : puts("NULL");
+            dato = NULL;
             break;
         case OBTENER_ANTES_DE:
-            x = lectura("%d");
-
-            if (obtenerAntesDe(lde, x) != NULL)
-                printf("%d\n", *(E *)(obtenerAntesDe(lde, x)));
-
-            free(x);
+            x = crearPersona();
+            dato = jxld_obtenerAntesDe(lde.cabeza, x, compararPersona);
+            (dato != NULL) ? printf("%s\n", mostrarPersona(dato)) : puts("NULL");
+            dato = NULL;
+            borrarPersona(x);
             x = NULL;
             break;
         case OBTENER_DESPUES_DE:
-            x = lectura("%d");
-
-            if (obtenerDespuesDe(lde, x) != NULL)
-                printf("%d\n", *(E *)(obtenerDespuesDe(lde, x)));
-
-            free(x);
+            x = crearPersona();
+            dato = jxld_obtenerDespuesDe(lde.cabeza, x, compararPersona);
+            (dato != NULL) ? printf("%s\n", mostrarPersona(dato)) : puts("NULL");
+            dato = NULL;
+            borrarPersona(x);
             x = NULL;
             break;
         case OBTENER_EN:
-            posicion = lectura("%d");
-
-            if (obtenerEn(lde, *posicion) != NULL)
-                printf("%d\n", *(E *)(obtenerEn(lde, *posicion)));
-
+            posicion = leerEntrada("%d", "Ingrese una posicion");
+            dato = jxld_obtenerEn(lde.cabeza, *posicion);
+            (dato != NULL) ? printf("%s\n", mostrarPersona(dato)) : puts("NULL");
+            dato = NULL;
             free(posicion);
             posicion = NULL;
             break;
         case BUSCAR:
-            x = lectura("%d");
-            printf("%d\n", buscar(lde, x));
-            free(x);
+            x = crearPersona();
+            printf("%d\n", jxld_buscar(lde.cabeza, x, compararPersona));
+            borrarPersona(x);
             x = NULL;
             break;
         case BORRAR:
-            borrar(&lde);
+            printf("%s\n", (jxld_borrar(&lde.cabeza, borrarPersona) ? "true" : "false"));
             break;
         case MOSTRAR:
-            mostrar(lde);
+            jxld_mostrar(lde.cabeza, mostrarPersona);
             break;
         default:
-            puts(NO_OPTION);
+            puts(MS_OPCION_INCORRECTA);
         }
 
         free(opcion);
         opcion = NULL;
-        puts(CONTINUE_OPTION);
-        flush_buffer();
+        puts(MS_OPCION_CONTINUAR);
+        limpiarBuffer();
     }
 }

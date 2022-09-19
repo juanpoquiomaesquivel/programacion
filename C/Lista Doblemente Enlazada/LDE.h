@@ -1,36 +1,41 @@
 #ifndef _LDE_H_
 #define _LDE_H_
 
+#include <stdbool.h>
 #include "Libreria.h"
 
-typedef void *T;
-typedef int E;
-typedef struct nodo
+typedef struct jxld_nodo
 {
-    T dato;
-    struct nodo *anterior;
-    struct nodo *siguiente;
-} Nodo;
+    void *dato;
+    struct jxld_nodo *anterior;
+    struct jxld_nodo *siguiente;
+} jxld_Nodo;
 
-Nodo *nuevoNodo(T dato);
-void insertarAlInicio(Nodo **cabeza, T dato);
-void insertarAlFinal(Nodo **cabeza, T dato);
-void insertarAntesDe(Nodo **cabeza, T dato, T x);
-void insertarDespuesDe(Nodo **cabeza, T dato, T x);
-void reemplazarEn(Nodo *cabeza, T dato, T x);
-void eliminarElPrimero(Nodo **cabeza);
-void eliminarElUltimo(Nodo **cabeza);
-void eliminarAntesDe(Nodo **cabeza, T x);
-void eliminarDespuesDe(Nodo **cabeza, T x);
-void eliminarEn(Nodo **cabeza, T x);
-T obtenerElPrimero(Nodo *cabeza);
-T obtenerElUltimo(Nodo *cabeza);
-T obtenerAntesDe(Nodo *cabeza, T x);
-T obtenerDespuesDe(Nodo *cabeza, T x);
-T obtenerEn(Nodo *cabeza, int posicion);
-int buscar(Nodo *cabeza, T x);
-void borrar(Nodo **cabeza);
-void mostrar(Nodo *cabeza);
-bool estaVacia(Nodo *cabeza);
+typedef struct jxld_lde
+{
+    jxld_Nodo *cabeza;
+} jxld_LDE;
+
+jxld_Nodo *jxld_crearNodo(void *dato);
+void jxld_borrarNodo(jxld_Nodo *nodo, void (*del)(void *p));
+void jxld_insertarAlInicio(jxld_Nodo **cabeza, void *dato);
+void jxld_insertarAlFinal(jxld_Nodo **cabeza, void *dato);
+bool jxld_insertarAntesDe(jxld_Nodo **cabeza, void *dato, void *x, bool (*cmp)(const void *p, const void *q));
+bool jxld_insertarDespuesDe(jxld_Nodo **cabeza, void *dato, void *x, bool (*cmp)(const void *p, const void *q));
+bool jxld_reemplazarEn(jxld_Nodo *cabeza, void *dato, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q));
+bool jxld_eliminarElPrimero(jxld_Nodo **cabeza, void (*del)(void *p));
+bool jxld_eliminarElUltimo(jxld_Nodo **cabeza, void (*del)(void *p));
+bool jxld_eliminarAntesDe(jxld_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q));
+bool jxld_eliminarDespuesDe(jxld_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q));
+bool jxld_eliminarEn(jxld_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q));
+void *jxld_obtenerElPrimero(jxld_Nodo *cabeza);
+void *jxld_obtenerElUltimo(jxld_Nodo *cabeza);
+void *jxld_obtenerAntesDe(jxld_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q));
+void *jxld_obtenerDespuesDe(jxld_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q));
+void *jxld_obtenerEn(jxld_Nodo *cabeza, int posicion);
+int jxld_buscar(jxld_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q));
+bool jxld_borrar(jxld_Nodo **cabeza, void (*del)(void *p));
+void jxld_mostrar(jxld_Nodo *cabeza, char *(*str)(const void *p));
+bool jxld_estaVacia(jxld_Nodo *cabeza);
 
 #endif
