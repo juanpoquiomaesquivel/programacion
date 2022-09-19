@@ -10,11 +10,11 @@ Persona *crearPersona()
 {
     Persona *persona = (Persona *)malloc(sizeof(Persona));
     errorDeMemoria(persona);
-    persona->nombres = leerEntrada("%s", "Ingrese un nombre");
-    persona->apellidoPaterno = leerEntrada("%s", "Ingrese un apellido paterno");
-    persona->apellidoMaterno = leerEntrada("%s", "Ingrese un apellido materno");
-    persona->edad = leerEntrada("%d", "Ingrese una edad");
-    persona->dni = leerEntrada("%s", "Ingrese un dni");
+    persona->nombres = (char *)leerEntrada("%s", "Ingrese un nombre");
+    persona->apellidoPaterno = (char *)leerEntrada("%s", "Ingrese un apellido paterno");
+    persona->apellidoMaterno = (char *)leerEntrada("%s", "Ingrese un apellido materno");
+    persona->edad = (int *)leerEntrada("%d", "Ingrese una edad");
+    persona->dni = (char *)leerEntrada("%s", "Ingrese un dni");
 
     return persona;
 }
@@ -27,6 +27,7 @@ void borrarPersona(void *p)
     free(persona->apellidoMaterno);
     free(persona->edad);
     free(persona->dni);
+    free(persona);
 }
 
 bool compararPersona(const void *p, const void *q)
