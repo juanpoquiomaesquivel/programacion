@@ -1,5 +1,6 @@
 #include "LCSE.h"
 #include "Libreria.h"
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -483,7 +484,11 @@ bool jxlcs_borrar(jxlcs_Nodo **cabeza, void (*del)(void *p))
             *cabeza = (*cabeza)->siguiente;
             jxlcs_borrarNodo(p, del);
         } while (*cabeza != NULL);
+
+        return true;
     }
+    else
+        return false;
 }
 
 void jxlcs_mostrar(jxlcs_Nodo *cabeza, char *(*str)(const void *p))
