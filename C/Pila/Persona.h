@@ -15,6 +15,7 @@ typedef struct persona
 Persona *crearPersona();
 void borrarPersona(void *p);
 bool compararPersona(const void *p, const void *q);
+int ordenarPersona(const void *p, const void *q);
 char *mostrarPersona(const void *p);
 
 #endif

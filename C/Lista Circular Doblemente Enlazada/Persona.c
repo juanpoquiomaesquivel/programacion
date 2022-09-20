@@ -41,6 +41,14 @@ bool compararPersona(const void *p, const void *q)
         return false;
 }
 
+int ordenarPersona(const void *p, const void *q)
+{
+    Persona *p1 = (Persona *)p;
+    Persona *p2 = (Persona *)q;
+
+    return *(p1->edad) - *(p2->edad);
+}
+
 char *mostrarPersona(const void *p)
 {
     char buffer[LONGITUD_DE_ENTRADA_STRING];
