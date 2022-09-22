@@ -1,11 +1,17 @@
 #ifndef _ARREGLO_H_
 #define _ARREGLO_H_
 
-int *crearVector(const unsigned int n);
-void liberarVector(int **vector);
-void mostrarVector(int *vector, const unsigned int n);
-int **crearMatriz(const unsigned int filas, const unsigned int columnas);
-void liberarMatriz(int ***matriz, const unsigned int filas);
-void mostrarMatriz(int **matriz, const unsigned int filas, const unsigned int columnas);
+typedef struct jxv_nodo
+{
+    void *dato;
+    struct jxv_nodo *siguiente;
+} jxv_Nodo;
+
+typedef struct jxv_vector
+{
+    jxv_Nodo *cabeza;
+} jxv_Vector;
+
+jxv_Nodo *jxv_crearNodo(void *dato);
 
 #endif

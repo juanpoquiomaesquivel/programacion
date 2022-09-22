@@ -4,31 +4,34 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifdef LECTURA
-#ifndef FUNCTION_LECTURA
-#define FUNCTION_LECTURA
-void *lectura(const char *formato)
+#ifdef LEER_ENTRADA
+#ifndef FUNCION_LEER_ENTRADA
+#define FUNCION_LEER_ENTRADA
+void *leerEntrada(const char *formato, const char *mensaje)
 {
     void *ptr;
+
+    if (mensaje != NULL)
+        puts(mensaje);
 
     if (strcmp(formato, "%s"))
     {
         if (!strcmp(formato, "%d"))
-            ptr = (int *)malloc(sizeof(int));
+            ptr = malloc(sizeof(int));
         else if (!strcmp(formato, "%hd"))
-            ptr = (short int *)malloc(sizeof(short int));
+            ptr = malloc(sizeof(short int));
         else if (!strcmp(formato, "%ld"))
-            ptr = (long int *)malloc(sizeof(long int));
+            ptr = malloc(sizeof(long int));
         else if (!strcmp(formato, "%f"))
-            ptr = (float *)malloc(sizeof(float));
+            ptr = malloc(sizeof(float));
         else if (!strcmp(formato, "%lf"))
-            ptr = (double *)malloc(sizeof(double));
+            ptr = malloc(sizeof(double));
         else if (!strcmp(formato, "%Lf"))
-            ptr = (long double *)malloc(sizeof(long double));
+            ptr = malloc(sizeof(long double));
         else if (!strcmp(formato, "%c"))
-            ptr = (char *)malloc(sizeof(char));
+            ptr = malloc(sizeof(char));
 
-        memory_error(ptr);
+        errorDeMemoria(ptr);
         int x = -1;
 
         do
@@ -38,50 +41,47 @@ void *lectura(const char *formato)
             if (!strcmp(formato, "%d"))
             {
                 if (!(x = scanf(formato, (int *)ptr)))
-                    puts("[SISTEMA] :- <Ingrese valor 'int'>");
+                    puts(MS_INGRESE_INT);
             }
             else if (!strcmp(formato, "%hd"))
             {
                 if (!(x = scanf(formato, (short int *)ptr)))
-                    puts("[SISTEMA] :- <Ingrese valor 'short int'>");
+                    puts(MS_INGRESE_SHORT_INT);
             }
             else if (!strcmp(formato, "%ld"))
             {
                 if (!(x = scanf(formato, (long int *)ptr)))
-                    puts("[SISTEMA] :- <Ingrese valor 'long int'>");
+                    puts(MS_INGRESE_LONG_INT);
             }
             else if (!strcmp(formato, "%f"))
             {
                 if (!(x = scanf(formato, (float *)ptr)))
-                    puts("[SISTEMA] :- <Ingrese valor 'float'>");
+                    puts(MS_INGRESE_FLOAT);
             }
             else if (!strcmp(formato, "%lf"))
             {
                 if (!(x = scanf(formato, (double *)ptr)))
-                    puts("[SISTEMA] :- <Ingrese valor 'double'>");
+                    puts(MS_INGRESE_DOUBLE);
             }
             else if (!strcmp(formato, "%Lf"))
             {
                 if (!(x = scanf(formato, (long double *)ptr)))
-                    puts("[SISTEMA] :- <Ingrese valor 'long double'>");
+                    puts(MS_INGRESE_LONG_DOUBLE);
             }
             else if (!strcmp(formato, "%c"))
-            {
-                if (!(x = scanf(formato, (char *)ptr)))
-                    puts("[SISTEMA] :- <Ingrese valor 'char'>");
-            }
+                x = scanf(formato, (char *)ptr);
 
-            flush_buffer();
+            limpiarBuffer();
         } while (!x);
     }
     else
     {
         printf(">> ");
-        char buffer[LEN_STR_INPUT];
-        fgets(buffer, LEN_STR_INPUT, stdin);
+        char buffer[LONGITUD_DE_ENTRADA_STRING];
+        fgets(buffer, LONGITUD_DE_ENTRADA_STRING, stdin);
         buffer[strcspn(buffer, "\n")] = '\0';
         ptr = strdup(buffer);
-        memory_error(ptr);
+        errorDeMemoria(ptr);
     }
 
     return ptr;
