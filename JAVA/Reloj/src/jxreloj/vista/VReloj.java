@@ -166,8 +166,8 @@ public class VReloj extends JFrame {
                     g2.setPaint(new Color(0, 0, 0)); // Color de las etiquetas
 
                     for (var i = 0; i < etiquetas.length; i++) {
-                        var loc = generarStringCentrado(g2, etiquetas[i], new Rectangle(dimension), fuente);
-                        g2.drawString(etiquetas[i], loc.x + fluctuaciones[i][0], loc.y + fluctuaciones[i][1]);
+                        var posicion = generarStringCentrado(g2, etiquetas[i], new Rectangle(dimension), fuente);
+                        g2.drawString(etiquetas[i], posicion.x + fluctuaciones[i][0], posicion.y + fluctuaciones[i][1]);
                     }
                 }
             };
