@@ -36,7 +36,7 @@ void menu()
 {
     const size_t n = sizeof(lista) / sizeof(lista[0]);
     short int *opcion = NULL;
-    jxp_Pila pila = {.tope = NULL};
+    jxp_Pila pila = {.del = borrarPersona, .str = mostrarPersona, .tope = NULL};
     void *dato = NULL;
 
     while (true)
@@ -53,29 +53,29 @@ void menu()
         switch (*opcion)
         {
         case SALIR:
-            jxp_borrar(&pila.tope, borrarPersona);
+            jxp_borrar(&pila);
             free(opcion);
             puts(MS_PROGRAMA_FINALIZADO);
 
             return;
         case EMPILAR:
             dato = crearPersona();
-            jxp_empilar(&pila.tope, dato);
+            jxp_empilar(&pila, dato);
             dato = NULL;
             break;
         case DEPILAR:
-            printf("%s\n", jxp_depilar(&pila.tope, borrarPersona) ? "true" : "false");
+            printf("%s\n", jxp_depilar(&pila) ? "true" : "false");
             break;
         case CIMA:
-            dato = jxp_cima(pila.tope);
+            dato = jxp_cima(&pila);
             (dato != NULL) ? printf("%s\n", mostrarPersona(dato)) : puts("NULL");
             dato = NULL;
             break;
         case BORRAR:
-            printf("%s\n", (jxp_borrar(&pila.tope, borrarPersona) ? "true" : "false"));
+            printf("%s\n", (jxp_borrar(&pila) ? "true" : "false"));
             break;
         case MOSTRAR:
-            jxp_mostrar(pila.tope, mostrarPersona);
+            jxp_mostrar(&pila);
             break;
         default:
             puts(MS_OPCION_INCORRECTA);

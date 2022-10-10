@@ -12,17 +12,19 @@ typedef struct jxc_nodo
 
 typedef struct jxc_cola
 {
+    void (*del)(void *p);
+    char *(*str)(const void *p);
     jxc_Nodo *cabeza;
 } jxc_Cola;
 
 jxc_Nodo *jxc_crearNodo(void *dato);
 void jxc_borrarNodo(jxc_Nodo *nodo, void (*del)(void *p));
-void jxc_encolar(jxc_Nodo **cabeza, void *dato);
-bool jxc_decolar(jxc_Nodo **cabeza, void (*del)(void *p));
-void *jxc_frente(jxc_Nodo *cabeza);
-void *jx_ultimo(jxc_Nodo *cabeza);
-bool jxc_borrar(jxc_Nodo **cabeza, void (*del)(void *p));
-void jxc_mostrar(jxc_Nodo *cabeza, char *(*str)(const void *p));
-bool jxc_estaVacia(jxc_Nodo *cabeza);
+void jxc_encolar(jxc_Cola *cola, void *dato);
+bool jxc_decolar(jxc_Cola *cola);
+void *jxc_frente(jxc_Cola *cola);
+void *jx_ultimo(jxc_Cola *cola);
+bool jxc_borrar(jxc_Cola *cola);
+void jxc_mostrar(jxc_Cola *cola);
+bool jxc_estaVacia(jxc_Cola *cola);
 
 #endif

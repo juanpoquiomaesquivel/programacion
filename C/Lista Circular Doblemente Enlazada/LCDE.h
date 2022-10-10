@@ -13,29 +13,32 @@ typedef struct jxlcd_nodo
 
 typedef struct jxlcd_lcde
 {
+    void (*del)(void *p);
+    int (*cmp)(const void *p, const void *q);
+    char *(*str)(const void *p);
     jxlcd_Nodo *cabeza;
 } jxlcd_LCDE;
 
 jxlcd_Nodo *jxlcd_crearNodo(void *dato);
 void jxlcd_borrarNodo(jxlcd_Nodo *nodo, void (*del)(void *p));
-void jxlcd_insertarAlInicio(jxlcd_Nodo **cabeza, void *dato);
-void jxlcd_insertarAlFinal(jxlcd_Nodo **cabeza, void *dato);
-bool jxlcd_insertarAntesDe(jxlcd_Nodo **cabeza, void *dato, void *x, bool (*cmp)(const void *p, const void *q));
-bool jxlcd_insertarDespuesDe(jxlcd_Nodo **cabeza, void *dato, void *x, bool (*cmp)(const void *p, const void *q));
-bool jxlcd_reemplazarEn(jxlcd_Nodo *cabeza, void *dato, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q));
-bool jxlcd_eliminarElPrimero(jxlcd_Nodo **cabeza, void (*del)(void *p));
-bool jxlcd_eliminarElUltimo(jxlcd_Nodo **cabeza, void (*del)(void *p));
-bool jxlcd_eliminarAntesDe(jxlcd_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q));
-bool jxlcd_eliminarDespuesDe(jxlcd_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q));
-bool jxlcd_eliminarEn(jxlcd_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q));
-void *jxlcd_obtenerElPrimero(jxlcd_Nodo *cabeza);
-void *jxlcd_obtenerElUltimo(jxlcd_Nodo *cabeza);
-void *jxlcd_obtenerAntesDe(jxlcd_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q));
-void *jxlcd_obtenerDespuesDe(jxlcd_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q));
-void *jxlcd_obtenerEn(jxlcd_Nodo *cabeza, int posicion);
-int jxlcd_buscar(jxlcd_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q));
-bool jxlcd_borrar(jxlcd_Nodo **cabeza, void (*del)(void *p));
-void jxlcd_mostrar(jxlcd_Nodo *cabeza, char *(*str)(const void *p));
-bool jxlcd_estaVacia(jxlcd_Nodo *cabeza);
+void jxlcd_insertarAlInicio(jxlcd_LCDE *lcde, void *dato);
+void jxlcd_insertarAlFinal(jxlcd_LCDE *lcde, void *dato);
+bool jxlcd_insertarAntesDe(jxlcd_LCDE *lcde, void *dato, void *x);
+bool jxlcd_insertarDespuesDe(jxlcd_LCDE *lcde, void *dato, void *x);
+bool jxlcd_reemplazarEn(jxlcd_LCDE *lcde, void *dato, void *x);
+bool jxlcd_eliminarElPrimero(jxlcd_LCDE *lcde);
+bool jxlcd_eliminarElUltimo(jxlcd_LCDE *lcde);
+bool jxlcd_eliminarAntesDe(jxlcd_LCDE *lcde, void *x);
+bool jxlcd_eliminarDespuesDe(jxlcd_LCDE *lcde, void *x);
+bool jxlcd_eliminarEn(jxlcd_LCDE *lcde, void *x);
+void *jxlcd_obtenerElPrimero(jxlcd_LCDE *lcde);
+void *jxlcd_obtenerElUltimo(jxlcd_LCDE *lcde);
+void *jxlcd_obtenerAntesDe(jxlcd_LCDE *lcde, void *x);
+void *jxlcd_obtenerDespuesDe(jxlcd_LCDE *lcde, void *x);
+void *jxlcd_obtenerEn(jxlcd_LCDE *lcde, int posicion);
+int jxlcd_buscar(jxlcd_LCDE *lcde, void *x);
+bool jxlcd_borrar(jxlcd_LCDE *lcde);
+void jxlcd_mostrar(jxlcd_LCDE *lcde);
+bool jxlcd_estaVacia(jxlcd_LCDE *lcde);
 
 #endif

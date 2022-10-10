@@ -17,32 +17,34 @@ jxld_Nodo *jxld_crearNodo(void *dato)
 
 void jxld_borrarNodo(jxld_Nodo *nodo, void (*del)(void *p))
 {
-    del(nodo->dato);
+    if (del != NULL)
+        del(nodo->dato);
+    
     free(nodo);
 }
 
-void jxld_insertarAlInicio(jxld_Nodo **cabeza, void *dato)
+void jxld_insertarAlInicio(jxld_LDE *lde, void *dato)
 {
     jxld_Nodo *nuevo = jxld_crearNodo(dato);
 
-    if (!jxld_estaVacia(*cabeza))
+    if (!jxld_estaVacia(lde))
     {
-        nuevo->siguiente = *cabeza;
-        (*cabeza)->anterior = nuevo;
+        nuevo->siguiente = lde->cabeza;
+        lde->cabeza->anterior = nuevo;
     }
 
-    *cabeza = nuevo;
+    lde->cabeza = nuevo;
 }
 
-void jxld_insertarAlFinal(jxld_Nodo **cabeza, void *dato)
+void jxld_insertarAlFinal(jxld_LDE *lde, void *dato)
 {
     jxld_Nodo *nuevo = jxld_crearNodo(dato);
 
-    if (jxld_estaVacia(*cabeza))
-        *cabeza = nuevo;
+    if (jxld_estaVacia(lde))
+        lde->cabeza = nuevo;
     else
     {
-        jxld_Nodo *p = *cabeza;
+        jxld_Nodo *p = lde->cabeza;
 
         while (p->siguiente != NULL)
             p = p->siguiente;
@@ -52,25 +54,25 @@ void jxld_insertarAlFinal(jxld_Nodo **cabeza, void *dato)
     }
 }
 
-bool jxld_insertarAntesDe(jxld_Nodo **cabeza, void *dato, void *x, bool (*cmp)(const void *p, const void *q))
+bool jxld_insertarAntesDe(jxld_LDE *lde, void *dato, void *x)
 {
-    if (!jxld_estaVacia(*cabeza))
+    if (!jxld_estaVacia(lde))
     {
-        jxld_Nodo *p = *cabeza;
+        jxld_Nodo *p = lde->cabeza;
 
-        while (p->siguiente != NULL && !cmp(p->dato, x))
+        while (p->siguiente != NULL && lde->cmp(p->dato, x))
             p = p->siguiente;
 
-        if (cmp(p->dato, x))
+        if (!lde->cmp(p->dato, x))
         {
             jxld_Nodo *nuevo = jxld_crearNodo(dato);
             nuevo->siguiente = p;
 
-            if (p == *cabeza)
+            if (p == lde->cabeza)
             {
-                nuevo->siguiente = *cabeza;
-                (*cabeza)->anterior = nuevo;
-                *cabeza = nuevo;
+                nuevo->siguiente = lde->cabeza;
+                lde->cabeza->anterior = nuevo;
+                lde->cabeza = nuevo;
             }
             else
             {
@@ -87,16 +89,16 @@ bool jxld_insertarAntesDe(jxld_Nodo **cabeza, void *dato, void *x, bool (*cmp)(c
     return false;
 }
 
-bool jxld_insertarDespuesDe(jxld_Nodo **cabeza, void *dato, void *x, bool (*cmp)(const void *p, const void *q))
+bool jxld_insertarDespuesDe(jxld_LDE *lde, void *dato, void *x)
 {
-    if (!jxld_estaVacia(*cabeza))
+    if (!jxld_estaVacia(lde))
     {
-        jxld_Nodo *p = *cabeza;
+        jxld_Nodo *p = lde->cabeza;
 
-        while (p->siguiente != NULL && !cmp(p->dato, x))
+        while (p->siguiente != NULL && lde->cmp(p->dato, x))
             p = p->siguiente;
 
-        if (cmp(p->dato, x))
+        if (!lde->cmp(p->dato, x))
         {
             jxld_Nodo *nuevo = jxld_crearNodo(dato);
 
@@ -116,18 +118,18 @@ bool jxld_insertarDespuesDe(jxld_Nodo **cabeza, void *dato, void *x, bool (*cmp)
     return false;
 }
 
-bool jxld_reemplazarEn(jxld_Nodo *cabeza, void *dato, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q))
+bool jxld_reemplazarEn(jxld_LDE *lde, void *dato, void *x)
 {
-    if (!jxld_estaVacia(cabeza))
+    if (!jxld_estaVacia(lde))
     {
-        jxld_Nodo *p = cabeza;
+        jxld_Nodo *p = lde->cabeza;
 
-        while (p->siguiente != NULL && !cmp(p->dato, x))
+        while (p->siguiente != NULL && lde->cmp(p->dato, x))
             p = p->siguiente;
 
-        if (cmp(p->dato, x))
+        if (!lde->cmp(p->dato, x))
         {
-            del(p->dato);
+            lde->del(p->dato);
             p->dato = dato;
 
             return true;
@@ -137,17 +139,17 @@ bool jxld_reemplazarEn(jxld_Nodo *cabeza, void *dato, void *x, void (*del)(void 
     return false;
 }
 
-bool jxld_eliminarElPrimero(jxld_Nodo **cabeza, void (*del)(void *p))
+bool jxld_eliminarElPrimero(jxld_LDE *lde)
 {
-    if (!jxld_estaVacia(*cabeza))
+    if (!jxld_estaVacia(lde))
     {
-        jxld_Nodo *p = *cabeza;
-        *cabeza = (*cabeza)->siguiente;
+        jxld_Nodo *p = lde->cabeza;
+        lde->cabeza = lde->cabeza->siguiente;
 
-        if (*cabeza != NULL)
-            (*cabeza)->anterior = NULL;
+        if (lde->cabeza != NULL)
+            lde->cabeza->anterior = NULL;
 
-        jxld_borrarNodo(p, del);
+        jxld_borrarNodo(p, lde->del);
 
         return true;
     }
@@ -155,21 +157,21 @@ bool jxld_eliminarElPrimero(jxld_Nodo **cabeza, void (*del)(void *p))
         return false;
 }
 
-bool jxld_eliminarElUltimo(jxld_Nodo **cabeza, void (*del)(void *p))
+bool jxld_eliminarElUltimo(jxld_LDE *lde)
 {
-    if (!jxld_estaVacia(*cabeza))
+    if (!jxld_estaVacia(lde))
     {
-        jxld_Nodo *p = *cabeza;
+        jxld_Nodo *p = lde->cabeza;
 
         while (p->siguiente != NULL)
             p = p->siguiente;
 
-        if (p == *cabeza)
-            *cabeza = NULL;
+        if (p == lde->cabeza)
+            lde->cabeza = NULL;
         else
             p->anterior->siguiente = NULL;
 
-        jxld_borrarNodo(p, del);
+        jxld_borrarNodo(p, lde->del);
 
         return true;
     }
@@ -177,24 +179,24 @@ bool jxld_eliminarElUltimo(jxld_Nodo **cabeza, void (*del)(void *p))
         return false;
 }
 
-bool jxld_eliminarAntesDe(jxld_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q))
+bool jxld_eliminarAntesDe(jxld_LDE *lde, void *x)
 {
-    if (!jxld_estaVacia(*cabeza))
+    if (!jxld_estaVacia(lde))
     {
-        jxld_Nodo *p = *cabeza;
+        jxld_Nodo *p = lde->cabeza;
 
-        while (p->siguiente != NULL && !cmp(p->dato, x))
+        while (p->siguiente != NULL && lde->cmp(p->dato, x))
             p = p->siguiente;
 
-        if (cmp(p->dato, x))
-            if (p != *cabeza)
+        if (!lde->cmp(p->dato, x))
+            if (p != lde->cabeza)
             {
                 jxld_Nodo *_p = p->anterior;
 
-                if (_p == *cabeza)
+                if (_p == lde->cabeza)
                 {
-                    *cabeza = p;
-                    (*cabeza)->anterior = NULL;
+                    lde->cabeza = p;
+                    lde->cabeza->anterior = NULL;
                 }
                 else
                 {
@@ -202,7 +204,7 @@ bool jxld_eliminarAntesDe(jxld_Nodo **cabeza, void *x, void (*del)(void *p), boo
                     p->anterior = _p->anterior;
                 }
 
-                jxld_borrarNodo(_p, del);
+                jxld_borrarNodo(_p, lde->del);
 
                 return true;
             }
@@ -211,16 +213,16 @@ bool jxld_eliminarAntesDe(jxld_Nodo **cabeza, void *x, void (*del)(void *p), boo
     return false;
 }
 
-bool jxld_eliminarDespuesDe(jxld_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q))
+bool jxld_eliminarDespuesDe(jxld_LDE *lde, void *x)
 {
-    if (!jxld_estaVacia(*cabeza))
+    if (!jxld_estaVacia(lde))
     {
-        jxld_Nodo *p = *cabeza;
+        jxld_Nodo *p = lde->cabeza;
 
-        while (p->siguiente != NULL && !cmp(p->dato, x))
+        while (p->siguiente != NULL && lde->cmp(p->dato, x))
             p = p->siguiente;
 
-        if (cmp(p->dato, x))
+        if (!lde->cmp(p->dato, x))
             if (p->siguiente != NULL)
             {
                 jxld_Nodo *p_ = p->siguiente;
@@ -229,7 +231,7 @@ bool jxld_eliminarDespuesDe(jxld_Nodo **cabeza, void *x, void (*del)(void *p), b
                 if (p_->siguiente != NULL)
                     p_->siguiente->anterior = p;
 
-                jxld_borrarNodo(p_, del);
+                jxld_borrarNodo(p_, lde->del);
 
                 return true;
             }
@@ -238,23 +240,23 @@ bool jxld_eliminarDespuesDe(jxld_Nodo **cabeza, void *x, void (*del)(void *p), b
     return false;
 }
 
-bool jxld_eliminarEn(jxld_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q))
+bool jxld_eliminarEn(jxld_LDE *lde, void *x)
 {
-    if (!jxld_estaVacia(*cabeza))
+    if (!jxld_estaVacia(lde))
     {
-        jxld_Nodo *p = *cabeza;
+        jxld_Nodo *p = lde->cabeza;
 
-        while (p->siguiente != NULL && !cmp(p->dato, x))
+        while (p->siguiente != NULL && lde->cmp(p->dato, x))
             p = p->siguiente;
 
-        if (cmp(p->dato, x))
+        if (!lde->cmp(p->dato, x))
         {
-            if (p == *cabeza)
+            if (p == lde->cabeza)
             {
-                *cabeza = (*cabeza)->siguiente;
+                lde->cabeza = lde->cabeza->siguiente;
 
-                if (*cabeza != NULL)
-                    (*cabeza)->anterior = NULL;
+                if (lde->cabeza != NULL)
+                    lde->cabeza->anterior = NULL;
             }
             else
             {
@@ -264,26 +266,26 @@ bool jxld_eliminarEn(jxld_Nodo **cabeza, void *x, void (*del)(void *p), bool (*c
                     p->siguiente->anterior = p->anterior;
             }
 
-            jxld_borrarNodo(p, del);
+            jxld_borrarNodo(p, lde->del);
 
             return true;
         }
     }
 }
 
-void *jxld_obtenerElPrimero(jxld_Nodo *cabeza)
+void *jxld_obtenerElPrimero(jxld_LDE *lde)
 {
-    if (!jxld_estaVacia(cabeza))
-        return cabeza->dato;
+    if (!jxld_estaVacia(lde))
+        return lde->cabeza->dato;
 
     return NULL;
 }
 
-void *jxld_obtenerElUltimo(jxld_Nodo *cabeza)
+void *jxld_obtenerElUltimo(jxld_LDE *lde)
 {
-    if (!jxld_estaVacia(cabeza))
+    if (!jxld_estaVacia(lde))
     {
-        jxld_Nodo *p = cabeza;
+        jxld_Nodo *p = lde->cabeza;
 
         while (p->siguiente != NULL)
             p = p->siguiente;
@@ -294,33 +296,33 @@ void *jxld_obtenerElUltimo(jxld_Nodo *cabeza)
     return NULL;
 }
 
-void *jxld_obtenerAntesDe(jxld_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q))
+void *jxld_obtenerAntesDe(jxld_LDE *lde, void *x)
 {
-    if (!jxld_estaVacia(cabeza))
+    if (!jxld_estaVacia(lde))
     {
-        jxld_Nodo *p = cabeza;
+        jxld_Nodo *p = lde->cabeza;
 
-        while (p->siguiente != NULL && !cmp(p->dato, x))
+        while (p->siguiente != NULL && lde->cmp(p->dato, x))
             p = p->siguiente;
 
-        if (cmp(p->dato, x))
-            if (p != cabeza)
+        if (!lde->cmp(p->dato, x))
+            if (p != lde->cabeza)
                 return p->anterior->dato;
     }
 
     return NULL;
 }
 
-void *jxld_obtenerDespuesDe(jxld_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q))
+void *jxld_obtenerDespuesDe(jxld_LDE *lde, void *x)
 {
-    if (!jxld_estaVacia(cabeza))
+    if (!jxld_estaVacia(lde))
     {
-        jxld_Nodo *p = cabeza;
+        jxld_Nodo *p = lde->cabeza;
 
-        while (p->siguiente != NULL && !cmp(p->dato, x))
+        while (p->siguiente != NULL && lde->cmp(p->dato, x))
             p = p->siguiente;
 
-        if (cmp(p->dato, x))
+        if (!lde->cmp(p->dato, x))
             if (p->siguiente != NULL)
                 return p->siguiente->dato;
     }
@@ -328,11 +330,11 @@ void *jxld_obtenerDespuesDe(jxld_Nodo *cabeza, void *x, bool (*cmp)(const void *
     return NULL;
 }
 
-void *jxld_obtenerEn(jxld_Nodo *cabeza, int posicion)
+void *jxld_obtenerEn(jxld_LDE *lde, int posicion)
 {
-    if (!jxld_estaVacia(cabeza))
+    if (!jxld_estaVacia(lde))
     {
-        jxld_Nodo *p = cabeza;
+        jxld_Nodo *p = lde->cabeza;
         int i = 0;
 
         while (p->siguiente != NULL && i != posicion)
@@ -348,38 +350,38 @@ void *jxld_obtenerEn(jxld_Nodo *cabeza, int posicion)
     return NULL;
 }
 
-int jxld_buscar(jxld_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q))
+int jxld_buscar(jxld_LDE *lde, void *x)
 {
-    if (!jxld_estaVacia(cabeza))
+    if (!jxld_estaVacia(lde))
     {
-        jxld_Nodo *p = cabeza;
+        jxld_Nodo *p = lde->cabeza;
         int i = 0;
 
-        while (p->siguiente != NULL && !cmp(p->dato, x))
+        while (p->siguiente != NULL && lde->cmp(p->dato, x))
         {
             p = p->siguiente;
             i++;
         }
 
-        if (cmp(p->dato, x))
+        if (!lde->cmp(p->dato, x))
             return i;
     }
 
     return -1;
 }
 
-bool jxld_borrar(jxld_Nodo **cabeza, void (*del)(void *p))
+bool jxld_borrar(jxld_LDE *lde)
 {
-    if (!jxld_estaVacia(*cabeza))
+    if (!jxld_estaVacia(lde))
     {
         jxld_Nodo *p;
 
         do
         {
-            p = *cabeza;
-            *cabeza = (*cabeza)->siguiente;
-            jxld_borrarNodo(p, del);
-        } while (*cabeza != NULL);
+            p = lde->cabeza;
+            lde->cabeza = lde->cabeza->siguiente;
+            jxld_borrarNodo(p, lde->del);
+        } while (lde->cabeza != NULL);
 
         return true;
     }
@@ -387,18 +389,18 @@ bool jxld_borrar(jxld_Nodo **cabeza, void (*del)(void *p))
         return false;
 }
 
-void jxld_mostrar(jxld_Nodo *cabeza, char *(*str)(const void *p))
+void jxld_mostrar(jxld_LDE *lde)
 {
     printf("LDE => { ");
 
-    if (!jxld_estaVacia(cabeza))
+    if (!jxld_estaVacia(lde))
     {
-        jxld_Nodo *p = cabeza;
+        jxld_Nodo *p = lde->cabeza;
         char *txt;
 
         do
         {
-            txt = str(p->dato);
+            txt = lde->str(p->dato);
             printf("%s -> ", txt);
             free(txt);
             p = p->siguiente;
@@ -408,7 +410,7 @@ void jxld_mostrar(jxld_Nodo *cabeza, char *(*str)(const void *p))
     puts(" }");
 }
 
-bool jxld_estaVacia(jxld_Nodo *cabeza)
+bool jxld_estaVacia(jxld_LDE *lde)
 {
-    return cabeza == NULL;
+    return lde->cabeza == NULL;
 }

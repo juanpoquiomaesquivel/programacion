@@ -2,32 +2,25 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <stdarg.h>
 
-typedef struct p
+// https://youtu.be/3iX9a_l9W9Y
+// https://youtu.be/S-ak715zIIE
+int print(const char *format, ...)
 {
-    char nom[20];
-    char dni[20];
-    int edad;
-} PER;
+    va_list args;
+    int done;
 
-int cmp(const void *a, const void *b)
-{
-    PER p1 = *(PER *)a;
-    PER p2 = *(PER *)b;
+    va_start (args, format);
+    done = vfprintf (stdout, format, args);
+    va_end (args);
 
-    printf("%d\n", strcmp(p1.nom, p2.nom));
-    printf("%d\n", strcmp(p1.dni, p2.dni));
-    printf("%d\n", p1.edad - p2.edad);
-
-    return 0;
+    return done;
 }
 
 int main(int argc, char const *argv[])
 {
-    PER p1 = {.nom = "JUAN", "75471208", 20};
-    PER p2 = {.nom = "juan", "75471202", 22};
-
-    cmp(&p1, &p2);
+    print("%d %d", 1, 2, 3);
 
     return 0;
 }

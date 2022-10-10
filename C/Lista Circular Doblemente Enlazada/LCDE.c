@@ -17,72 +17,74 @@ jxlcd_Nodo *jxlcd_crearNodo(void *dato)
 
 void jxlcd_borrarNodo(jxlcd_Nodo *nodo, void (*del)(void *p))
 {
-    del(nodo->dato);
+    if (del != NULL)
+        del(nodo->dato);
+    
     free(nodo);
 }
 
-void jxlcd_insertarAlInicio(jxlcd_Nodo **cabeza, void *dato)
+void jxlcd_insertarAlInicio(jxlcd_LCDE *lcde, void *dato)
 {
     jxlcd_Nodo *nuevo = jxlcd_crearNodo(dato);
 
-    if (jxlcd_estaVacia(*cabeza))
+    if (jxlcd_estaVacia(lcde))
     {
-        *cabeza = nuevo;
-        (*cabeza)->anterior = *cabeza;
-        (*cabeza)->siguiente = *cabeza;
+        lcde->cabeza = nuevo;
+        lcde->cabeza->anterior = lcde->cabeza;
+        lcde->cabeza->siguiente = lcde->cabeza;
     }
     else
     {
-        jxlcd_Nodo *p = (*cabeza)->anterior;
+        jxlcd_Nodo *p = lcde->cabeza->anterior;
         nuevo->anterior = p;
-        nuevo->siguiente = *cabeza;
-        (*cabeza)->anterior = nuevo;
-        *cabeza = nuevo;
-        p->siguiente = *cabeza;
+        nuevo->siguiente = lcde->cabeza;
+        lcde->cabeza->anterior = nuevo;
+        lcde->cabeza = nuevo;
+        p->siguiente = lcde->cabeza;
     }
 }
 
-void jxlcd_insertarAlFinal(jxlcd_Nodo **cabeza, void *dato)
+void jxlcd_insertarAlFinal(jxlcd_LCDE *lcde, void *dato)
 {
     jxlcd_Nodo *nuevo = jxlcd_crearNodo(dato);
 
-    if (jxlcd_estaVacia(*cabeza))
+    if (jxlcd_estaVacia(lcde))
     {
-        *cabeza = nuevo;
-        (*cabeza)->anterior = *cabeza;
-        (*cabeza)->siguiente = *cabeza;
+        lcde->cabeza = nuevo;
+        lcde->cabeza->anterior = lcde->cabeza;
+        lcde->cabeza->siguiente = lcde->cabeza;
     }
     else
     {
-        jxlcd_Nodo *p = (*cabeza)->anterior;
-        (*cabeza)->anterior = nuevo;
+        jxlcd_Nodo *p = lcde->cabeza->anterior;
+        lcde->cabeza->anterior = nuevo;
         p->siguiente = nuevo;
         nuevo->anterior = p;
-        nuevo->siguiente = *cabeza;
+        nuevo->siguiente = lcde->cabeza;
     }
 }
 
-bool jxlcd_insertarAntesDe(jxlcd_Nodo **cabeza, void *dato, void *x, bool (*cmp)(const void *p, const void *q))
+bool jxlcd_insertarAntesDe(jxlcd_LCDE *lcde, void *dato, void *x)
 {
-    if (!jxlcd_estaVacia(*cabeza))
+    if (!jxlcd_estaVacia(lcde))
     {
-        jxlcd_Nodo *p = *cabeza;
+        jxlcd_Nodo *p = lcde->cabeza;
 
-        while (p->siguiente != *cabeza && !cmp(p->dato, x))
+        while (p->siguiente != lcde->cabeza && lcde->cmp(p->dato, x))
             p = p->siguiente;
 
-        if (cmp(p->dato, x))
+        if (!lcde->cmp(p->dato, x))
         {
             jxlcd_Nodo *nuevo = jxlcd_crearNodo(dato);
 
-            if (p == *cabeza)
+            if (p == lcde->cabeza)
             {
-                jxlcd_Nodo *q = (*cabeza)->anterior;
+                jxlcd_Nodo *q = lcde->cabeza->anterior;
                 nuevo->anterior = q;
-                nuevo->siguiente = *cabeza;
-                (*cabeza)->anterior = nuevo;
-                *cabeza = nuevo;
-                q->siguiente = *cabeza;
+                nuevo->siguiente = lcde->cabeza;
+                lcde->cabeza->anterior = nuevo;
+                lcde->cabeza = nuevo;
+                q->siguiente = lcde->cabeza;
             }
             else
             {
@@ -99,25 +101,25 @@ bool jxlcd_insertarAntesDe(jxlcd_Nodo **cabeza, void *dato, void *x, bool (*cmp)
     return false;
 }
 
-bool jxlcd_insertarDespuesDe(jxlcd_Nodo **cabeza, void *dato, void *x, bool (*cmp)(const void *p, const void *q))
+bool jxlcd_insertarDespuesDe(jxlcd_LCDE *lcde, void *dato, void *x)
 {
-    if (!jxlcd_estaVacia(*cabeza))
+    if (!jxlcd_estaVacia(lcde))
     {
-        jxlcd_Nodo *p = *cabeza;
+        jxlcd_Nodo *p = lcde->cabeza;
 
-        while (p->siguiente != *cabeza && !cmp(p->dato, x))
+        while (p->siguiente != lcde->cabeza && lcde->cmp(p->dato, x))
             p = p->siguiente;
 
-        if (cmp(p->dato, x))
+        if (!lcde->cmp(p->dato, x))
         {
             jxlcd_Nodo *nuevo = jxlcd_crearNodo(dato);
 
-            if (p->siguiente == *cabeza)
+            if (p->siguiente == lcde->cabeza)
             {
                 p->siguiente = nuevo;
                 nuevo->anterior = p;
-                nuevo->siguiente = *cabeza;
-                (*cabeza)->anterior = nuevo;
+                nuevo->siguiente = lcde->cabeza;
+                lcde->cabeza->anterior = nuevo;
             }
             else
             {
@@ -134,18 +136,18 @@ bool jxlcd_insertarDespuesDe(jxlcd_Nodo **cabeza, void *dato, void *x, bool (*cm
     return false;
 }
 
-bool jxlcd_reemplazarEn(jxlcd_Nodo *cabeza, void *dato, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q))
+bool jxlcd_reemplazarEn(jxlcd_LCDE *lcde, void *dato, void *x)
 {
-    if (!jxlcd_estaVacia(cabeza))
+    if (!jxlcd_estaVacia(lcde))
     {
-        jxlcd_Nodo *p = cabeza;
+        jxlcd_Nodo *p = lcde->cabeza;
 
-        while (p->siguiente != cabeza && !cmp(p->dato, x))
+        while (p->siguiente != lcde->cabeza && lcde->cmp(p->dato, x))
             p = p->siguiente;
 
-        if (cmp(p->dato, x))
+        if (!lcde->cmp(p->dato, x))
         {
-            del(p->dato);
+            lcde->del(p->dato);
             p->dato = dato;
 
             return true;
@@ -155,23 +157,23 @@ bool jxlcd_reemplazarEn(jxlcd_Nodo *cabeza, void *dato, void *x, void (*del)(voi
     return false;
 }
 
-bool jxlcd_eliminarElPrimero(jxlcd_Nodo **cabeza, void (*del)(void *p))
+bool jxlcd_eliminarElPrimero(jxlcd_LCDE *lcde)
 {
-    if (!jxlcd_estaVacia(*cabeza))
+    if (!jxlcd_estaVacia(lcde))
     {
-        jxlcd_Nodo *p = *cabeza;
+        jxlcd_Nodo *p = lcde->cabeza;
 
-        if ((*cabeza)->siguiente == *cabeza)
-            *cabeza = NULL;
+        if (lcde->cabeza->siguiente == lcde->cabeza)
+            lcde->cabeza = NULL;
         else
         {
-            jxlcd_Nodo *q = (*cabeza)->anterior;
-            *cabeza = (*cabeza)->siguiente;
-            (*cabeza)->anterior = q;
-            q->siguiente = *cabeza;
+            jxlcd_Nodo *q = lcde->cabeza->anterior;
+            lcde->cabeza = lcde->cabeza->siguiente;
+            lcde->cabeza->anterior = q;
+            q->siguiente = lcde->cabeza;
         }
 
-        jxlcd_borrarNodo(p, del);
+        jxlcd_borrarNodo(p, lcde->del);
 
         return true;
     }
@@ -179,22 +181,21 @@ bool jxlcd_eliminarElPrimero(jxlcd_Nodo **cabeza, void (*del)(void *p))
         return false;
 }
 
-bool jxlcd_eliminarElUltimo(jxlcd_Nodo **cabeza, void (*del)(void *p))
+bool jxlcd_eliminarElUltimo(jxlcd_LCDE *lcde)
 {
-    if (!jxlcd_estaVacia(*cabeza))
+    if (!jxlcd_estaVacia(lcde))
     {
-        jxlcd_Nodo *p = (*cabeza)->anterior;
+        jxlcd_Nodo *p = lcde->cabeza->anterior;
 
-        if (p == *cabeza)
-            *cabeza = NULL;
+        if (p == lcde->cabeza)
+            lcde->cabeza = NULL;
         else
         {
-            (*cabeza)->anterior = p->anterior;
-            p->anterior->siguiente = *cabeza;
+            lcde->cabeza->anterior = p->anterior;
+            p->anterior->siguiente = lcde->cabeza;
         }
 
-        free(p->dato);
-        jxlcd_borrarNodo(p, del);
+        jxlcd_borrarNodo(p, lcde->del);
         
         return true;
     }
@@ -202,42 +203,42 @@ bool jxlcd_eliminarElUltimo(jxlcd_Nodo **cabeza, void (*del)(void *p))
         return false;
 }
 
-bool jxlcd_eliminarAntesDe(jxlcd_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q))
+bool jxlcd_eliminarAntesDe(jxlcd_LCDE *lcde, void *x)
 {
-    if (!jxlcd_estaVacia(*cabeza))
+    if (!jxlcd_estaVacia(lcde))
     {
-        jxlcd_Nodo *p = *cabeza;
+        jxlcd_Nodo *p = lcde->cabeza;
 
-        while (p->siguiente != *cabeza && !cmp(p->dato, x))
+        while (p->siguiente != lcde->cabeza && lcde->cmp(p->dato, x))
             p = p->siguiente;
 
-        if (cmp(p->dato, x))
+        if (!lcde->cmp(p->dato, x))
         {
-            if (p == *cabeza)
+            if (p == lcde->cabeza)
             {
-                if (p->siguiente == *cabeza)
+                if (p->siguiente == lcde->cabeza)
                 {
-                    *cabeza = NULL;
-                    jxlcd_borrarNodo(p, del);
+                    lcde->cabeza = NULL;
+                    jxlcd_borrarNodo(p, lcde->del);
                 }
                 else
                 {
-                    jxlcd_Nodo *q = (*cabeza)->anterior;
-                    q->anterior->siguiente = *cabeza;
-                    (*cabeza)->anterior = q->anterior;
-                    jxlcd_borrarNodo(q, del);
+                    jxlcd_Nodo *q = lcde->cabeza->anterior;
+                    q->anterior->siguiente = lcde->cabeza;
+                    lcde->cabeza->anterior = q->anterior;
+                    jxlcd_borrarNodo(q, lcde->del);
                 }
             }
             else
             {
                 jxlcd_Nodo *_p = p->anterior;
 
-                if (_p == *cabeza)
+                if (_p == lcde->cabeza)
                 {
-                    jxlcd_Nodo *q = (*cabeza)->anterior;
-                    *cabeza = (*cabeza)->siguiente;
-                    (*cabeza)->anterior = q;
-                    q->siguiente = *cabeza;
+                    jxlcd_Nodo *q = lcde->cabeza->anterior;
+                    lcde->cabeza = lcde->cabeza->siguiente;
+                    lcde->cabeza->anterior = q;
+                    q->siguiente = lcde->cabeza;
                 }
                 else
                 {
@@ -245,7 +246,7 @@ bool jxlcd_eliminarAntesDe(jxlcd_Nodo **cabeza, void *x, void (*del)(void *p), b
                     p->anterior = _p->anterior;
                 }
 
-                jxlcd_borrarNodo(_p, del);
+                jxlcd_borrarNodo(_p, lcde->del);
             }
 
             return true;
@@ -255,39 +256,39 @@ bool jxlcd_eliminarAntesDe(jxlcd_Nodo **cabeza, void *x, void (*del)(void *p), b
     return false;
 }
 
-bool jxlcd_eliminarDespuesDe(jxlcd_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q))
+bool jxlcd_eliminarDespuesDe(jxlcd_LCDE *lcde, void *x)
 {
-    if (!jxlcd_estaVacia(*cabeza))
+    if (!jxlcd_estaVacia(lcde))
     {
-        jxlcd_Nodo *p = *cabeza;
+        jxlcd_Nodo *p = lcde->cabeza;
 
-        while (p->siguiente != *cabeza && !cmp(p->dato, x))
+        while (p->siguiente != lcde->cabeza && lcde->cmp(p->dato, x))
             p = p->siguiente;
 
-        if (cmp(p->dato, x))
+        if (!lcde->cmp(p->dato, x))
         {
             jxlcd_Nodo *p_ = p->siguiente;
 
-            if (p->siguiente == *cabeza)
+            if (p->siguiente == lcde->cabeza)
             {
-                if (p == *cabeza)
+                if (p == lcde->cabeza)
                 {
-                    *cabeza = NULL;
-                    jxlcd_borrarNodo(p, del);
+                    lcde->cabeza = NULL;
+                    jxlcd_borrarNodo(p, lcde->del);
                 }
                 else
                 {
-                    *cabeza = (*cabeza)->siguiente;
-                    (*cabeza)->anterior = p;
-                    p->siguiente = *cabeza;
-                    jxlcd_borrarNodo(p_, del);
+                    lcde->cabeza = lcde->cabeza->siguiente;
+                    lcde->cabeza->anterior = p;
+                    p->siguiente = lcde->cabeza;
+                    jxlcd_borrarNodo(p_, lcde->del);
                 }
             }
             else
             {
                 p->siguiente = p_->siguiente;
                 p_->siguiente->anterior = p;
-                jxlcd_borrarNodo(p_, del);
+                jxlcd_borrarNodo(p_, lcde->del);
             }
 
             return true;
@@ -297,27 +298,27 @@ bool jxlcd_eliminarDespuesDe(jxlcd_Nodo **cabeza, void *x, void (*del)(void *p),
     return false;
 }
 
-bool jxlcd_eliminarEn(jxlcd_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q))
+bool jxlcd_eliminarEn(jxlcd_LCDE *lcde, void *x)
 {
-    if (!jxlcd_estaVacia(*cabeza))
+    if (!jxlcd_estaVacia(lcde))
     {
-        jxlcd_Nodo *p = *cabeza;
+        jxlcd_Nodo *p = lcde->cabeza;
 
-        while (p->siguiente != *cabeza && !cmp(p->dato, x))
+        while (p->siguiente != lcde->cabeza && lcde->cmp(p->dato, x))
             p = p->siguiente;
 
-        if (cmp(p->dato, x))
+        if (!lcde->cmp(p->dato, x))
         {
-            if (p == *cabeza)
+            if (p == lcde->cabeza)
             {
-                if (p->siguiente == *cabeza)
-                    *cabeza = NULL;
+                if (p->siguiente == lcde->cabeza)
+                    lcde->cabeza = NULL;
                 else
                 {
-                    jxlcd_Nodo *q = (*cabeza)->anterior;
-                    *cabeza = (*cabeza)->siguiente;
-                    (*cabeza)->anterior = q;
-                    q->siguiente = *cabeza;
+                    jxlcd_Nodo *q = lcde->cabeza->anterior;
+                    lcde->cabeza = lcde->cabeza->siguiente;
+                    lcde->cabeza->anterior = q;
+                    q->siguiente = lcde->cabeza;
                 }
             }
             else
@@ -326,7 +327,7 @@ bool jxlcd_eliminarEn(jxlcd_Nodo **cabeza, void *x, void (*del)(void *p), bool (
                 p->siguiente->anterior = p->anterior;
             }
 
-            jxlcd_borrarNodo(p, del);
+            jxlcd_borrarNodo(p, lcde->del);
 
             return true;
         }
@@ -335,62 +336,62 @@ bool jxlcd_eliminarEn(jxlcd_Nodo **cabeza, void *x, void (*del)(void *p), bool (
     return false;
 }
 
-void *jxlcd_obtenerElPrimero(jxlcd_Nodo *cabeza)
+void *jxlcd_obtenerElPrimero(jxlcd_LCDE *lcde)
 {
-    if (!jxlcd_estaVacia(cabeza))
-        return cabeza->dato;
+    if (!jxlcd_estaVacia(lcde))
+        return lcde->cabeza->dato;
 
     return NULL;
 }
 
-void *jxlcd_obtenerElUltimo(jxlcd_Nodo *cabeza)
+void *jxlcd_obtenerElUltimo(jxlcd_LCDE *lcde)
 {
-    if (!jxlcd_estaVacia(cabeza))
-        return cabeza->anterior->dato;
+    if (!jxlcd_estaVacia(lcde))
+        return lcde->cabeza->anterior->dato;
 
     return NULL;
 }
 
-void *jxlcd_obtenerAntesDe(jxlcd_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q))
+void *jxlcd_obtenerAntesDe(jxlcd_LCDE *lcde, void *x)
 {
-    if (!jxlcd_estaVacia(cabeza))
+    if (!jxlcd_estaVacia(lcde))
     {
-        jxlcd_Nodo *p = cabeza;
+        jxlcd_Nodo *p = lcde->cabeza;
 
-        while (p->siguiente != cabeza && !cmp(p->dato, x))
+        while (p->siguiente != lcde->cabeza && lcde->cmp(p->dato, x))
             p = p->siguiente;
 
-        if (cmp(p->dato, x))
+        if (!lcde->cmp(p->dato, x))
             return p->anterior->dato;
     }
 
     return NULL;
 }
 
-void *jxlcd_obtenerDespuesDe(jxlcd_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q))
+void *jxlcd_obtenerDespuesDe(jxlcd_LCDE *lcde, void *x)
 {
-    if (!jxlcd_estaVacia(cabeza))
+    if (!jxlcd_estaVacia(lcde))
     {
-        jxlcd_Nodo *p = cabeza;
+        jxlcd_Nodo *p = lcde->cabeza;
 
-        while (p->siguiente != cabeza && !cmp(p->dato, x))
+        while (p->siguiente != lcde->cabeza && lcde->cmp(p->dato, x))
             p = p->siguiente;
 
-        if (cmp(p->dato, x))
+        if (!lcde->cmp(p->dato, x))
             return p->siguiente->dato;
     }
 
     return NULL;
 }
 
-void *jxlcd_obtenerEn(jxlcd_Nodo *cabeza, int posicion)
+void *jxlcd_obtenerEn(jxlcd_LCDE *lcde, int posicion)
 {
-    if (!jxlcd_estaVacia(cabeza))
+    if (!jxlcd_estaVacia(lcde))
     {
-        jxlcd_Nodo *p = cabeza;
+        jxlcd_Nodo *p = lcde->cabeza;
         int i = 0;
 
-        while (p->siguiente != cabeza && i != posicion)
+        while (p->siguiente != lcde->cabeza && i != posicion)
         {
             p = p->siguiente;
             i++;
@@ -403,40 +404,40 @@ void *jxlcd_obtenerEn(jxlcd_Nodo *cabeza, int posicion)
     return NULL;
 }
 
-int jxlcd_buscar(jxlcd_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q))
+int jxlcd_buscar(jxlcd_LCDE *lcde, void *x)
 {
-    if (!jxlcd_estaVacia(cabeza))
+    if (!jxlcd_estaVacia(lcde))
     {
-        jxlcd_Nodo *p = cabeza;
+        jxlcd_Nodo *p = lcde->cabeza;
         int i = 0;
 
-        while (p->siguiente != cabeza && !cmp(p->dato, x))
+        while (p->siguiente != lcde->cabeza && lcde->cmp(p->dato, x))
         {
             p = p->siguiente;
             i++;
         }
 
-        if (cmp(p->dato, x))
+        if (!lcde->cmp(p->dato, x))
             return i;
     }
 
     return -1;
 }
 
-bool jxlcd_borrar(jxlcd_Nodo **cabeza, void (*del)(void *p))
+bool jxlcd_borrar(jxlcd_LCDE *lcde)
 {
-    if (!jxlcd_estaVacia(*cabeza))
+    if (!jxlcd_estaVacia(lcde))
     {
         jxlcd_Nodo *p;
-        jxlcd_Nodo *q = (*cabeza)->anterior;
+        jxlcd_Nodo *q = lcde->cabeza->anterior;
         q->siguiente = NULL;
 
         do
         {
-            p = *cabeza;
-            *cabeza = (*cabeza)->siguiente;
-            jxlcd_borrarNodo(p, del);
-        } while (*cabeza != NULL);
+            p = lcde->cabeza;
+            lcde->cabeza = lcde->cabeza->siguiente;
+            jxlcd_borrarNodo(p, lcde->del);
+        } while (lcde->cabeza != NULL);
 
         return true;
     }
@@ -444,28 +445,28 @@ bool jxlcd_borrar(jxlcd_Nodo **cabeza, void (*del)(void *p))
         return false;
 }
 
-void jxlcd_mostrar(jxlcd_Nodo *cabeza, char *(*str)(const void *p))
+void jxlcd_mostrar(jxlcd_LCDE *lcde)
 {
     printf("LCDE => { ");
 
-    if (!jxlcd_estaVacia(cabeza))
+    if (!jxlcd_estaVacia(lcde))
     {
-        jxlcd_Nodo *p = cabeza;
+        jxlcd_Nodo *p = lcde->cabeza;
         char *txt;
 
         do
         {
-            txt = str(p->dato);
+            txt = lcde->str(p->dato);
             printf("%s -> ", txt);
             free(txt);
             p = p->siguiente;
-        } while (p != cabeza);
+        } while (p != lcde->cabeza);
     }
 
     puts(" }");
 }
 
-bool jxlcd_estaVacia(jxlcd_Nodo *cabeza)
+bool jxlcd_estaVacia(jxlcd_LCDE *lcde)
 {
-    return cabeza == NULL;
+    return lcde->cabeza == NULL;
 }

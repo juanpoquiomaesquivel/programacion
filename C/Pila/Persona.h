@@ -1,8 +1,6 @@
 #ifndef _PERSONA_H_
 #define _PERSONA_H_
 
-#include <stdbool.h>
-
 typedef struct persona
 {
     char *nombres;
@@ -14,8 +12,7 @@ typedef struct persona
 
 Persona *crearPersona();
 void borrarPersona(void *p);
-bool compararPersona(const void *p, const void *q);
-int ordenarPersona(const void *p, const void *q);
+int compararPersona(const void *p, const void *q);
 char *mostrarPersona(const void *p);
 
 #endif

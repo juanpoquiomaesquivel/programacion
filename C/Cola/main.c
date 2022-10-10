@@ -38,7 +38,7 @@ void menu()
 {
     const size_t n = sizeof(lista) / sizeof(lista[0]);
     short int *opcion = NULL;
-    jxc_Cola cola = {.cabeza = NULL};
+    jxc_Cola cola = {.del = borrarPersona, .str = mostrarPersona, .cabeza = NULL};
     void *dato = NULL;
 
     while (true)
@@ -55,34 +55,34 @@ void menu()
         switch (*opcion)
         {
         case SALIR:
-            jxc_borrar(&cola.cabeza, borrarPersona);
+            jxc_borrar(&cola);
             free(opcion);
             puts(MS_PROGRAMA_FINALIZADO);
 
             return;
         case ENCOLAR:
             dato = crearPersona();
-            jxc_encolar(&cola.cabeza, dato);
+            jxc_encolar(&cola, dato);
             dato = NULL;
             break;
         case DECOLAR:
-            printf("%s\n", (jxc_decolar(&cola.cabeza, borrarPersona) ? "true" : "false"));
+            printf("%s\n", (jxc_decolar(&cola) ? "true" : "false"));
             break;
         case FRENTE:
-            dato = jxc_frente(cola.cabeza);
+            dato = jxc_frente(&cola);
             (dato != NULL) ? printf("%s\n", mostrarPersona(dato)) : puts("NULL");
             dato = NULL;
             break;
         case ULTIMO:
-            dato = jx_ultimo(cola.cabeza);
+            dato = jx_ultimo(&cola);
             (dato != NULL) ? printf("%s\n", mostrarPersona(dato)) : puts("NULL");
             dato = NULL;
             break;
         case BORRAR:
-            printf("%s\n", (jxc_borrar(&cola.cabeza, borrarPersona) ? "true" : "false"));
+            printf("%s\n", (jxc_borrar(&cola) ? "true" : "false"));
             break;
         case MOSTRAR:
-            jxc_mostrar(cola.cabeza, mostrarPersona);
+            jxc_mostrar(&cola);
             break;
         default:
             puts(MS_OPCION_INCORRECTA);

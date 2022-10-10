@@ -16,80 +16,82 @@ jxlcs_Nodo *jxlcs_crearNodo(void *dato)
 
 void jxlcs_borrarNodo(jxlcs_Nodo *nodo, void (*del)(void *p))
 {
-    del(nodo->dato);
+    if (del != NULL)
+        del(nodo->dato);
+    
     free(nodo);
 }
 
-void jxlcs_insertarAlInicio(jxlcs_Nodo **cabeza, void *dato)
+void jxlcs_insertarAlInicio(jxlcs_LCSE *lcse, void *dato)
 {
     jxlcs_Nodo *nuevo = jxlcs_crearNodo(dato);
 
-    if (jxlcs_estaVacia(*cabeza))
+    if (jxlcs_estaVacia(lcse))
     {
-        *cabeza = nuevo;
-        (*cabeza)->siguiente = *cabeza;
+        lcse->cabeza = nuevo;
+        lcse->cabeza->siguiente = lcse->cabeza;
     }
     else
     {
-        jxlcs_Nodo *p = *cabeza;
+        jxlcs_Nodo *p = lcse->cabeza;
 
-        while (p->siguiente != *cabeza)
+        while (p->siguiente != lcse->cabeza)
             p = p->siguiente;
 
-        nuevo->siguiente = *cabeza;
-        *cabeza = nuevo;
-        p->siguiente = *cabeza;
+        nuevo->siguiente = lcse->cabeza;
+        lcse->cabeza = nuevo;
+        p->siguiente = lcse->cabeza;
     }
 }
 
-void jxlcs_insertarAlFinal(jxlcs_Nodo **cabeza, void *dato)
+void jxlcs_insertarAlFinal(jxlcs_LCSE *lcse, void *dato)
 {
     jxlcs_Nodo *nuevo = jxlcs_crearNodo(dato);
 
-    if (jxlcs_estaVacia(*cabeza))
+    if (jxlcs_estaVacia(lcse))
     {
-        *cabeza = nuevo;
-        (*cabeza)->siguiente = *cabeza;
+        lcse->cabeza = nuevo;
+        lcse->cabeza->siguiente = lcse->cabeza;
     }
     else
     {
-        jxlcs_Nodo *p = *cabeza;
+        jxlcs_Nodo *p = lcse->cabeza;
 
-        while (p->siguiente != *cabeza)
+        while (p->siguiente != lcse->cabeza)
             p = p->siguiente;
 
         p->siguiente = nuevo;
-        nuevo->siguiente = *cabeza;
+        nuevo->siguiente = lcse->cabeza;
     }
 }
 
-bool jxlcs_insertarAntesDe(jxlcs_Nodo **cabeza, void *dato, void *x, bool (*cmp)(const void *p, const void *q))
+bool jxlcs_insertarAntesDe(jxlcs_LCSE *lcse, void *dato, void *x)
 {
-    if (!jxlcs_estaVacia(*cabeza))
+    if (!jxlcs_estaVacia(lcse))
     {
-        jxlcs_Nodo *p = *cabeza;
+        jxlcs_Nodo *p = lcse->cabeza;
         jxlcs_Nodo *_p = NULL;
 
-        while (p->siguiente != *cabeza && !cmp(p->dato, x))
+        while (p->siguiente != lcse->cabeza && lcse->cmp(p->dato, x))
         {
             _p = p;
             p = p->siguiente;
         }
 
-        if (cmp(p->dato, x))
+        if (!lcse->cmp(p->dato, x))
         {
             jxlcs_Nodo *nuevo = jxlcs_crearNodo(dato);
 
-            if (p == *cabeza)
+            if (p == lcse->cabeza)
             {
-                jxlcs_Nodo *q = *cabeza;
+                jxlcs_Nodo *q = lcse->cabeza;
 
-                while (q->siguiente != *cabeza)
+                while (q->siguiente != lcse->cabeza)
                     q = q->siguiente;
 
-                nuevo->siguiente = *cabeza;
-                *cabeza = nuevo;
-                q->siguiente = *cabeza;
+                nuevo->siguiente = lcse->cabeza;
+                lcse->cabeza = nuevo;
+                q->siguiente = lcse->cabeza;
             }
             else
             {
@@ -104,23 +106,23 @@ bool jxlcs_insertarAntesDe(jxlcs_Nodo **cabeza, void *dato, void *x, bool (*cmp)
     return false;
 }
 
-bool jxlcs_insertarDespuesDe(jxlcs_Nodo **cabeza, void *dato, void *x, bool (*cmp)(const void *p, const void *q))
+bool jxlcs_insertarDespuesDe(jxlcs_LCSE *lcse, void *dato, void *x)
 {
-    if (!jxlcs_estaVacia(*cabeza))
+    if (!jxlcs_estaVacia(lcse))
     {
-        jxlcs_Nodo *p = *cabeza;
+        jxlcs_Nodo *p = lcse->cabeza;
 
-        while (p->siguiente != *cabeza && !cmp(p->dato, x))
+        while (p->siguiente != lcse->cabeza && lcse->cmp(p->dato, x))
             p = p->siguiente;
 
-        if (cmp(p->dato, x))
+        if (!lcse->cmp(p->dato, x))
         {
             jxlcs_Nodo *nuevo = jxlcs_crearNodo(dato);
 
-            if (p->siguiente == *cabeza)
+            if (p->siguiente == lcse->cabeza)
             {
                 p->siguiente = nuevo;
-                nuevo->siguiente = *cabeza;
+                nuevo->siguiente = lcse->cabeza;
             }
             else
             {
@@ -135,18 +137,18 @@ bool jxlcs_insertarDespuesDe(jxlcs_Nodo **cabeza, void *dato, void *x, bool (*cm
     return false;
 }
 
-bool jxlcs_reemplazarEn(jxlcs_Nodo *cabeza, void *dato, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q))
+bool jxlcs_reemplazarEn(jxlcs_LCSE *lcse, void *dato, void *x)
 {
-    if (!jxlcs_estaVacia(cabeza))
+    if (!jxlcs_estaVacia(lcse))
     {
-        jxlcs_Nodo *p = cabeza;
+        jxlcs_Nodo *p = lcse->cabeza;
 
-        while (p->siguiente != cabeza && !cmp(p->dato, x))
+        while (p->siguiente != lcse->cabeza && lcse->cmp(p->dato, x))
             p = p->siguiente;
 
-        if (cmp(p->dato, x))
+        if (!lcse->cmp(p->dato, x))
         {
-            del(p->dato);
+            lcse->del(p->dato);
             p->dato = dato;
 
             return true;
@@ -156,26 +158,26 @@ bool jxlcs_reemplazarEn(jxlcs_Nodo *cabeza, void *dato, void *x, void (*del)(voi
     return false;
 }
 
-bool jxlcs_eliminarElPrimero(jxlcs_Nodo **cabeza, void (*del)(void *p))
+bool jxlcs_eliminarElPrimero(jxlcs_LCSE *lcse)
 {
-    if (!jxlcs_estaVacia(*cabeza))
+    if (!jxlcs_estaVacia(lcse))
     {
-        jxlcs_Nodo *p = *cabeza;
+        jxlcs_Nodo *p = lcse->cabeza;
 
-        if ((*cabeza)->siguiente == *cabeza)
-            *cabeza = NULL;
+        if (lcse->cabeza->siguiente == lcse->cabeza)
+            lcse->cabeza = NULL;
         else
         {
-            jxlcs_Nodo *q = *cabeza;
+            jxlcs_Nodo *q = lcse->cabeza;
 
-            while (q->siguiente != *cabeza)
+            while (q->siguiente != lcse->cabeza)
                 q = q->siguiente;
 
-            *cabeza = (*cabeza)->siguiente;
-            q->siguiente = *cabeza;
+            lcse->cabeza = lcse->cabeza->siguiente;
+            q->siguiente = lcse->cabeza;
         }
 
-        jxlcs_borrarNodo(p, del);
+        jxlcs_borrarNodo(p, lcse->del);
 
         return true;
     }
@@ -183,25 +185,25 @@ bool jxlcs_eliminarElPrimero(jxlcs_Nodo **cabeza, void (*del)(void *p))
         return false;
 }
 
-bool jxlcs_eliminarElUltimo(jxlcs_Nodo **cabeza, void (*del)(void *p))
+bool jxlcs_eliminarElUltimo(jxlcs_LCSE *lcse)
 {
-    if (!jxlcs_estaVacia(*cabeza))
+    if (!jxlcs_estaVacia(lcse))
     {
-        jxlcs_Nodo *p = *cabeza;
+        jxlcs_Nodo *p = lcse->cabeza;
         jxlcs_Nodo *_p = NULL;
 
-        while (p->siguiente != *cabeza)
+        while (p->siguiente != lcse->cabeza)
         {
             _p = p;
             p = p->siguiente;
         }
 
-        if (p == *cabeza)
-            *cabeza = NULL;
+        if (p == lcse->cabeza)
+            lcse->cabeza = NULL;
         else
-            _p->siguiente = *cabeza;
+            _p->siguiente = lcse->cabeza;
 
-        jxlcs_borrarNodo(p, del);
+        jxlcs_borrarNodo(p, lcse->del);
 
         return true;
     }
@@ -209,61 +211,61 @@ bool jxlcs_eliminarElUltimo(jxlcs_Nodo **cabeza, void (*del)(void *p))
         return false;
 }
 
-bool jxlcs_eliminarAntesDe(jxlcs_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q))
+bool jxlcs_eliminarAntesDe(jxlcs_LCSE *lcse, void *x)
 {
-    if (!jxlcs_estaVacia(*cabeza))
+    if (!jxlcs_estaVacia(lcse))
     {
-        jxlcs_Nodo *p = *cabeza;
+        jxlcs_Nodo *p = lcse->cabeza;
         jxlcs_Nodo *_p = NULL;
         jxlcs_Nodo *__p = NULL;
 
-        while (p->siguiente != *cabeza && !cmp(p->dato, x))
+        while (p->siguiente != lcse->cabeza && lcse->cmp(p->dato, x))
         {
             __p = _p;
             _p = p;
             p = p->siguiente;
         }
 
-        if (cmp(p->dato, x))
+        if (!lcse->cmp(p->dato, x))
         {
-            if (p == *cabeza)
+            if (p == lcse->cabeza)
             {
-                if (p->siguiente == *cabeza)
+                if (p->siguiente == lcse->cabeza)
                 {
-                    *cabeza = NULL;
-                    jxlcs_borrarNodo(p, del);
+                    lcse->cabeza = NULL;
+                    jxlcs_borrarNodo(p, lcse->del);
                 }
                 else
                 {
-                    jxlcs_Nodo *q = *cabeza;
+                    jxlcs_Nodo *q = lcse->cabeza;
                     jxlcs_Nodo *_q = NULL;
 
-                    while (q->siguiente != *cabeza)
+                    while (q->siguiente != lcse->cabeza)
                     {
                         _q = q;
                         q = q->siguiente;
                     }
 
-                    _q->siguiente = *cabeza;
-                    jxlcs_borrarNodo(q, del);
+                    _q->siguiente = lcse->cabeza;
+                    jxlcs_borrarNodo(q, lcse->del);
                 }
             }
             else
             {
-                if (_p == *cabeza)
+                if (_p == lcse->cabeza)
                 {
-                    jxlcs_Nodo *q = *cabeza;
+                    jxlcs_Nodo *q = lcse->cabeza;
 
-                    while (q->siguiente != *cabeza)
+                    while (q->siguiente != lcse->cabeza)
                         q = q->siguiente;
 
-                    *cabeza = (*cabeza)->siguiente;
-                    q->siguiente = *cabeza;
+                    lcse->cabeza = lcse->cabeza->siguiente;
+                    q->siguiente = lcse->cabeza;
                 }
                 else
                     __p->siguiente = p;
 
-                jxlcs_borrarNodo(_p, del);
+                jxlcs_borrarNodo(_p, lcse->del);
             }
 
             return true;
@@ -273,37 +275,37 @@ bool jxlcs_eliminarAntesDe(jxlcs_Nodo **cabeza, void *x, void (*del)(void *p), b
     return false;
 }
 
-bool jxlcs_eliminarDespuesDe(jxlcs_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q))
+bool jxlcs_eliminarDespuesDe(jxlcs_LCSE *lcse, void *x)
 {
-    if (!jxlcs_estaVacia(*cabeza))
+    if (!jxlcs_estaVacia(lcse))
     {
-        jxlcs_Nodo *p = *cabeza;
+        jxlcs_Nodo *p = lcse->cabeza;
 
-        while (p->siguiente != *cabeza && !cmp(p->dato, x))
+        while (p->siguiente != lcse->cabeza && lcse->cmp(p->dato, x))
             p = p->siguiente;
 
-        if (cmp(p->dato, x))
+        if (!lcse->cmp(p->dato, x))
         {
             jxlcs_Nodo *p_ = p->siguiente;
 
-            if (p->siguiente == *cabeza)
+            if (p->siguiente == lcse->cabeza)
             {
-                if (p == *cabeza)
+                if (p == lcse->cabeza)
                 {
-                    *cabeza = NULL;
-                    jxlcs_borrarNodo(p, del);
+                    lcse->cabeza = NULL;
+                    jxlcs_borrarNodo(p, lcse->del);
                 }
                 else
                 {
-                    *cabeza = (*cabeza)->siguiente;
-                    p->siguiente = *cabeza;
-                    jxlcs_borrarNodo(p_, del);
+                    lcse->cabeza = lcse->cabeza->siguiente;
+                    p->siguiente = lcse->cabeza;
+                    jxlcs_borrarNodo(p_, lcse->del);
                 }
             }
             else
             {
                 p->siguiente = p_->siguiente;
-                jxlcs_borrarNodo(p_, del);
+                jxlcs_borrarNodo(p_, lcse->del);
             }
 
             return true;
@@ -313,40 +315,40 @@ bool jxlcs_eliminarDespuesDe(jxlcs_Nodo **cabeza, void *x, void (*del)(void *p),
     return false;
 }
 
-bool jxlcs_eliminarEn(jxlcs_Nodo **cabeza, void *x, void (*del)(void *p), bool (*cmp)(const void *p, const void *q))
+bool jxlcs_eliminarEn(jxlcs_LCSE *lcse, void *x)
 {
-    if (!jxlcs_estaVacia(*cabeza))
+    if (!jxlcs_estaVacia(lcse))
     {
-        jxlcs_Nodo *p = *cabeza;
+        jxlcs_Nodo *p = lcse->cabeza;
         jxlcs_Nodo *_p = NULL;
 
-        while (p->siguiente != *cabeza && !cmp(p->dato, x))
+        while (p->siguiente != lcse->cabeza && lcse->cmp(p->dato, x))
         {
             _p = p;
             p = p->siguiente;
         }
 
-        if (cmp(p->dato, x))
+        if (!lcse->cmp(p->dato, x))
         {
-            if (p == *cabeza)
+            if (p == lcse->cabeza)
             {
-                if (p->siguiente == *cabeza)
-                    *cabeza = NULL;
+                if (p->siguiente == lcse->cabeza)
+                    lcse->cabeza = NULL;
                 else
                 {
-                    jxlcs_Nodo *q = *cabeza;
+                    jxlcs_Nodo *q = lcse->cabeza;
 
-                    while (q->siguiente != *cabeza)
+                    while (q->siguiente != lcse->cabeza)
                         q = q->siguiente;
 
-                    *cabeza = (*cabeza)->siguiente;
-                    q->siguiente = *cabeza;
+                    lcse->cabeza = lcse->cabeza->siguiente;
+                    q->siguiente = lcse->cabeza;
                 }
             }
             else
                 _p->siguiente = p->siguiente;
 
-            jxlcs_borrarNodo(p, del);
+            jxlcs_borrarNodo(p, lcse->del);
 
             return true;
         }
@@ -355,21 +357,21 @@ bool jxlcs_eliminarEn(jxlcs_Nodo **cabeza, void *x, void (*del)(void *p), bool (
     return false;
 }
 
-void *jxlcs_obtenerElPrimero(jxlcs_Nodo *cabeza)
+void *jxlcs_obtenerElPrimero(jxlcs_LCSE *lcse)
 {
-    if (!jxlcs_estaVacia(cabeza))
-        return cabeza->dato;
+    if (!jxlcs_estaVacia(lcse))
+        return lcse->cabeza->dato;
 
     return NULL;
 }
 
-void *jxlcs_obtenerElUltimo(jxlcs_Nodo *cabeza)
+void *jxlcs_obtenerElUltimo(jxlcs_LCSE *lcse)
 {
-    if (!jxlcs_estaVacia(cabeza))
+    if (!jxlcs_estaVacia(lcse))
     {
-        jxlcs_Nodo *p = cabeza;
+        jxlcs_Nodo *p = lcse->cabeza;
 
-        while (p->siguiente != cabeza)
+        while (p->siguiente != lcse->cabeza)
             p = p->siguiente;
 
         return p->dato;
@@ -378,26 +380,26 @@ void *jxlcs_obtenerElUltimo(jxlcs_Nodo *cabeza)
     return NULL;
 }
 
-void *jxlcs_obtenerAntesDe(jxlcs_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q))
+void *jxlcs_obtenerAntesDe(jxlcs_LCSE *lcse, void *x)
 {
-    if (!jxlcs_estaVacia(cabeza))
+    if (!jxlcs_estaVacia(lcse))
     {
-        jxlcs_Nodo *p = cabeza;
+        jxlcs_Nodo *p = lcse->cabeza;
         jxlcs_Nodo *_p = NULL;
 
-        while (p->siguiente != cabeza && !cmp(p->dato, x))
+        while (p->siguiente != lcse->cabeza && lcse->cmp(p->dato, x))
         {
             _p = p;
             p = p->siguiente;
         }
 
-        if (cmp(p->dato, x))
+        if (!lcse->cmp(p->dato, x))
         {
-            if (p == cabeza)
+            if (p == lcse->cabeza)
             {
-                jxlcs_Nodo *q = cabeza;
+                jxlcs_Nodo *q = lcse->cabeza;
 
-                while (q->siguiente != cabeza)
+                while (q->siguiente != lcse->cabeza)
                     q = q->siguiente;
 
                 return q->dato;
@@ -410,30 +412,30 @@ void *jxlcs_obtenerAntesDe(jxlcs_Nodo *cabeza, void *x, bool (*cmp)(const void *
     return NULL;
 }
 
-void *jxlcs_obtenerDespuesDe(jxlcs_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q))
+void *jxlcs_obtenerDespuesDe(jxlcs_LCSE *lcse, void *x)
 {
-    if (!jxlcs_estaVacia(cabeza))
+    if (!jxlcs_estaVacia(lcse))
     {
-        jxlcs_Nodo *p = cabeza;
+        jxlcs_Nodo *p = lcse->cabeza;
 
-        while (p->siguiente != cabeza && !cmp(p->dato, x))
+        while (p->siguiente != lcse->cabeza && lcse->cmp(p->dato, x))
             p = p->siguiente;
 
-        if (cmp(p->dato, x))
+        if (!lcse->cmp(p->dato, x))
             return p->siguiente->dato;
     }
 
     return NULL;
 }
 
-void *jxlcs_obtenerEn(jxlcs_Nodo *cabeza, int posicion)
+void *jxlcs_obtenerEn(jxlcs_LCSE *lcse, int posicion)
 {
-    if (!jxlcs_estaVacia(cabeza))
+    if (!jxlcs_estaVacia(lcse))
     {
-        jxlcs_Nodo *p = cabeza;
+        jxlcs_Nodo *p = lcse->cabeza;
         int i = 0;
 
-        while (p->siguiente != cabeza && i != posicion)
+        while (p->siguiente != lcse->cabeza && i != posicion)
         {
             p = p->siguiente;
             i++;
@@ -446,44 +448,44 @@ void *jxlcs_obtenerEn(jxlcs_Nodo *cabeza, int posicion)
     return NULL;
 }
 
-int jxlcs_buscar(jxlcs_Nodo *cabeza, void *x, bool (*cmp)(const void *p, const void *q))
+int jxlcs_buscar(jxlcs_LCSE *lcse, void *x)
 {
-    if (!jxlcs_estaVacia(cabeza))
+    if (!jxlcs_estaVacia(lcse))
     {
-        jxlcs_Nodo *p = cabeza;
+        jxlcs_Nodo *p = lcse->cabeza;
         int i = 0;
 
-        while (p->siguiente != cabeza && !cmp(p->dato, x))
+        while (p->siguiente != lcse->cabeza && lcse->cmp(p->dato, x))
         {
             p = p->siguiente;
             i++;
         }
 
-        if (cmp(p->dato, x))
+        if (!lcse->cmp(p->dato, x))
             return i;
     }
 
     return -1;
 }
 
-bool jxlcs_borrar(jxlcs_Nodo **cabeza, void (*del)(void *p))
+bool jxlcs_borrar(jxlcs_LCSE *lcse)
 {
-    if (!jxlcs_estaVacia(*cabeza))
+    if (!jxlcs_estaVacia(lcse))
     {
         jxlcs_Nodo *p;
-        jxlcs_Nodo *q = *cabeza;
+        jxlcs_Nodo *q = lcse->cabeza;
 
-        while (q->siguiente != *cabeza)
+        while (q->siguiente != lcse->cabeza)
             q = q->siguiente;
 
         q->siguiente = NULL;
 
         do
         {
-            p = *cabeza;
-            *cabeza = (*cabeza)->siguiente;
-            jxlcs_borrarNodo(p, del);
-        } while (*cabeza != NULL);
+            p = lcse->cabeza;
+            lcse->cabeza = lcse->cabeza->siguiente;
+            jxlcs_borrarNodo(p, lcse->del);
+        } while (lcse->cabeza != NULL);
 
         return true;
     }
@@ -491,28 +493,28 @@ bool jxlcs_borrar(jxlcs_Nodo **cabeza, void (*del)(void *p))
         return false;
 }
 
-void jxlcs_mostrar(jxlcs_Nodo *cabeza, char *(*str)(const void *p))
+void jxlcs_mostrar(jxlcs_LCSE *lcse)
 {
     printf("LCSE => { ");
 
-    if (!jxlcs_estaVacia(cabeza))
+    if (!jxlcs_estaVacia(lcse))
     {
-        jxlcs_Nodo *p = cabeza;
+        jxlcs_Nodo *p = lcse->cabeza;
         char *txt;
 
         do
         {
-            txt = str(p->dato);
+            txt = lcse->str(p->dato);
             printf("%s -> ", txt);
             free(txt);
             p = p->siguiente;
-        } while (p != cabeza);
+        } while (p != lcse->cabeza);
     }
 
     puts(" }");
 }
 
-bool jxlcs_estaVacia(jxlcs_Nodo *cabeza)
+bool jxlcs_estaVacia(jxlcs_LCSE *lcse)
 {
-    return cabeza == NULL;
+    return lcse->cabeza == NULL;
 }

@@ -1,7 +1,6 @@
 #include "Persona.h"
 #include "Entrada.h"
 #include "Libreria.h"
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -21,6 +20,9 @@ Persona *crearPersona()
 
 void borrarPersona(void *p)
 {
+    if (p == NULL)
+        return;
+
     Persona *persona = (Persona *)p;
     free(persona->nombres);
     free(persona->apellidoPaterno);
@@ -30,29 +32,21 @@ void borrarPersona(void *p)
     free(persona);
 }
 
-bool compararPersona(const void *p, const void *q)
+int compararPersona(const void *p, const void *q)
 {
-    Persona *p1 = (Persona *)p;
-    Persona *p2 = (Persona *)q;
+    const Persona *p1 = (const Persona *)p;
+    const Persona *p2 = (const Persona *)q;
 
     if (!strcmp(p1->nombres, p2->nombres) && !strcmp(p1->apellidoPaterno, p2->apellidoPaterno) && !strcmp(p1->apellidoMaterno, p2->apellidoMaterno) && *(p1->edad) == *(p2->edad) && !strcmp(p1->dni, p2->dni))
-        return true;
+        return 0;
     else
-        return false;
-}
-
-int ordenarPersona(const void *p, const void *q)
-{
-    Persona *p1 = (Persona *)p;
-    Persona *p2 = (Persona *)q;
-
-    return *(p1->edad) - *(p2->edad);
+        return *(p1->edad) - *(p2->edad);
 }
 
 char *mostrarPersona(const void *p)
 {
     char buffer[LONGITUD_DE_ENTRADA_STRING];
-    Persona *persona = (Persona *)p;
+    const Persona *persona = (const Persona *)p;
     sprintf(buffer, "Persona(%s %s %s, %d, %s)\n", persona->nombres, persona->apellidoPaterno, persona->apellidoMaterno, *(persona->edad), persona->dni);
     buffer[strcspn(buffer, "\n")] = '\0';
     char *toString = strdup(buffer);

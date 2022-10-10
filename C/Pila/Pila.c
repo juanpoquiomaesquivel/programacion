@@ -16,73 +16,75 @@ jxp_Nodo *jxp_crearNodo(void *dato)
 
 void jxp_borrarNodo(jxp_Nodo *nodo, void (*del)(void *p))
 {
-    del(nodo->dato);
+    if (del != NULL)
+        del(nodo->dato);
+
     free(nodo);
 }
 
-void jxp_empilar(jxp_Nodo **tope, void *dato)
+void jxp_empilar(jxp_Pila *pila, void *dato)
 {
     jxp_Nodo *nuevo = jxp_crearNodo(dato);
 
-    if (!jxp_estaVacia(*tope))
-        nuevo->abajo = *tope;
+    if (!jxp_estaVacia(pila))
+        nuevo->abajo = pila->tope;
 
-    *tope = nuevo;
+    pila->tope = nuevo;
 }
 
-bool jxp_depilar(jxp_Nodo **tope, void (*del)(void *p))
+bool jxp_depilar(jxp_Pila *pila)
 {
-    if (!jxp_estaVacia(*tope))
+    if (!jxp_estaVacia(pila))
     {
-        jxp_Nodo *p = *tope;
-        *tope = (*tope)->abajo;
-        jxp_borrarNodo(p, del);
+        jxp_Nodo *p = pila->tope;
+        pila->tope = pila->tope->abajo;
+        jxp_borrarNodo(p, pila->del);
 
         return true;
     }
-
-    return false;
+    else
+        return false;
 }
 
-void *jxp_cima(jxp_Nodo *tope)
+void *jxp_cima(jxp_Pila *pila)
 {
-    if (!jxp_estaVacia(tope))
-        return tope->dato;
+    if (!jxp_estaVacia(pila))
+        return pila->tope->dato;
     else
         return NULL;
 }
 
-bool jxp_borrar(jxp_Nodo **tope, void (*del)(void *p))
+bool jxp_borrar(jxp_Pila *pila)
 {
-    if (!jxp_estaVacia(*tope))
+    if (!jxp_estaVacia(pila))
     {
         jxp_Nodo *p;
 
         do
         {
-            p = *tope;
-            *tope = (*tope)->abajo;
-            jxp_borrarNodo(p, del);
-        } while (*tope != NULL);
+            p = pila->tope;
+            pila->tope = pila->tope->abajo;
+            jxp_borrarNodo(p, pila->del);
+        } while (pila->tope != NULL);
 
         return true;
     }
-
-    return false;
+    else
+        return false;
 }
 
-void jxp_mostrar(jxp_Nodo *tope, char *(*str)(const void *p))
+void jxp_mostrar(jxp_Pila *pila)
 {
     printf("PILA => { ");
 
-    if (!jxp_estaVacia(tope))
+    if (!jxp_estaVacia(pila))
     {
-        jxp_Nodo *p = tope;
+        jxp_Nodo *p = pila->tope;
         char *txt;
 
         do
         {
-            txt = str(p->dato);
+            txt = pila->str(p->dato);
             printf("%s -> ", txt);
             free(txt);
             p = p->abajo;
@@ -92,7 +94,7 @@ void jxp_mostrar(jxp_Nodo *tope, char *(*str)(const void *p))
     puts(" }");
 }
 
-bool jxp_estaVacia(jxp_Nodo *tope)
+bool jxp_estaVacia(jxp_Pila *pila)
 {
-    return tope == NULL;
+    return pila->tope == NULL;
 }

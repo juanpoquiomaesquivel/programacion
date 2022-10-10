@@ -8,6 +8,8 @@
         "typeinfo": "c",
         "stdio.h": "c",
         "random": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "abb.h": "c",
+        "stdbool.h": "c"
     }
 }

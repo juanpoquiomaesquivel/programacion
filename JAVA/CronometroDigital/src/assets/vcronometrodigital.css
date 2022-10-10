@@ -1,0 +1,52 @@
+.root {
+    -fx-background-color: black;
+}
+
+#display {
+    -fx-alignment: center;
+    -fx-text-fill: #00ff00;
+    -fx-font: normal 25px "E1234", serif;
+    -fx-effect: dropshadow(gaussian, #00ff00, 10, 0.15, 0, 0);
+}
+
+#bgdisplay {
+    -fx-alignment: center;
+    -fx-text-fill: rgba(255, 255, 255, 0.3);
+    -fx-font: normal 25px "E1234", serif;
+}
+
+#btnPlayPause, #btnReset {
+    -fx-background-color: #00ff00;
+    -fx-background-insets: 4px;
+    -fx-background-position: center;
+    -fx-background-radius: 100%;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+
+    -fx-border-color: #00ff00;
+    -fx-border-radius: 100%;
+    -fx-border-insets: 2px;
+    -fx-border-width: 1px;
+    -fx-cursor: hand;
+
+    -fx-effect: dropshadow(gaussian, #00ff00, 15, 0.25, 0, 0);
+}
+
+
+#btnPlayPause {
+    -fx-background-image: url(play-button.png);
+}
+
+#btnPlayPause:hover, #btnReset:hover {
+    -fx-effect: dropshadow(gaussian, #00ff00, 18, 0.35, 0, 0);
+}
+
+#btnPlayPause:selected {
+    -fx-background-image: url(pause-button.png);
+    -fx-background-repeat: no-repeat;
+}
+
+
+#btnReset {
+    -fx-background-image: url(stop-button.png);
+}
