@@ -20,7 +20,7 @@ public class ControllerPasswordGenerator implements Initializable {
 
     @FXML
     private void copiarPasswordField(MouseEvent evt) {
-        var cb = Toolkit.getDefaultToolkit().getSystemClipboard();
+        var cb = Toolkit.getDefaultToolkit().getSystemClipboard(); // https://www.delftstack.com/es/howto/java/java-copy-text-to-clipboard/
         var str = new StringSelection(this.passwordField.getText());
         cb.setContents(str, null);
     }
@@ -40,5 +40,4 @@ public class ControllerPasswordGenerator implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         this.passwordGenerator = new ModelPasswordGenerator();
     }
-
 }
