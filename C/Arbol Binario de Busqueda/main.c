@@ -12,9 +12,11 @@ enum
     INSERTAR,
     ELIMINAR,
     BUSCAR,
+    REEMPLAZAR,
     PREORDEN,
-    POSORDEN,
     INORDEN,
+    POSORDEN,
+    PORNIVEL,
     BORRAR,
     MOSTRAR
 };
@@ -23,9 +25,11 @@ const char lista[][100] = {"Salir",
                            "Insertar",
                            "Eliminar",
                            "Buscar",
+                           "Reemplazar",
                            "Preorden",
-                           "Posorden",
                            "Inorden",
+                           "Posorden",
+                           "Por nivel",
                            "Borrar",
                            "Mostrar"};
 
@@ -42,8 +46,8 @@ void menu()
 {
     const size_t n = sizeof(lista) / sizeof(lista[0]);
     short int *opcion = NULL;
-    jxab_ABB abb = {.raiz = NULL};
-    void *dato = NULL;
+    jxab_ABB abb = {.del = borrarPersona, .cmp = compararPersona, .str = mostrarPersona, .raiz = NULL};
+    void *dato = NULL, *x = NULL;
 
     while (true)
     {
@@ -60,47 +64,37 @@ void menu()
         switch (*opcion)
         {
         case SALIR:
-            jxab_borrar(&abb.raiz, borrarPersona);
+            jxab_borrar(&abb);
             free(opcion);
             puts(MS_PROGRAMA_FINALIZADO);
 
             return;
         case INSERTAR:
             dato = crearPersona();
-            jxab_insertar(&abb.raiz, dato, compararPersona);
+            jxab_insertar(&abb, dato);
             dato = NULL;
-            break; /*
-         case ELIMINAR:
-             printf("%s\n", (jxab_eliminar(&abb.raiz, borrarPersona) ? "true" : "false"));
-             break;
-         case FRENTE:
-             dato = jxc_frente(abb.raiz);
-             (dato != NULL) ? printf("%s\n", mostrarPersona(dato)) : puts("NULL");
-             dato = NULL;
-             break;
-         case ULTIMO:
-             dato = jx_ultimo(abb.raiz);
-             (dato != NULL) ? printf("%s\n", mostrarPersona(dato)) : puts("NULL");
-             dato = NULL;
-             break;
-         case BORRAR:
-             printf("%s\n", (jxc_borrar(&abb.raiz, borrarPersona) ? "true" : "false"));
-             break;
-         case MOSTRAR:
-             jxc_mostrar(abb.raiz, mostrarPersona);
-             break;*/
+            break;
+        case BUSCAR:
+            x = crearPersona();
+            printf("%s\n", (jxab_buscar(&abb, x) ? "true" : "false"));
+            borrarPersona(x);
+            x = NULL;
+            break;
         case PREORDEN:
-            jxab_preOrden(abb.raiz, mostrarPersona);
+            jxab_preorden(&abb);
             break;
         case INORDEN:
-            jxab_inOrden(abb.raiz, mostrarPersona);
+            jxab_inorden(&abb);
             break;
         case POSORDEN:
-            jxab_posOrden(abb.raiz, mostrarPersona);
+            jxab_posorden(&abb);
             break;
-         case BORRAR:
-             printf("%s\n", (jxab_borrar(&abb.raiz, borrarPersona) ? "true" : "false"));
-             break;
+        case PORNIVEL:
+            jxab_porNivel(&abb);
+            break;
+        case BORRAR:
+            printf("%s\n", (jxab_borrar(&abb) ? "true" : "false"));
+            break;
         default:
             puts(MS_OPCION_INCORRECTA);
         }

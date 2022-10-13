@@ -21,6 +21,9 @@ Persona *crearPersona()
 
 void borrarPersona(void *p)
 {
+    if (p == NULL)
+        return;
+
     Persona *persona = (Persona *)p;
     free(persona->nombres);
     free(persona->apellidoPaterno);

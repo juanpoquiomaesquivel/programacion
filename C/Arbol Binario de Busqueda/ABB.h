@@ -13,23 +13,25 @@ typedef struct jxab_nodo
 
 typedef struct jxab_abb
 {
+    void (*del)(void *p);
+    int (*cmp)(const void *p, const void *q);
+    char *(*str)(const void *p);
     jxab_Nodo *raiz;
 } jxab_ABB;
 
 jxab_Nodo *jxab_crearNodo(void *dato);
 void jxab_borrarNodo(jxab_Nodo *nodo, void (*del)(void *p));
-bool jxab_insertar(jxab_Nodo **raiz, void *dato, int (*cmp)(const void *p, const void *q));
+bool jxab_insertar(jxab_ABB *abb, void *dato);
+// bool jxab_eliminar(jxab_ABB *abb, void *dato);
+bool jxab_buscar(jxab_ABB *abb, void *x);
+bool jxab_reemplazar(jxab_ABB *abb, void *dato, void *x);
 
+void jxab_preorden(jxab_ABB *abb);
+void jxab_inorden(jxab_ABB *abb);
+void jxab_posorden(jxab_ABB *abb);
+void jxab_porNivel(jxab_ABB *abb);
 
-void jxab_preOrden(jxab_Nodo *raiz, char *(*str)(const void *p));
-void jxab_inOrden(jxab_Nodo *raiz, char *(*str)(const void *p));
-void jxab_posOrden(jxab_Nodo *raiz, char *(*str)(const void *p));
-
-void preorden(jxab_Nodo *nodo, char *(*str)(const void *p));
-void inorden(jxab_Nodo *nodo, char *(*str)(const void *p));
-void posorden(jxab_Nodo *nodo, char *(*str)(const void *p));
-
-bool jxab_borrar(jxab_Nodo **raiz, void (*del)(void *p));
-bool jxab_estaVacio(jxab_Nodo *raiz);
+bool jxab_borrar(jxab_ABB *abb);
+bool jxab_estaVacio(jxab_ABB *abb);
 
 #endif
