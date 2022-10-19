@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="252.0" prefWidth="405.0" stylesheets="@../assets/viewdigitalchronometer.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="jxcontroller.ControllerDigitalChronometer">
+   <center>
+      <HBox alignment="CENTER" maxHeight="200.0" maxWidth="700.0" BorderPane.alignment="CENTER">
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="display_minutes" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="display" text="00" VBox.vgrow="ALWAYS" />
+                  <Label styleClass="displayLabel" text="minutes" />
+               </children>
+            </VBox>
+            <Label maxHeight="1.7976931348623157E308" styleClass="display" text=":" HBox.hgrow="ALWAYS">
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding></Label>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="display_seconds" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="display" text="00" VBox.vgrow="ALWAYS" />
+                  <Label styleClass="displayLabel" text="seconds" />
+               </children>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </VBox>
+            <Label maxHeight="1.7976931348623157E308" styleClass="display" text=":" HBox.hgrow="ALWAYS">
+               <padding>
+                  <Insets bottom="20.0" />
+               </padding></Label>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="display_miliseconds" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="display" text="00" VBox.vgrow="ALWAYS" />
+                  <Label styleClass="displayLabel" text="miliseconds" />
+               </children>
+            </VBox>
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="5.0" top="20.0" />
+         </BorderPane.margin>
+      </HBox>
+   </center>
+   <bottom>
+      <HBox alignment="CENTER" maxHeight="70.0" maxWidth="1.7976931348623157E308" minHeight="70.0" prefHeight="70.0" spacing="20.0" BorderPane.alignment="CENTER">
+         <children>
+            <ToggleButton id="buttonPlayPause" fx:id="play_pause_button" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#handlePlayPauseButton" pickOnBounds="false" prefHeight="50.0" prefWidth="50.0" styleClass="buttons">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ToggleButton>
+            <Button id="buttonStop" fx:id="stop_button" contentDisplay="GRAPHIC_ONLY" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#handleStopButton" pickOnBounds="false" prefHeight="50.0" prefWidth="50.0" styleClass="buttons">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <BorderPane.margin>
+            <Insets bottom="5.0" top="5.0" />
+         </BorderPane.margin>
+      </HBox>
+   </bottom>
+</BorderPane>

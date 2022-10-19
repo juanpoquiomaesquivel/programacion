@@ -1,0 +1,52 @@
+.root {
+    -fx-background-color: black;
+    -fx-font-family: arial, serif;
+}
+
+.display {
+    -fx-effect: dropshadow(gaussian, #00ff00, 7, 0.25, 0, 0);
+    -fx-font: normal 50px "E1234", arial, serif;
+    -fx-text-fill: #00ff00;
+}
+
+.displayLabel {
+    -fx-effect: dropshadow(gaussian, #00ff00, 3, 0.25, 0, 0);
+    -fx-font: normal 11px "HP Simplified", arial, serif;
+    -fx-text-fill: #00ff00;
+}
+
+.buttons {
+    -fx-background-color: #00ff00;
+    -fx-background-insets: 4px;
+    -fx-background-position: center;
+    -fx-background-radius: 50%;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover;
+
+    -fx-border-color: #00ff00;
+    -fx-border-radius: 50%;
+    -fx-border-insets: 2px;
+    -fx-border-width: 2px;
+
+    -fx-effect: dropshadow(gaussian, #00ff00, 15, 0.25, 0, 0);
+}
+
+.buttons:hover {
+    -fx-effect: dropshadow(gaussian, #00ff00, 18, 0.35, 0, 0);
+}
+
+.buttons:pressed {
+    -fx-effect: dropshadow(gaussian, #00ff00, 18, 0.55, 0, 0);
+}
+
+#buttonPlayPause {
+    -fx-background-image: url(play-button.png);
+}
+
+#buttonPlayPause:selected {
+    -fx-background-image: url(pause-button.png);
+}
+
+#buttonStop {
+    -fx-background-image: url(stop-button.png);
+}
