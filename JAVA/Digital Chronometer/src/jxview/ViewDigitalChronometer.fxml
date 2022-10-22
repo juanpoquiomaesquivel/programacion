@@ -44,12 +44,12 @@
             </VBox>
          </children>
          <BorderPane.margin>
-            <Insets bottom="5.0" top="20.0" />
+            <Insets bottom="5.0" left="5.0" right="5.0" top="20.0" />
          </BorderPane.margin>
       </HBox>
    </center>
    <bottom>
-      <HBox alignment="CENTER" maxHeight="70.0" maxWidth="1.7976931348623157E308" minHeight="70.0" prefHeight="70.0" spacing="20.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" maxHeight="70.0" maxWidth="1.7976931348623157E308" minHeight="70.0" prefHeight="70.0" spacing="30.0" BorderPane.alignment="CENTER">
          <children>
             <ToggleButton id="buttonPlayPause" fx:id="play_pause_button" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#handlePlayPauseButton" pickOnBounds="false" prefHeight="50.0" prefWidth="50.0" styleClass="buttons">
                <opaqueInsets>

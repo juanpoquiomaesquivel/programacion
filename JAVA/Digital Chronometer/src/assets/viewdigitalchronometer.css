@@ -1,42 +1,48 @@
 .root {
     -fx-background-color: black;
-    -fx-font-family: arial, serif;
 }
 
 .display {
-    -fx-effect: dropshadow(gaussian, #00ff00, 7, 0.25, 0, 0);
+    -fx-effect: dropshadow(gaussian, red, 6, 0.85, 0, 0);
+    
     -fx-font: normal 50px "E1234", arial, serif;
-    -fx-text-fill: #00ff00;
+    
+    -fx-text-fill: black;
 }
 
 .displayLabel {
-    -fx-effect: dropshadow(gaussian, #00ff00, 3, 0.25, 0, 0);
-    -fx-font: normal 11px "HP Simplified", arial, serif;
-    -fx-text-fill: #00ff00;
+    -fx-effect: dropshadow(gaussian, red, 2, 0.95, 0, 0);
+    
+    -fx-font: bold 15px "Consolas", arial, serif;
+    
+    -fx-text-fill: black;
 }
 
 .buttons {
-    -fx-background-color: #00ff00;
+    -fx-background-color: red;
     -fx-background-insets: 4px;
     -fx-background-position: center;
     -fx-background-radius: 50%;
     -fx-background-repeat: no-repeat;
     -fx-background-size: cover;
 
-    -fx-border-color: #00ff00;
-    -fx-border-radius: 50%;
+    -fx-border-color: red;
     -fx-border-insets: 2px;
+    -fx-border-radius: 50%;
     -fx-border-width: 2px;
 
-    -fx-effect: dropshadow(gaussian, #00ff00, 15, 0.25, 0, 0);
+    -fx-effect: dropshadow(gaussian, red, 15, 0.25, 0, 0);
 }
 
 .buttons:hover {
-    -fx-effect: dropshadow(gaussian, #00ff00, 18, 0.35, 0, 0);
+    -fx-effect: dropshadow(gaussian, red, 18, 0.35, 0, 0);
 }
 
 .buttons:pressed {
-    -fx-effect: dropshadow(gaussian, #00ff00, 18, 0.55, 0, 0);
+    -fx-effect: dropshadow(gaussian, red, 18, 0.55, 0, 0);
+    
+    -fx-scale-x: 1.075;
+    -fx-scale-y: 1.075;
 }
 
 #buttonPlayPause {
